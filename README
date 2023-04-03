@@ -1,0 +1,33 @@
+This application is used to manage and review qcards at scheduled intervals.
+
+Categories represents larger topics, for example Java or Python.
+
+Stacks represents a stack of QCards to be reviewed together, and that related to the Category. A stack can be a subcategory of the broader category, for example a stack of qcards related to java.lang methods.
+
+
+UI Python Scripts
+=================
+qcards_app.py - The main qcards application, using Tkinter.
+category_gui.py - Containing user interface code for managing categories using Tkinter.
+qcards_gui_util.py - A util file containing utilities for the gui
+
+Backend Python Scripts
+======================
+manage-categories.py - A script containing classes to manage categories, such as inserting categories to a database, updating categories, and retrieving categories.
+qcards_db.py - A script for performing database functions in a generic way.
+qcards_date_util.py - A script with functions to do all kinds of date calculations
+manage-stacks.py - A script containing classes to manage stack related database operations.
+
+Resources:
+https://www.pythontutorial.net/tkinter/tkinter-ttk/
+https://www.pythontutorial.net/tkinter/tkinter-theme/
+https://pypi.org/project/convertdate/
+https://www.tutorialspoint.com/how-to-clear-items-from-a-ttk-treeview-widget
+https://www.tutorialspoint.com/how-to-change-ttk-treeview-column-width-and-weight-in-python-3-3
+https://pythonguides.com/python-tkinter-treeview/
+https://www.pythonguis.com/faq/pack-place-and-grid-in-tkinter/
+https://www.askpython.com/python-modules/tkinter/tkinter-intvar
+
+Resources (MySQL):
+https://www.mysqltutorial.org/mysql-add-column/
+http://www.squirrelsql.org/
