@@ -4,22 +4,24 @@ import qcards_util as qu
 
 class Stack:
 
-    def __init__(self, id, description, active, source, category_id):
+    def __init__(self, id, description, active, source, category_id, last_view_date, next_view_date):
         self.id = id
         self.description = description
         self.active = active
         self.source = source
         self.category_id = category_id
+        self.last_view_date = last_view_date
+        self.next_view_date = next_view_date
 
     def convert_to_list(self):
-        return [ self.id, self.description, self.active, self.source, self.category_id ]
+        return [ self.id, self.description, self.active, self.source, self.category_id, self.last_view_date, self.next_view_date ]
 
 class AddStack:
 
     def run(self, description, active, source, category_id):
         # Prepare SQL
-        sql = "insert into t_stack(description, active, source, category_id, create_date, last_modified_date) \
-            values('{:s}', {}, '{:s}', {:d}, current_timestamp(), current_timestamp());".format(description, active, source, category_id);
+        sql = "insert into t_stack(description, active, source, category_id, next_view_date, create_date) \
+            values('{:s}', {}, '{:s}', {:d}, '{:%Y-%m-%d}', current_timestamp());".format(description, active, source, category_id, next_view_date);
         print(sql);
 
         # Run the query
@@ -29,14 +31,16 @@ class AddStack:
 
 class UpdateStack:
 
-    def run(self, id, description, active, source, category_id):
+    def run(self, id, description, active, source, category_id, last_view_date, next_view_date):
         # Prepare SQL
         sql = "update t_stack  \
             set description = '{:s}', \
             active = {}, \
             source = '{:s}', \
             category_id = {:d} \
-            where id = {:d};".format(description, active, source, category_id, id)
+            last_view_date = '{:%Y-%m-%d}', \
+            next_view_date = '{:%Y-%m-%d}' \
+            where id = {:d};".format(description, active, source, category_id, last_view_date, next_view_date, id)
         print(sql);
 
         # Run the query
@@ -47,7 +51,7 @@ class RetrieveStackById:
 
     def run(self, id):
         # Prepare SQL
-        sql = "select id, description, active, source, category_id from t_stack where id = {:d};".format(id)
+        sql = "select id, description, active, source, category_id, last_view_date, next_view_date from t_stack where id = {:d};".format(id)
         print(sql);
 
         # Run the query
@@ -58,7 +62,7 @@ class RetrieveAllStacks:
 
     def run(self):
         # Prepare SQL
-        sql = "select id, description, active, source, category_id from t_stack;"
+        sql = "select id, description, active, source, category_id, last_view_date, next_view_date from t_stack;"
         print(sql);
 
         # Run the query
@@ -78,7 +82,7 @@ class RetrieveStackByCategoryId:
 
     def run(self, category_id):
         # Prepare SQL
-        sql = "select id, description, active, source, category_id from t_stack where category_id = {:d};".format(category_id)
+        sql = "select id, description, active, source, category_id, last_view_date, next_view_date from t_stack where category_id = {:d};".format(category_id)
         print(sql);
 
         # Run the query

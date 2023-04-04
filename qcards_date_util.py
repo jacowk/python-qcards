@@ -1,3 +1,11 @@
+import datetime
+
+"""
+A general class for miscellaneous date utilities
+
+Jaco Koekemoer
+2023-04-04
+"""
 class DateUtil:
 
     """
@@ -11,5 +19,14 @@ class DateUtil:
     add_two_weeks_with_weekday
     calculate_next_odd_day
     calculate_next_even_day
-
     """
+
+    def getNow(self):
+        return datetime.datetime.now()
+
+    def getNowAsYearMonthDay(self):
+        now = self.getNow()
+        return now.strftime("%Y-%m-%d")
+
+    def getDateForYearMonthDay(self, year, month, day):
+        return datetime.datetime(year, month, day)

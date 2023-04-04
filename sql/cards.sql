@@ -3,13 +3,16 @@ Run SQuirrel:
 sudo /usr/local/squirrel-sql-4.5.1/squirrel-sql.sh
 */
 
-/* Stacks */
-CREATE TABLE t_stack (
+/* Cards */
+CREATE TABLE t_card (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-		description VARCHAR(100),
+    title VARCHAR(100),
+    front_content VARCHAR(200),
+    back_content VARCHAR(1000),
+    stack_id INT(6),
+    view_cnt INT(6),
+    group_cnt INT(6),
     active BOOLEAN,
-		source VARCHAR(300),
-		category_id INT(6),
     last_view_date TIMESTAMP NULL DEFAULT NULL,
     next_view_date TIMESTAMP NULL DEFAULT NULL,
     create_date TIMESTAMP NULL DEFAULT NULL,
@@ -17,23 +20,30 @@ CREATE TABLE t_stack (
 );
 
 show tables;
-select * from t_stack;
 
-describe t_stack;
-DROP TABLE t_stack;
+describe t_card;
+drop table t_card;
 
-select * from t_stack;
+select * from t_card;
 
-insert into t_stack(description, active, source, category_id, create_date)
-values('HTML in W3Schools', True, 'www.w3schools.com', 3, NOW());
+insert into t_card(title, front_content, back_content, stack_id, view_cnt, group_cnt, active, create_date)
+values('Front 1', 'Back 1', 1, 0, 1, True, NOW());
 
-update t_stack
-set description = 'Java Updated Stack',
+
+update t_card
+set title = 'Title 1',
+front_content = 'Front 1 updated',
+back_content = 'Back 1 updated',
+stack_id = 2,
+view_cnt = 1,
+group_cnt = 2,
 active = True,
-source = 'test source',
-category_id = 2
+last_view_date = now(),
+next_view_date = now()
 where id = 1;
 
+select * from t_card;
+truncate table t_card;
 
 alter table t_category add column create_date timestamp after active;
 
