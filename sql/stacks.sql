@@ -8,20 +8,20 @@ CREATE TABLE t_stack (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 		description VARCHAR(100),
     active BOOLEAN,
-		source VARCHAR(300),
-		category_id INT(6),
-    last_view_date TIMESTAMP NULL DEFAULT NULL,
-    next_view_date TIMESTAMP NULL DEFAULT NULL,
-    create_date TIMESTAMP NULL DEFAULT NULL,
+	source VARCHAR(300),
+	category_id INT(6),
+    next_view_date DATE NULL,
+    create_date TIMESTAMP NOT NULL,
     last_modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+alter table t_stack drop column last_view_date;
+
 show tables;
 select * from t_stack;
-
 describe t_stack;
-DROP TABLE t_stack;
-
+drop table t_stack;
+truncate table t_stack;
 select * from t_stack;
 
 insert into t_stack(description, active, source, category_id, create_date)

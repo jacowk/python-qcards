@@ -25,7 +25,9 @@ ALTER TABLE t_category ALTER COLUMN create_date DROP DEFAULT;
 
 describe t_category;
 
-DROP TABLE t_category;
+drop table t_category;
+truncate table t_category;
+select * from t_category;
 
 insert into t_category(description, active, create_date) values('Java SDK', True, NOW());
 
