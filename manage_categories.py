@@ -19,12 +19,12 @@ class AddCategory:
     def run(self, description, active):
         # Prepare SQL
         sql = "insert into t_category(description, active, create_date, last_modified_date) values('{:s}', {}, current_timestamp(), current_timestamp());".format(
-            description, active);
-        print(sql);
+            description, active)
+        # print(sql)
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteQuery()
-        execute_query.execute(sql);
+        execute_query.execute(sql)
 
 
 class UpdateCategory:
@@ -32,11 +32,11 @@ class UpdateCategory:
     def run(self, id, description, active):
         # Prepare SQL
         sql = "update t_category set description = '{:s}', active = {} where id = {:d};".format(description, active, id)
-        print(sql);
+        # print(sql)
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteQuery()
-        execute_query.execute(sql);
+        execute_query.execute(sql)
 
 
 class RetrieveCategoryById:
@@ -44,11 +44,11 @@ class RetrieveCategoryById:
     def run(self, id):
         # Prepare SQL
         sql = "select id, description, active from t_category where id = {:d};".format(id)
-        print(sql);
+        # print(sql)
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteSelectQuery()
-        return execute_query.execute(sql);
+        return execute_query.execute(sql)
 
 
 class RetrieveAllCategories:
@@ -56,7 +56,7 @@ class RetrieveAllCategories:
     def run(self):
         # Prepare SQL
         sql = "select id, description, active from t_category;"
-        print(sql)
+        # print(sql)
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteSelectQuery()
