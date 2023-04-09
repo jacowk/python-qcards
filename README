@@ -130,16 +130,26 @@ Records:
 
 UI Python Scripts
 =================
+qcards_text_app.py - The main qcards application, using a text based GUI.
 qcards_app.py - The main qcards application, using Tkinter.
 category_gui.py - Containing user interface code for managing categories using Tkinter.
 qcards_gui_util.py - A util file containing utilities for the gui
 
 Backend Python Scripts
 ======================
-manage-categories.py - A script containing classes to manage categories, such as inserting categories to a database, updating categories, and retrieving categories.
+qcards_initial_db_test.py - An initial script to make a connection to the database
 qcards_db.py - A script for performing database functions in a generic way.
-qcards_date_util.py - A script with functions to do all kinds of date calculations
-manage-stacks.py - A script containing classes to manage stack related database operations.
+qcards_date_util.py - A script with functions to do all kinds of static date calculations
+qcards_util.py - A script with some utility static functions
+manage_categories.py - A script containing classes to manage categories, such as inserting categories to a database, updating categories, and retrieving categories.
+manage_stacks.py - CRUD operations on stacks
+manage_cards.py - CRUD operations on the qcards
+manage_review_stage.py - CRUD operations on the review stages for the qcards. Reviewing a card daily, 2nd daily, weekly or monthly?
+
+Review Stage Calculation Functions
+==================================
+Calculate the next odd date: qcards_date_util.py, DateUtil.calculate_next_odd_date()
+Calculate the next even date: qcards_date_util.py, DateUtil.calculate_next_even_date()
 
 Resources:
 https://www.pythontutorial.net/tkinter/tkinter-ttk/

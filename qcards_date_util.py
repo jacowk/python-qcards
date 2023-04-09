@@ -7,8 +7,6 @@ A general class for miscellaneous date utilities
 Jaco Koekemoer
 2023-04-04
 """
-
-
 class DateUtil:
     """
     Functions required:
@@ -61,3 +59,63 @@ class DateUtil:
     @staticmethod
     def add_months(date, no_months):
         return date + relativedelta(months=no_months)
+
+    """
+    Calculate the next odd date after today
+    from_date should be datetime.date()
+
+    Jaco Koekemoer
+    2023-04-08
+    """
+    @staticmethod
+    def calculate_next_odd_date(from_date):
+        odd_date_found = False
+        next_view_date = from_date
+        while odd_date_found == False:
+            # Add 1 day to the date
+            next_view_date = DateUtil.add_days(next_view_date, 1)
+            next_view_day = next_view_date.day
+            if DateUtil.validate_is_odd(next_view_day):
+                odd_date_found = True
+                break
+        return next_view_date
+
+    """
+    A validation method to check if a given day value is on an odd day, e.g. 1, 3, 5, etc
+    Jaco Koekemoer
+    2023-04-09
+    """
+    @staticmethod
+    def validate_is_odd(day_value):
+        return day_value % 2 != 0
+
+    """
+    Calculate the next even date after today
+    from_date should be datetime.date()
+
+    Jaco Koekemoer
+    2023-04-09
+    """
+
+    @staticmethod
+    def calculate_next_even_date(from_date):
+        even_date_found = False
+        next_view_date = from_date
+        while even_date_found == False:
+            # Add 1 day to the date
+            next_view_date = DateUtil.add_days(next_view_date, 1)
+            next_view_day = next_view_date.day
+            if DateUtil.validate_is_even(next_view_day):
+                even_date_found = True
+                break
+        return next_view_date
+
+    """
+    A validation method to check if a given day value is on an even day, e.g. 2, 4, 6, etc
+    Jaco Koekemoer
+    2023-04-09
+    """
+
+    @staticmethod
+    def validate_is_even(day_value):
+        return day_value % 2 == 0

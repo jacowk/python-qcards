@@ -5,6 +5,9 @@
     Calculate next_review_date for every week
     Calculate next_review_date for every month
     On manage_stacks.py, add update_review_date(self, stack_id, next_review_date)
+    Calculate a best fit for every 2nd day
+    Calculate a best fit for every week
+    Calculate a best fit for every month
 4. Retrieve scheduled stacks. This has 2 groups:
     - The daily review stacks doesn't have a next_view_date calculated, but retrieve these
     - The scheduled review stacks where next_view_date on t_stack is <= to today
@@ -12,3 +15,10 @@
     - Reviewing all the scheduled stacks for review
     - Scheduling of stacks
 6. Test adding code to cards that are formatted
+7. manage_cards.py
+    - Update the group_cd (1 = Front, 2 = Middle, 3 = Back)
+    - Retrieve by group_cd asc, id asc
+    - Enhance the text based UI with this
+8. Build Tkinter UI
+9. Sub categories
+    - Add parent_category_id to t_category

@@ -84,6 +84,25 @@ class UpdateEverySecondDayReviewStage:
         execute_query.execute(sql)
 
 """
+Calculate the next review date if the review stage cd is every second day
+
+Jaco Koekemoer
+2023-04-08
+"""
+class CalculateEverySecondDayNextViewDate:
+
+    def run(self, stack_id, odd_even_cd):
+        # Get today's date
+        today = qdu.DateUtil().get_now_as_date()
+
+        # Determine which date to calculate
+        if odd_even_cd == OddEven.ODD.value:
+            next_odd_date = qdu.DateUtil().calculate_next_odd_date(today)
+            return next_odd_date
+
+
+
+"""
 Update the review stage to weekly, for the given weekday_cd and week_count.
 weekday_cd refers to t_lookup_weekday (Monday, Tuesday, etc)
 week_count column (1 = once a week, 2 = every 2nd week, 3 = every third week
