@@ -1,8 +1,8 @@
 1. Don't add duplicate category descriptions
 2. Don't add duplicate stack descriptions
 3. manage_review_stage.py
-    Calculate next_review_date for every 2nd day
-    Calculate next_review_date for every week
+    Calculate next_review_date for every 2nd day (Done)
+    Calculate next_review_date for every week (TODO)
     Calculate next_review_date for every month
     On manage_stacks.py, add update_review_date(self, stack_id, next_review_date)
     Calculate a best fit for every 2nd day

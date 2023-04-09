@@ -1,3 +1,20 @@
+Resources:
+==================================
+https://www.pythontutorial.net/tkinter/tkinter-ttk/
+https://www.pythontutorial.net/tkinter/tkinter-theme/
+https://pypi.org/project/convertdate/
+https://www.tutorialspoint.com/how-to-clear-items-from-a-ttk-treeview-widget
+https://www.tutorialspoint.com/how-to-change-ttk-treeview-column-width-and-weight-in-python-3-3
+https://pythonguides.com/python-tkinter-treeview/
+https://www.pythonguis.com/faq/pack-place-and-grid-in-tkinter/
+https://www.askpython.com/python-modules/tkinter/tkinter-intvar
+https://www.javatpoint.com/atom-python
+https://pynative.com/python-get-the-day-of-week/
+
+Resources (MySQL):
+https://www.mysqltutorial.org/mysql-add-column/
+http://www.squirrelsql.org/
+
 System Requirements
 ====================
 
@@ -151,18 +168,12 @@ Review Stage Calculation Functions
 Calculate the next odd date: qcards_date_util.py, DateUtil.calculate_next_odd_date()
 Calculate the next even date: qcards_date_util.py, DateUtil.calculate_next_even_date()
 
-Resources:
-https://www.pythontutorial.net/tkinter/tkinter-ttk/
-https://www.pythontutorial.net/tkinter/tkinter-theme/
-https://pypi.org/project/convertdate/
-https://www.tutorialspoint.com/how-to-clear-items-from-a-ttk-treeview-widget
-https://www.tutorialspoint.com/how-to-change-ttk-treeview-column-width-and-weight-in-python-3-3
-https://pythonguides.com/python-tkinter-treeview/
-https://www.pythonguis.com/faq/pack-place-and-grid-in-tkinter/
-https://www.askpython.com/python-modules/tkinter/tkinter-intvar
-https://www.javatpoint.com/atom-python
-https://pynative.com/python-get-the-day-of-week/
-
-Resources (MySQL):
-https://www.mysqltutorial.org/mysql-add-column/
-http://www.squirrelsql.org/
+Typical Execution Order of Functions
+====================================
+1. Run the UI application with qcards_app.py, or the text based application with qcards_text_app.py
+2. Add a category with the AddCategory class's run() function (manage_categories.py)
+3. Add a stack for the category with the AddStack class's run() funtion (manage_stacks.py)
+4. Add a qcard for in the stack with the AddCard class's run() function (manage_cards.py)
+5. Add the initial review stage for the card with AddReviewStage class's run() funtion (manage_review_stage.py) The initial review stage is to view the cards daily.
+6. To simply review all active cards by stack id, use the RetrieveAllActiveCardsByStackId class's run() function (manage_cards.py). This will not consider the review stage.
+7. Once a card is viewed and you go to the next card, update the view statistics using the UpdateViewStatistics class's run() function (manage_cards.py). Increment the view count by 1 and update the last view date.
