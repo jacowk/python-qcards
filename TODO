@@ -3,8 +3,8 @@
 3. manage_review_stage.py
     Calculate next_review_date for every 2nd day (Done)
     Calculate next_review_date for every week (TODO)
-    Calculate next_review_date for every month
-    On manage_stacks.py, add update_review_date(self, stack_id, next_review_date)
+    Calculate next_review_date for every month (Done)
+    On manage_stacks.py, add update_review_date(self, stack_id, next_review_date) (Done)
     Calculate a best fit for every 2nd day
     Calculate a best fit for every week
     Calculate a best fit for every month
@@ -22,5 +22,6 @@
 8. Build Tkinter UI
 9. Sub categories
     - Add parent_category_id to t_category
-10. Bookmark function
+10. Bookmark function. Create a table t_bookmark, manage_bookmarks.py
 11. Ability to go forward and backward when reviewing cards
+12. Build in validations

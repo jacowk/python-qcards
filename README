@@ -145,7 +145,6 @@ Records:
 2 - Middle
 3 - Back
 
-
 UI Python Scripts
 =================
 qcards_text_app.py - The main qcards application, using a text based GUI.
@@ -186,7 +185,7 @@ Typical Execution Order of Functions
 2. Add a category with the AddCategory class's run() function (manage_categories.py)
 3. Add a stack for the category with the AddStack class's run() funtion (manage_stacks.py)
 4. Add a qcard for in the stack with the AddCard class's run() function (manage_cards.py)
-5. Add the initial review stage for the card with AddReviewStage class's run() funtion (manage_review_stage.py) The initial review stage is to view the cards daily.
+5. Add the initial review stage for the card with AddReviewStage class's run() function (manage_review_stage.py) The initial review stage is to view the cards daily.
 6. To simply review all active cards by stack id, use the RetrieveAllActiveCardsByStackId class's run() function (manage_cards.py). This will not consider the review stage.
 7. Once a card is viewed and you go to the next card, update the view statistics using the UpdateViewStatistics class's run() function (manage_cards.py). Increment the view count by 1 and update the last view date.
 8. To change the review stage to every 2nd day, call UpdateEverySecondDayReviewStage (manage_review_stage.py)
@@ -198,3 +197,26 @@ Typical Execution Order of Functions
 14. To change the review stage to monthly, call UpdateMonthlyReviewStage (manage_review_stage.py)
 15. To calculate the next view date for a montly view stage, call CalculateMonthlyNextViewDate (manage_review_stage.py)
 16. Update the next view date on stack level with UpdateNextViewDate (manage_stacks.py)
+
+General classes and functions
+=============================
+To retrieve a single stack, call RetrieveStackById (manage_stacks.py)
+To retrieve all stacks, call RetrieveAllStacks (manage_stacks.py)
+To retrieve active stacks by category id, call RetrieveActiveStacksByCategoryId (manage_stacks.py)
+To update a stack, call UpdateStack (manage_stacks.py)
+
+To retrieve a single card, call RetrieveCardById (manage_cards.py)
+To retrieve all cards, call RetrieveAllCards (manage_cards.py)
+To retrieve active cards by stack id, call RetrieveAllActiveCardsByStackId (manage_cards.py)
+To update a card, call UpdateCard (manage_cards.py)
+
+To setup a stack of cards using unit testing
+============================================
+Until the UI development is done, stacks and cards can be set up with unit testing
+1. Add a category with AddCategoryTest (manage_categories_test.py)
+2. Get the category id with this query, which is required to add a stack: select * from t_category;
+3. Add a stack with AddStackTest (manage_stacks_test.py)
+4. Getting the stack id, which is required for adding cards: select * from t_stack;
+5. Prep the cards in a pipe delimited csv file with the following headings: summary|front_content|back_content
+6. Import the cards with AddMultipleCardsTest (manage_cards_test.py)
+
