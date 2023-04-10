@@ -84,23 +84,3 @@ class RetrieveAllActiveCategories:
         execute_query = qcards_db.QCardsExecuteSelectQuery()
         categories = execute_query.execute(sql)
         return convert_active(categories)
-
-
-class AdaptRecordsToCategories:
-
-    def run(self, records):
-        categories = []
-        for row in records:
-            id = row[0]
-            description = row[1]
-            active = row[2]
-            category = Category(id, description, active)
-            categories.append(category);
-        return categories
-
-
-class PrintCategories:
-
-    def run(self, categories):
-        for category in categories:
-            print("{} {} {}".format(category.id, category.description, category.active))

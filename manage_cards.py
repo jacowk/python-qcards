@@ -1,9 +1,13 @@
 import qcards_db as qcards_db
-import MySQLdb as mysql
 import qcards_util as qu
 import qcards_date_util as du
 
+"""
+A class for representing a card
 
+Jaco Koekemoer
+2023-04-07
+"""
 class Card:
 
     def __init__(self, id, summary, front_content, back_content, stack_id, view_cnt, group_cnt, active):
@@ -20,7 +24,12 @@ class Card:
         return [self.id, self.summary, self.front_content, self.back_content, self.stack_id, self.view_cnt,
                 self.group_cnt, self.active]
 
+"""
+A class for creating a new card
 
+Jaco Koekemoer
+2023-04-07
+"""
 class AddCard:
 
     def run(self, summary, front_content, back_content, stack_id, active):
@@ -34,7 +43,12 @@ class AddCard:
         execute_query = qcards_db.QCardsExecuteQuery()
         execute_query.execute(sql)
 
+"""
+A class for updating a card
 
+Jaco Koekemoer
+2023-04-07
+"""
 class UpdateCard:
 
     def run(self, id, summary, front_content, back_content, stack_id, view_cnt, group_cnt, active):
@@ -54,7 +68,12 @@ class UpdateCard:
         execute_query = qcards_db.QCardsExecuteQuery()
         execute_query.execute(sql);
 
+"""
+A class for updating the view count for a card
 
+Jaco Koekemoer
+2023-04-07
+"""
 class UpdateViewCnt:
 
     def run(self, id, new_view_count):
@@ -68,7 +87,12 @@ class UpdateViewCnt:
         execute_query = qcards_db.QCardsExecuteQuery()
         execute_query.execute(sql)
 
+"""
+A class for retrieving a card by id
 
+Jaco Koekemoer
+2023-04-07
+"""
 class RetrieveCardById:
 
     def run(self, card_id):
@@ -81,7 +105,12 @@ class RetrieveCardById:
         execute_query = qcards_db.QCardsExecuteSelectQuery()
         return execute_query.execute(sql)
 
+"""
+A class for retrieving all cards
 
+Jaco Koekemoer
+2023-04-07
+"""
 class RetrieveAllCards:
 
     def run(self):
@@ -102,7 +131,12 @@ class RetrieveAllCards:
             converted_cards = converted_cards + (converted_card,)  # Building up a tuple of tuples
         return converted_cards
 
+"""
+A class for retrieving all active cards by stack id
 
+Jaco Koekemoer
+2023-04-07
+"""
 class RetrieveAllActiveCardsByStackId:
 
     def run(self, stack_id):
@@ -127,7 +161,12 @@ class RetrieveAllActiveCardsByStackId:
             converted_cards = converted_cards + (converted_card,)  # Building up a tuple of tuples
         return converted_cards
 
+"""
+A class for updating the view staticstics for a card, meaning the view count is incremented by 1, and the last_view_date is updated to today
 
+Jaco Koekemoer
+2023-04-07
+"""
 class UpdateViewStatistics:
 
     def run(self, card_id):
@@ -147,23 +186,3 @@ class UpdateViewStatistics:
         # Run the query
         execute_query = qcards_db.QCardsExecuteQuery()
         execute_query.execute(sql)
-
-
-class AdaptRecordsToCards:
-
-    def run(self, records):
-        cards = []
-        for row in records:
-            id = row[0]
-            description = row[1]
-            active = row[2]
-            card = Card(id, description, active)
-            cards.append(card);
-        return cards
-
-
-class PrintCards:
-
-    def run(self, cards):
-        for card in cards:
-            print("{} {} {}".format(card.id, card.description, card.active))

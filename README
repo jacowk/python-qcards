@@ -14,6 +14,7 @@ https://pynative.com/python-get-the-day-of-week/
 Resources (MySQL):
 https://www.mysqltutorial.org/mysql-add-column/
 http://www.squirrelsql.org/
+Mysql Driver (Platform Independent): https://dev.mysql.com/downloads/connector/j/
 
 System Requirements
 ====================
@@ -167,6 +168,17 @@ Review Stage Calculation Functions
 ==================================
 Calculate the next odd date: qcards_date_util.py, DateUtil.calculate_next_odd_date()
 Calculate the next even date: qcards_date_util.py, DateUtil.calculate_next_even_date()
+Calculate the next view date for every second day: manage_review_stage.py, CalculateEverySecondDayNextViewDate's run method. This method calls the first 2 methods.
+
+For updating the next view date, call UpdateNextViewDate's run method (manage_stacks.py)
+
+Updating review stage configurations
+====================================
+manage_review_stage.py is the main file where these are done
+Add an initial daily review stage - AddReviewStage
+Set the review stage to 2nd daily - UpdateEverySecondDayReviewStage
+Set the review stage to weekly - UpdateWeeklyReviewStage
+Set the review stage to monthly - UpdateMonthlyReviewStage
 
 Typical Execution Order of Functions
 ====================================
@@ -177,3 +189,12 @@ Typical Execution Order of Functions
 5. Add the initial review stage for the card with AddReviewStage class's run() funtion (manage_review_stage.py) The initial review stage is to view the cards daily.
 6. To simply review all active cards by stack id, use the RetrieveAllActiveCardsByStackId class's run() function (manage_cards.py). This will not consider the review stage.
 7. Once a card is viewed and you go to the next card, update the view statistics using the UpdateViewStatistics class's run() function (manage_cards.py). Increment the view count by 1 and update the last view date.
+8. To change the review stage to every 2nd day, call UpdateEverySecondDayReviewStage (manage_review_stage.py)
+9. To calculate the next view date for a 2nd daily view stage, call CalculateEverySecondDayNextViewDate (manage_review_stage.py)
+10. Once the next view date is calculated, update the next view date on stack level with UpdateNextViewDate (manage_stacks.py)
+11. To change the review stage to weekly, call UpdateWeeklyReviewStage (manage_review_stage.py)
+12. To calculate the next view date for a weekly view stage, call CalculateWeeklyNextViewDate (manage_review_stage.py) (TODO)
+13. Update the next view date on stack level with UpdateNextViewDate (manage_stacks.py)
+14. To change the review stage to monthly, call UpdateMonthlyReviewStage (manage_review_stage.py)
+15. To calculate the next view date for a montly view stage, call CalculateMonthlyNextViewDate (manage_review_stage.py) (TODO)
+16. Update the next view date on stack level with UpdateNextViewDate (manage_stacks.py)

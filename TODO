@@ -22,3 +22,5 @@
 8. Build Tkinter UI
 9. Sub categories
     - Add parent_category_id to t_category
+10. Bookmark function
+11. Ability to go forward and backward when reviewing cards

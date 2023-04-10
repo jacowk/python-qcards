@@ -6,7 +6,7 @@ class AddCategoryTest(ut.TestCase):
 
     @staticmethod
     def runTest():
-        description = "Design Patterns"
+        description = "Test"
         active = 1
 
         add_category = mc.AddCategory()
@@ -72,10 +72,10 @@ class RetrieveAllCategoriesTest(ut.TestCase):
 # Run specific tests
 loader = ut.TestLoader()
 # suite = loader.loadTestsFromTestCase(AddMultipleCategoriesTest)
-# suite = loader.loadTestsFromTestCase(AddCategoryTest)
+suite = loader.loadTestsFromTestCase(AddCategoryTest)
 # suite = loader.loadTestsFromTestCase(UpdateCategoryTest)
 # suite = loader.loadTestsFromTestCase(RetrieveCategoryByIdTest)
-suite = loader.loadTestsFromTestCase(RetrieveAllCategoriesTest)
+# suite = loader.loadTestsFromTestCase(RetrieveAllCategoriesTest)
 
 runner = ut.TextTestRunner()
 runner.run(suite)

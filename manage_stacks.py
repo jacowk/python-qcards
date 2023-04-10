@@ -2,7 +2,12 @@ import qcards_db as qcards_db
 import MySQLdb as mysql
 import qcards_util as qu
 
+"""
+A class representing a Stack.
 
+Jaco Koekemoer
+2023-04-07
+"""
 class Stack:
 
     def __init__(self, id, description, active, source, category_id, last_view_date, next_view_date):
@@ -18,7 +23,12 @@ class Stack:
         return [self.id, self.description, self.active, self.source, self.category_id, self.last_view_date,
                 self.next_view_date]
 
+"""
+A class for creating a new stack in the database.
 
+Jaco Koekemoer
+2023-04-07
+"""
 class AddStack:
 
     def run(self, description, active, source, category_id):
@@ -31,10 +41,15 @@ class AddStack:
         execute_query = qcards_db.QCardsExecuteQuery()
         execute_query.execute(sql);
 
+"""
+A class for updating a stack in the database.
 
+Jaco Koekemoer
+2023-04-07
+"""
 class UpdateStack:
 
-    def run(self, id, description, active, source, category_id, next_view_date):
+    def run(self, id, description, active, source, category_id):
 
         # Prepare SQL
         sql = "update t_stack \
@@ -42,15 +57,35 @@ class UpdateStack:
             active = {}, \
             source = '{:s}', \
             category_id = {:d}, \
-            next_view_date = '{:%Y-%m-%d}' \
-            where id = {:d};".format(description, active, source, category_id, next_view_date, id)
+            where id = {:d};".format(description, active, source, category_id, id)
         #print(sql)
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteQuery()
         execute_query.execute(sql)
 
+"""
+A class to update the next_view_date for a stack.
 
+Jaco Koekemoer
+2023-04-10
+"""
+class UpdateNextViewDate:
+
+    def run(self, stack_id, next_view_date):
+        # Prepare SQL
+        sql = "update t_stack set next_view_date = '{:%Y-%m-%d}' where id = {:d};".format(next_view_date, stack_id)
+
+        # Run the query
+        execute_query = qcards_db.QCardsExecuteQuery()
+        execute_query.execute(sql)
+
+"""
+A class for retrieving a stack by id
+
+Jaco Koekemoer
+2023-04-07
+"""
 class RetrieveStackById:
 
     def run(self, id):
@@ -63,7 +98,12 @@ class RetrieveStackById:
         execute_query = qcards_db.QCardsExecuteSelectQuery()
         return execute_query.execute(sql);
 
+"""
+A class for retrieving all stacks
 
+Jaco Koekemoer
+2023-04-07
+"""
 class RetrieveAllStacks:
 
     def run(self):
@@ -86,6 +126,12 @@ class RetrieveAllStacks:
         return converted_stacks
 
 
+"""
+A class for retrieving a stacks by category id
+
+Jaco Koekemoer
+2023-04-07
+"""
 class RetrieveActiveStacksByCategoryId:
 
     def run(self, category_id):
@@ -110,25 +156,3 @@ class RetrieveActiveStacksByCategoryId:
             converted_stack = (stack[0], stack[1], qcards_util.convert_tinyint_to_boolean(stack[2]), stack[3], stack[4])
             converted_stacks = converted_stacks + (converted_stack,)  # Building up a tuple of tuples
         return converted_stacks
-
-
-class AdaptRecordsToCategories:
-
-    def run(self, records):
-        stacks = []
-        for row in records:
-            id = row[0]
-            description = row[1]
-            active = row[2]
-            source = row[3]
-            category_id = row[4]
-            stack = Stack(id, description, active, source, category_id)
-            stacks.append(stack);
-        return stacks
-
-
-class PrintCategories:
-
-    def run(self, stacks):
-        for stack in stacks:
-            print("{} {} {}".format(stack.id, stack.description, stack.active))

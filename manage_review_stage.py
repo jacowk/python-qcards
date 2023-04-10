@@ -99,8 +99,9 @@ class CalculateEverySecondDayNextViewDate:
         if odd_even_cd == OddEven.ODD.value:
             next_odd_date = qdu.DateUtil().calculate_next_odd_date(today)
             return next_odd_date
-
-
+        else:
+            next_even_date = qdu.DateUtil().calculate_next_even_date(today)
+            return next_even_date
 
 """
 Update the review stage to weekly, for the given weekday_cd and week_count.

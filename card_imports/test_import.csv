@@ -1,0 +1,2 @@
+title|front_content|back_content
+jquery|example code|$(\"#hide\").click(function(){\n  $(\"p\").hide();\n});

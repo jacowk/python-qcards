@@ -45,3 +45,9 @@ Installation directory: /usr/local/squirrel-sql-4.5.1
 sudo /usr/local/squirrel-sql-4.5.1/squirrel-sql.sh
 
 Mysql Driver (Platform Independent): https://dev.mysql.com/downloads/connector/j/
+
+/* Update the next_view_date */
+update t_stack set next_view_date = '2023-04-10' where stack_id = 4;
+
+select * from t_stack;
+

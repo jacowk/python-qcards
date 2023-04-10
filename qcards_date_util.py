@@ -8,6 +8,7 @@ Jaco Koekemoer
 2023-04-04
 """
 class DateUtil:
+
     """
     Functions required:
     add_one_week
@@ -17,7 +18,6 @@ class DateUtil:
     calculate_next_odd_day
     calculate_next_even_day
     """
-
     @staticmethod
     def get_now_as_date():
         return datetime.date.today()
@@ -96,7 +96,6 @@ class DateUtil:
     Jaco Koekemoer
     2023-04-09
     """
-
     @staticmethod
     def calculate_next_even_date(from_date):
         even_date_found = False
