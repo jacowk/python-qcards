@@ -91,7 +91,7 @@ Jaco Koekemoer
 """
 class CalculateEverySecondDayNextViewDate:
 
-    def run(self, stack_id, odd_even_cd):
+    def run(self, odd_even_cd):
         # Get today's date
         today = qdu.DateUtil().get_now_as_date()
 
@@ -151,3 +151,20 @@ class UpdateMonthlyReviewStage:
         # Run the query
         execute_query = qcards_db.QCardsExecuteQuery()
         execute_query.execute(sql)
+
+"""
+Calculate the next view date if the review stage cd is monthly
+
+Jaco Koekemoer
+2023-04-10
+"""
+class CalculateMonthlyNextViewDate:
+
+    def run(self, calendar_day, month_count):
+        # Get today's date
+        today = qdu.DateUtil().get_now_as_date()
+
+        # Calculate the next view date
+        next_view_date = qdu.DateUtil().calculate_next_monthly_date(today, calendar_day, month_count)
+        return next_view_date
+

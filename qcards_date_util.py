@@ -114,7 +114,24 @@ class DateUtil:
     Jaco Koekemoer
     2023-04-09
     """
-
     @staticmethod
     def validate_is_even(day_value):
         return day_value % 2 == 0
+
+    """
+    A method to calculate the next view date for a monthly review stage
+    Parameters:
+    date: Represents the date you want to adjust
+    calendar_day: The day on which the view should be done, for example 1 to 31 of a month
+    month_count: 1 means viewing a card monthly. 2 means viewing a card every 2nd month.
+    
+    Jaco Koekemoer
+    2023-04-10
+    """
+    @staticmethod
+    def calculate_next_monthly_date(from_date, calendar_day, month_count):
+        current_year = from_date.year
+        current_month = from_date.month
+        adjusted_date = DateUtil.get_string_as_date(current_year, current_month, calendar_day)
+        adjusted_date = DateUtil.add_months(adjusted_date, month_count)
+        return adjusted_date

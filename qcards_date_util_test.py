@@ -130,10 +130,11 @@ Jaco Koekemoer
 """
 class ValidateIsOddTest(ut.TestCase):
 
-    def runTest(self):
+    @staticmethod
+    def runTest():
         day_value = 13
         result = qdu.DateUtil().validate_is_odd(day_value)
-        self.assertTrue(result, True)
+        ut.TestCase.assertTrue(result, True)
 
 """
 A unit test for the function calculate_next_odd_date() in qcards_util.py from today's date
@@ -143,7 +144,8 @@ Jaco Koekemoer
 """
 class CalculateNextOddDateFromTodayTest(ut.TestCase):
 
-    def runTest(self):
+    @staticmethod
+    def runTest():
         # Get today's date
         today = qdu.DateUtil().get_now_as_date()
 
@@ -161,7 +163,8 @@ Jaco Koekemoer
 """
 class CalculateNextOddDateFromOddDateTest(ut.TestCase):
 
-    def runTest(self):
+    @staticmethod
+    def runTest():
         # Get today's date
         odd_date = qdu.DateUtil().get_string_as_date(2023, 4, 13)
 
@@ -171,7 +174,7 @@ class CalculateNextOddDateFromOddDateTest(ut.TestCase):
 
         # Assert results
         expected_date = "2023-04-13"
-        self.assertTrue(expected_date, next_view_date_string)
+        ut.TestCase.assertTrue(expected_date, next_view_date_string)
 
 """
 A unit test for the function calculate_next_odd_date() in qcards_util.py using an even date
@@ -181,7 +184,8 @@ Jaco Koekemoer
 """
 class CalculateNextOddDateFromEvenDateTest(ut.TestCase):
 
-    def runTest(self):
+    @staticmethod
+    def runTest():
         # Get today's date
         odd_date = qdu.DateUtil().get_string_as_date(2023, 4, 12)
 
@@ -191,7 +195,7 @@ class CalculateNextOddDateFromEvenDateTest(ut.TestCase):
 
         # Assert results
         expected_date = "2023-04-13"
-        self.assertTrue(expected_date, next_view_date_string)
+        ut.TestCase.assertTrue(expected_date, next_view_date_string)
 
 """
 A unit test for the function calculate_next_odd_date() in qcards_util.py using an even date
@@ -201,7 +205,8 @@ Jaco Koekemoer
 """
 class CalculateNextOddDateFromEndOfMonthTest(ut.TestCase):
 
-    def runTest(self):
+    @staticmethod
+    def runTest():
         # Get today's date
         odd_date = qdu.DateUtil().get_string_as_date(2023, 3, 31)
 
@@ -211,7 +216,7 @@ class CalculateNextOddDateFromEndOfMonthTest(ut.TestCase):
 
         # Assert results
         expected_date = "2023-04-01"
-        self.assertTrue(expected_date, next_view_date_string)
+        ut.TestCase.assertTrue(expected_date, next_view_date_string)
 
 """
 A unit test for the function validate_is_even() in qcards_util.py
@@ -221,10 +226,11 @@ Jaco Koekemoer
 """
 class ValidateIsEvenTest(ut.TestCase):
 
-    def runTest(self):
+    @staticmethod
+    def runTest():
         day_value = 14
         result = qdu.DateUtil().validate_is_even(day_value)
-        self.assertTrue(result, True)
+        ut.TestCase.assertTrue(result, True)
 
 """
 A unit test for the function calculate_next_even_date() in qcards_util.py using an even date
@@ -234,7 +240,8 @@ Jaco Koekemoer
 """
 class CalculateNextEvenDateFromEvenDateTest(ut.TestCase):
 
-    def runTest(self):
+    @staticmethod
+    def runTest():
         # Get today's date
         even_date = qdu.DateUtil().get_string_as_date(2023, 4, 14)
 
@@ -244,7 +251,7 @@ class CalculateNextEvenDateFromEvenDateTest(ut.TestCase):
 
         # Assert results
         expected_date = "2023-04-16"
-        self.assertTrue(expected_date, next_view_date_string)
+        ut.TestCase.assertTrue(expected_date, next_view_date_string)
 
 """
 A unit test for the function calculate_next_even_date() in qcards_util.py using an odd date
@@ -254,7 +261,8 @@ Jaco Koekemoer
 """
 class CalculateNextEvenDateFromOddDateTest(ut.TestCase):
 
-    def runTest(self):
+    @staticmethod
+    def runTest():
         # Get today's date
         odd_date = qdu.DateUtil().get_string_as_date(2023, 4, 13)
 
@@ -264,7 +272,7 @@ class CalculateNextEvenDateFromOddDateTest(ut.TestCase):
 
         # Assert results
         expected_date = "2023-04-14"
-        self.assertTrue(expected_date, next_view_date_string)
+        ut.TestCase.assertTrue(expected_date, next_view_date_string)
 
 """
 A unit test for the function calculate_next_even_date() in qcards_util.py using a date at the end of the month
@@ -274,7 +282,8 @@ Jaco Koekemoer
 """
 class CalculateNextEvenDateFromEndOfMonthTest(ut.TestCase):
 
-    def runTest(self):
+    @staticmethod
+    def runTest():
         # Get today's date
         odd_date = qdu.DateUtil().get_string_as_date(2023, 3, 31)
 
@@ -284,7 +293,34 @@ class CalculateNextEvenDateFromEndOfMonthTest(ut.TestCase):
 
         # Assert results
         expected_date = "2023-04-02"
-        self.assertTrue(expected_date, next_view_date_string)
+        ut.TestCase.assertTrue(expected_date, next_view_date_string)
+
+"""
+A unit test for the calculate_next_monthly_date() function in the DateUtil class
+
+Jaco Koekemoer
+2023-04-10
+"""
+class CalculateNextMonthlyDateTest(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        date1 = qdu.DateUtil.get_now_as_date()
+        calendar_day = 20
+        month_count = 9 # Every 2nd month
+        expected_view_date = "2024-01-20"
+        next_view_date = qdu.DateUtil.calculate_next_monthly_date(date1, calendar_day, month_count)
+        next_view_date_str = qdu.DateUtil.get_date_as_string(next_view_date)
+        ut.TestCase.assertTrue(next_view_date_str, expected_view_date)
+
+        date2 = qdu.DateUtil.get_now_as_date()
+        calendar_day = 20
+        month_count = 1  # Every 2nd month
+        expected_view_date = "2023-05-20"
+        next_view_date = qdu.DateUtil.calculate_next_monthly_date(date2, calendar_day, month_count)
+        next_view_date_str = qdu.DateUtil.get_date_as_string(next_view_date)
+        ut.TestCase.assertTrue(next_view_date_str, expected_view_date)
+
 
 # Run specific tests
 loader = ut.TestLoader()
@@ -305,7 +341,8 @@ loader = ut.TestLoader()
 # suite = loader.loadTestsFromTestCase(ValidateIsEvenTest)
 # suite = loader.loadTestsFromTestCase(CalculateNextEvenDateFromEvenDateTest)
 # suite = loader.loadTestsFromTestCase(CalculateNextEvenDateFromOddDateTest)
-suite = loader.loadTestsFromTestCase(CalculateNextEvenDateFromEndOfMonthTest)
+# suite = loader.loadTestsFromTestCase(CalculateNextEvenDateFromEndOfMonthTest)
+suite = loader.loadTestsFromTestCase(CalculateNextMonthlyDateTest)
 
 runner = ut.TextTestRunner()
 runner.run(suite)
