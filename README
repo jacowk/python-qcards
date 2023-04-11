@@ -1,15 +1,15 @@
 Resources:
 ==================================
-https://www.pythontutorial.net/tkinter/tkinter-ttk/
-https://www.pythontutorial.net/tkinter/tkinter-theme/
-https://pypi.org/project/convertdate/
+https://www.pythontutorial.net/tkinter/tkinter-ttk
+https://www.pythontutorial.net/tkinter/tkinter-theme
+https://pypi.org/project/convertdate
 https://www.tutorialspoint.com/how-to-clear-items-from-a-ttk-treeview-widget
 https://www.tutorialspoint.com/how-to-change-ttk-treeview-column-width-and-weight-in-python-3-3
-https://pythonguides.com/python-tkinter-treeview/
-https://www.pythonguis.com/faq/pack-place-and-grid-in-tkinter/
+https://pythonguides.com/python-tkinter-treeview
+https://www.pythonguis.com/faq/pack-place-and-grid-in-tkinter
 https://www.askpython.com/python-modules/tkinter/tkinter-intvar
 https://www.javatpoint.com/atom-python
-https://pynative.com/python-get-the-day-of-week/
+https://pynative.com/python-get-the-day-of-week
 
 Resources (MySQL):
 https://www.mysqltutorial.org/mysql-add-column/
@@ -192,7 +192,7 @@ Typical Execution Order of Functions
 9. To calculate the next view date for a 2nd daily view stage, call CalculateEverySecondDayNextViewDate (manage_review_stage.py)
 10. Once the next view date is calculated, update the next view date on stack level with UpdateNextViewDate (manage_stacks.py)
 11. To change the review stage to weekly, call UpdateWeeklyReviewStage (manage_review_stage.py)
-12. To calculate the next view date for a weekly view stage, call CalculateWeeklyNextViewDate (manage_review_stage.py) (TODO)
+12. To calculate the next view date for a weekly view stage, call CalculateWeeklyNextViewDate (manage_review_stage.py)
 13. Update the next view date on stack level with UpdateNextViewDate (manage_stacks.py)
 14. To change the review stage to monthly, call UpdateMonthlyReviewStage (manage_review_stage.py)
 15. To calculate the next view date for a montly view stage, call CalculateMonthlyNextViewDate (manage_review_stage.py)

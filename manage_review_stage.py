@@ -127,6 +127,22 @@ class UpdateWeeklyReviewStage:
         execute_query = qcards_db.QCardsExecuteQuery()
         execute_query.execute(sql)
 
+"""
+Calculate the next view date if the review stage cd is weekly
+
+Jaco Koekemoer
+2023-04-11
+"""
+class CalculateWeeklyNextViewDate:
+
+    def run(self, weekday_cd, week_count):
+        # Get today's date
+        today = qdu.DateUtil().get_now_as_date()
+
+        # Calculate the next view date
+        next_view_date = qdu.DateUtil().calculate_next_weekly_date(today, weekday_cd, week_count)
+        return next_view_date
+
 
 """
 Update the review stage to monthly

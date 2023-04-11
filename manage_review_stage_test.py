@@ -102,6 +102,26 @@ class CalculateEverySecondDayNextViewDateWithEvenTest(ut.TestCase):
         expected_date_string = "2023-04-12"
         ut.TestCase.assertTrue(expected_date_string, next_view_date_string)
 
+
+"""
+A unit test for CalculateWeeklyNextViewDate
+
+Jaco Koekemoer
+2023-04-10
+"""
+class CalculateWeeklyNextViewDateTest(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        weekday_cd = 0  # Monday
+        week_count = 2
+        calculate_next_view_date = mrs.CalculateWeeklyNextViewDate()
+        next_view_date = calculate_next_view_date.run(weekday_cd, week_count)
+        next_view_date_string = qdu.DateUtil().get_date_as_string(next_view_date)
+        expected_date_string = "2023-04-24"
+        ut.TestCase.assertTrue(expected_date_string, next_view_date_string)
+
+
 # Run specific tests
 loader = ut.TestLoader()
 # suite = loader.loadTestsFromTestCase(AddReviewStageTest)
@@ -109,7 +129,8 @@ loader = ut.TestLoader()
 # suite = loader.loadTestsFromTestCase(UpdateWeeklyReviewStageTest)
 # suite = loader.loadTestsFromTestCase(UpdateMonthlyReviewStageTest)
 # suite = loader.loadTestsFromTestCase(CalculateEverySecondDayNextViewDateWithOddTest)
-suite = loader.loadTestsFromTestCase(CalculateEverySecondDayNextViewDateWithEvenTest)
+# suite = loader.loadTestsFromTestCase(CalculateEverySecondDayNextViewDateWithEvenTest)
+suite = loader.loadTestsFromTestCase(CalculateWeeklyNextViewDateTest)
 
 runner = ut.TextTestRunner()
 runner.run(suite)
