@@ -130,6 +130,59 @@ class RetrieveActiveStacksByCategoryIdTest(ut.TestCase):
         print(result)
         print(type(result))
 
+"""
+A class to test RetrieveScheduledActiveStacks
+
+Jaco Koekemoer
+2023-04-12
+"""
+class RetrieveScheduledActiveStacksTest(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        # Run the test
+        retrieve_stacks = ms.RetrieveScheduledActiveStacks()
+        result = retrieve_stacks.run()
+        print(result)
+
+        # Assert results
+        ut.TestCase.assertTrue(len(result) > 0, True)
+
+"""
+A class to test RetrieveDailyActiveStacks
+
+Jaco Koekemoer
+2023-04-12
+"""
+class RetrieveDailyActiveStacksTest(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        # Run the test
+        retrieve_stacks = ms.RetrieveDailyActiveStacks()
+        result = retrieve_stacks.run()
+        print(result)
+
+        # Assert results
+        ut.TestCase.assertTrue(len(result) > 0, True)
+
+"""
+A class to test RetrieveStacksForReview
+
+Jaco Koekemoer
+2023-04-12
+"""
+class RetrieveStacksForReviewTest(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        # Run the test
+        retrieve_stacks = ms.RetrieveStacksForReview()
+        result = retrieve_stacks.run()
+        print(result)
+
+        # Assert results
+        ut.TestCase.assertTrue(len(result) > 0, True)
 
 # Run all tests
 # ut.main()
@@ -141,7 +194,10 @@ loader = ut.TestLoader()
 # suite = loader.loadTestsFromTestCase(RetrieveStackByIdTest)
 # suite = loader.loadTestsFromTestCase(RetrieveAllStacksTest)
 # suite = loader.loadTestsFromTestCase(RetrieveActiveStacksByCategoryIdTest)
-suite = loader.loadTestsFromTestCase(UpdateNextViewDateTest)
+# suite = loader.loadTestsFromTestCase(UpdateNextViewDateTest)
+# suite = loader.loadTestsFromTestCase(RetrieveScheduledActiveStacksTest)
+# suite = loader.loadTestsFromTestCase(RetrieveDailyActiveStacksTest)
+suite = loader.loadTestsFromTestCase(RetrieveStacksForReviewTest)
 
 runner = ut.TextTestRunner()
 runner.run(suite)

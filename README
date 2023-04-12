@@ -197,6 +197,7 @@ Typical Execution Order of Functions
 14. To change the review stage to monthly, call UpdateMonthlyReviewStage (manage_review_stage.py)
 15. To calculate the next view date for a montly view stage, call CalculateMonthlyNextViewDate (manage_review_stage.py)
 16. Update the next view date on stack level with UpdateNextViewDate (manage_stacks.py)
+17. To retrieve stacks to review, call RetrieveStacksForReview (manage_stacks.py)
 
 General classes and functions
 =============================

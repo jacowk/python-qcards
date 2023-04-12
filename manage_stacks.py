@@ -156,3 +156,71 @@ class RetrieveActiveStacksByCategoryId:
             converted_stack = (stack[0], stack[1], qcards_util.convert_tinyint_to_boolean(stack[2]), stack[3], stack[4])
             converted_stacks = converted_stacks + (converted_stack,)  # Building up a tuple of tuples
         return converted_stacks
+
+"""
+A class for retrieving a stacks which are active and scheduled for view today
+and s.next_view_date <= curdate() - Today or in the past
+and rs.review_stage_cd != 1 - Not daily review stage
+
+Jaco Koekemoer
+2023-04-12
+"""
+class RetrieveScheduledActiveStacks:
+
+    def run(self):
+        # Prepare SQL
+        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, rs.review_stage_cd \
+            from t_stack s, t_review_stage rs \
+            where s.id = rs.stack_id \
+            and s.active = 1 \
+            and s.next_view_date <= curdate() \
+            and rs.review_stage_cd != 1;"
+        # print(sql)
+
+        # Run the query
+        execute_query = qcards_db.QCardsExecuteSelectQuery()
+        return execute_query.execute(sql)
+
+"""
+A class for retrieving a stacks which are active and in the daily review stage.
+and rs.review_stage_cd = 1; - Daily
+
+Daily will not have a next_review_date set
+
+Jaco Koekemoer
+2023-04-12
+"""
+class RetrieveDailyActiveStacks:
+
+    def run(self):
+        # Prepare SQL
+        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, rs.review_stage_cd \
+            from t_stack s, t_review_stage rs \
+            where s.id = rs.stack_id \
+            and s.active = 1 \
+            and rs.review_stage_cd = 1;"
+        # print(sql)
+
+        # Run the query
+        execute_query = qcards_db.QCardsExecuteSelectQuery()
+        return execute_query.execute(sql)
+
+"""
+A class for retrieving a stacks to be reviewed
+
+Jaco Koekemoer
+2023-04-12
+"""
+class RetrieveStacksForReview:
+
+    def run(self):
+        # Retrieve scheduled stacks
+        retrieve_scheduled_stacks = RetrieveScheduledActiveStacks()
+        scheduled_stacks = retrieve_scheduled_stacks.run()
+
+        # Retrieve active stacks
+        retrieve_daily_stacks = RetrieveDailyActiveStacks()
+        daily_stacks = retrieve_daily_stacks.run()
+
+        # Combine stacks and return
+        return scheduled_stacks + daily_stacks
