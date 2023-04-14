@@ -209,7 +209,9 @@ To update a stack, call UpdateStack (manage_stacks.py)
 To retrieve a single card, call RetrieveCardById (manage_cards.py)
 To retrieve all cards, call RetrieveAllCards (manage_cards.py)
 To retrieve active cards by stack id, call RetrieveAllActiveCardsByStackId (manage_cards.py)
+    - This class also can order by group cd or only by card id, depending on a flag provided when calling run()
 To update a card, call UpdateCard (manage_cards.py)
+To update a card group (Front, Middle or Back), call UpdateCardGroup (manage_cards.py)
 
 To setup a stack of cards using unit testing
 ============================================

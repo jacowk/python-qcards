@@ -1,8 +1,6 @@
 import unittest as ut
 import manage_cards as mcard
-import qcards_date_util as qdu
 import csv  # https://docs.python.org/3/library/csv.html
-
 
 class AddCardTest(ut.TestCase):
 
@@ -62,12 +60,12 @@ class RetrieveAllActiveCardsByStackIdTest(ut.TestCase):
 
         # Run the test
         retrieve_cards = mcard.RetrieveAllActiveCardsByStackId()
-        result = retrieve_cards.run(stack_id)
+        results = retrieve_cards.run(stack_id)
 
         # Assert result
         # ut.TestCase.assertTrue(len(result) > 0)
-        print(result)
-        print(type(result))
+        for result in results:
+            print(result)
 
 
 class UpdateViewStatisticsTest(ut.TestCase):
@@ -81,14 +79,25 @@ class UpdateViewStatisticsTest(ut.TestCase):
         update_stats = mcard.UpdateViewStatistics()
         update_stats.run(card_id)
 
+class UpdateCardGroupTest(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        # Setup parameter
+        card_id = 2
+        group_cd = mcard.CardGroup.MIDDLE.value
+
+        # Run the test
+        update_card_group = mcard.UpdateCardGroup()
+        update_card_group.run(card_id, group_cd)
 
 # Run specific tests
 loader = ut.TestLoader()
 # suite = loader.loadTestsFromTestCase(AddCardTest)
-suite = loader.loadTestsFromTestCase(AddMultipleCardsTest)
-# suite = loader.loadTestsFromTestCase(RetrieveAllActiveCardsByStackIdTest)
+# suite = loader.loadTestsFromTestCase(AddMultipleCardsTest)
+suite = loader.loadTestsFromTestCase(RetrieveAllActiveCardsByStackIdTest)
 # suite = loader.loadTestsFromTestCase(UpdateViewStatisticsTest)
-
+# suite = loader.loadTestsFromTestCase(UpdateCardGroupTest)
 
 runner = ut.TextTestRunner()
 runner.run(suite)

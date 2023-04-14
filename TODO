@@ -15,10 +15,9 @@
     - Reviewing all the scheduled stacks for review
     - Scheduling of stacks
 6. Test adding code to cards that are formatted (Done)
-7. manage_cards.py
+7. manage_cards.py (Done)
     - Update the group_cd (1 = Front, 2 = Middle, 3 = Back)
     - Retrieve by group_cd asc, id asc
-    - Enhance the text based UI with this
 8. Build Tkinter UI
 9. Sub categories
     - Add parent_category_id to t_category

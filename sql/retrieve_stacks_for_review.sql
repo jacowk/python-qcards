@@ -11,7 +11,7 @@ select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date,
 from t_stack s, t_review_stage rs
 where s.id = rs.stack_id
 and s.active = 1
-and rs.review_stage_cd == 1; --Daily
+and rs.review_stage_cd = 1; --Daily
 
 
 update t_stack set next_view_date = curdate() where id = 4;

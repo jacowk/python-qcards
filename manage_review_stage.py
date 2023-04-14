@@ -1,6 +1,5 @@
 import qcards_db as qcards_db
 from enum import Enum
-import qcards_util as qu
 import qcards_date_util as qdu
 
 """
