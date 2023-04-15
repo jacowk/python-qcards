@@ -6,11 +6,12 @@ class AddCategoryTest(ut.TestCase):
 
     @staticmethod
     def runTest():
-        description = "Test 2"
+        description = "Test 3"
+        parent_id = 2
         active = 1
 
         add_category = catd.AddCategory()
-        add_category.run(description, active)
+        add_category.run(description, parent_id, active)
 
 
 class AddMultipleCategoriesTest(ut.TestCase):
@@ -20,19 +21,22 @@ class AddMultipleCategoriesTest(ut.TestCase):
         categories = ['Java', 'Python', 'HTML', 'CSS', 'Bootstrap', 'JavaScript', 'JQuery']
         for category in categories:
             add_category = catd.AddCategory()
-            add_category.run(category, True)
+            parent_id = None
+            active = True
+            add_category.run(category, parent_id, active)
 
 
 class UpdateCategoryTest(ut.TestCase):
 
     @staticmethod
     def runTest():
-        id = 1
-        description = "Java"
+        id = 5
+        description = "Sub Test 3"
+        parent_id = 2
         active = 1
 
         update_category = catd.UpdateCategory()
-        update_category.run(id, description, active)
+        update_category.run(id, description, parent_id, active)
 
 
 class RetrieveCategoryByIdTest(ut.TestCase):
@@ -40,14 +44,14 @@ class RetrieveCategoryByIdTest(ut.TestCase):
     @staticmethod
     def runTest():
         # Setup parameter
-        id = 1
+        id = 5
 
         # Run the test
         retrieve_category = catd.RetrieveCategoryById()
         result = retrieve_category.run(id)
 
         # Assert result
-        ut.TestCase.assertTrue(len(result) > 0)
+        ut.TestCase.assertTrue(len(result) > 0, True)
         print(result)
         print(type(result))
 
@@ -72,10 +76,10 @@ class RetrieveAllCategoriesTest(ut.TestCase):
 # Run specific tests
 loader = ut.TestLoader()
 # suite = loader.loadTestsFromTestCase(AddMultipleCategoriesTest)
-suite = loader.loadTestsFromTestCase(AddCategoryTest)
+# suite = loader.loadTestsFromTestCase(AddCategoryTest)
 # suite = loader.loadTestsFromTestCase(UpdateCategoryTest)
 # suite = loader.loadTestsFromTestCase(RetrieveCategoryByIdTest)
-# suite = loader.loadTestsFromTestCase(RetrieveAllCategoriesTest)
+suite = loader.loadTestsFromTestCase(RetrieveAllCategoriesTest)
 
 runner = ut.TextTestRunner()
 runner.run(suite)

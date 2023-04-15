@@ -5,16 +5,9 @@ sudo /usr/local/squirrel-sql-4.5.1/squirrel-sql.sh
 
 /* Categories */
 CREATE TABLE t_category (
-	id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	description VARCHAR(100),
-	active BOOLEAN,
-	create_date TIMESTAMP,
-	last_modified_date TIMESTAMP
-);
-
-CREATE TABLE t_category (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     description VARCHAR(100),
+    parent_id INT(6),
     active TINYINT,
     create_date TIMESTAMP NULL DEFAULT NULL,
     last_modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -29,18 +22,15 @@ drop table t_category;
 truncate table t_category;
 select * from t_category;
 
-insert into t_category(description, active, create_date) values('Java SDK', True, NOW());
+insert into t_category(description, active, create_date) values('Design Patterns', True, NOW());
+insert into t_category(description, active, create_date) values('Test', True, NOW());
+insert into t_category(description, active, create_date) values('Test 2', True, NOW());
+insert into t_category(description, parent_id, active, create_date) values('Test 2', 3, True, NOW());
 
 update t_category set description = 'Java JDK Update', active = False, last_modified_date = NOW() where id = 1;
-update t_category set description = 'Java JDK Update', active = False where id = 1;
+update t_category set description = 'Sub Test 2' where id = 4;
 
-update t_category
-	set description = "",
-	active =
-where id = ;
-
-select id, description, active from t_category where id = ;
+select * from t_category;
 
 alter table t_category add column create_date timestamp after active;
-
 alter table t_category add column last_modified_date timestamp after active;

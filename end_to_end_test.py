@@ -15,11 +15,12 @@ class AddCategoryTest(ut.TestCase):
 
     @staticmethod
     def runTest():
-        description = "Test 2"
+        description = "Test 3"
+        parent_id = 2
         active = 1
 
         add_category = catd.AddCategory()
-        add_category.run(description, active)
+        add_category.run(description, parent_id, active)
 
 class AddStackTest(ut.TestCase):
 
