@@ -1,15 +1,15 @@
 import unittest as ut
-import manage_categories as mc
+import category_dao as catd
 
 
 class AddCategoryTest(ut.TestCase):
 
     @staticmethod
     def runTest():
-        description = "Test"
+        description = "Test 2"
         active = 1
 
-        add_category = mc.AddCategory()
+        add_category = catd.AddCategory()
         add_category.run(description, active)
 
 
@@ -19,7 +19,7 @@ class AddMultipleCategoriesTest(ut.TestCase):
     def runTest():
         categories = ['Java', 'Python', 'HTML', 'CSS', 'Bootstrap', 'JavaScript', 'JQuery']
         for category in categories:
-            add_category = mc.AddCategory()
+            add_category = catd.AddCategory()
             add_category.run(category, True)
 
 
@@ -31,7 +31,7 @@ class UpdateCategoryTest(ut.TestCase):
         description = "Java"
         active = 1
 
-        update_category = mc.UpdateCategory()
+        update_category = catd.UpdateCategory()
         update_category.run(id, description, active)
 
 
@@ -43,7 +43,7 @@ class RetrieveCategoryByIdTest(ut.TestCase):
         id = 1
 
         # Run the test
-        retrieve_category = mc.RetrieveCategoryById()
+        retrieve_category = catd.RetrieveCategoryById()
         result = retrieve_category.run(id)
 
         # Assert result
@@ -57,7 +57,7 @@ class RetrieveAllCategoriesTest(ut.TestCase):
     @staticmethod
     def runTest():
         # Run the test
-        retrieve_category = mc.RetrieveAllCategories()
+        retrieve_category = catd.RetrieveAllCategories()
         result = retrieve_category.run()
 
         # Assert result

@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import tkinter.messagebox as messagebox
-import manage_categories as mc
+import category_dao as mc
 import qcards_gui_util as u
 import qcards_util as qu
 

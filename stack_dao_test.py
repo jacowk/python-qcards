@@ -1,7 +1,7 @@
 import unittest as ut
-import manage_stacks as ms
+import stack_dao as sd
 import qcards_date_util as qdu
-import manage_review_stage as mrs
+import review_stage_dao as rsd
 
 """
 A class to test AddStack
@@ -18,7 +18,7 @@ class AddStackTest(ut.TestCase):
         source = "Testing different things"
         category_id = 2
 
-        add_stack = ms.AddStack()
+        add_stack = sd.AddStack()
         add_stack.run(description, active, source, category_id)
 
 """
@@ -40,7 +40,7 @@ class UpdateStackTest(ut.TestCase):
         today = qdu.DateUtil.get_now_as_date()
         next_view_date = qdu.DateUtil.add_days(today, 2)
 
-        update_stack = ms.UpdateStack()
+        update_stack = sd.UpdateStack()
         update_stack.run(id, description, active, source, category_id, last_view_date, next_view_date)
 
 """
@@ -55,16 +55,16 @@ class UpdateNextViewDateTest(ut.TestCase):
     def runTest():
         # Prepare parameters
         stack_id = 4
-        odd_even_cd = mrs.OddEven.ODD.value
+        odd_even_cd = rsd.OddEven.ODD.value
 
         # Calculate the next view date
-        calculate_next_view_date = mrs.CalculateEverySecondDayNextViewDate()
+        calculate_next_view_date = rsd.CalculateEverySecondDayNextViewDate()
         next_view_date = calculate_next_view_date.run(stack_id, odd_even_cd)
         next_view_date_string = qdu.DateUtil().get_date_as_string(next_view_date)
         print("Calculated date: {:s}".format(next_view_date_string))
 
         # Run the test
-        update_next_view_date = ms.UpdateNextViewDate()
+        update_next_view_date = sd.UpdateNextViewDate()
         update_next_view_date.run(stack_id, next_view_date)
 
 """
@@ -81,7 +81,7 @@ class RetrieveStackByIdTest(ut.TestCase):
         id = 1
 
         # Run the test
-        retrieve_stack = ms.RetrieveStackById()
+        retrieve_stack = sd.RetrieveStackById()
         result = retrieve_stack.run(id)
 
         # Assert result
@@ -100,7 +100,7 @@ class RetrieveAllStacksTest(ut.TestCase):
     @staticmethod
     def runTest():
         # Run the test
-        retrieve_stack = ms.RetrieveAllStacks()
+        retrieve_stack = sd.RetrieveAllStacks()
         result = retrieve_stack.run()
 
         # Assert result
@@ -122,7 +122,7 @@ class RetrieveActiveStacksByCategoryIdTest(ut.TestCase):
         category_id = 1
 
         # Run the test
-        retrieve_stack = ms.RetrieveActiveStacksByCategoryId()
+        retrieve_stack = sd.RetrieveActiveStacksByCategoryId()
         result = retrieve_stack.run(category_id)
 
         # Assert result
@@ -141,7 +141,7 @@ class RetrieveScheduledActiveStacksTest(ut.TestCase):
     @staticmethod
     def runTest():
         # Run the test
-        retrieve_stacks = ms.RetrieveScheduledActiveStacks()
+        retrieve_stacks = sd.RetrieveScheduledActiveStacks()
         result = retrieve_stacks.run()
         print(result)
 
@@ -159,7 +159,7 @@ class RetrieveDailyActiveStacksTest(ut.TestCase):
     @staticmethod
     def runTest():
         # Run the test
-        retrieve_stacks = ms.RetrieveDailyActiveStacks()
+        retrieve_stacks = sd.RetrieveDailyActiveStacks()
         result = retrieve_stacks.run()
         print(result)
 
@@ -177,7 +177,7 @@ class RetrieveStacksForReviewTest(ut.TestCase):
     @staticmethod
     def runTest():
         # Run the test
-        retrieve_stacks = ms.RetrieveStacksForReview()
+        retrieve_stacks = sd.RetrieveStacksForReview()
         result = retrieve_stacks.run()
         print(result)
 

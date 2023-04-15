@@ -1,5 +1,5 @@
 import unittest as ut
-import manage_cards as mcard
+import card_dao as cd
 import csv  # https://docs.python.org/3/library/csv.html
 
 class AddCardTest(ut.TestCase):
@@ -12,7 +12,7 @@ class AddCardTest(ut.TestCase):
         stack_id = 1
         active = 1
 
-        add_card = mcard.AddCard()
+        add_card = cd.AddCard()
         add_card.run(summary, front_content, back_content, stack_id, active)
 
 
@@ -47,7 +47,7 @@ class AddMultipleCardsTest(ut.TestCase):
 
                 print(summary, front_content, back_content, stack_id, active)
 
-                add_card = mcard.AddCard()
+                add_card = cd.AddCard()
                 add_card.run(summary, front_content, back_content, stack_id, active)
 
 
@@ -59,7 +59,7 @@ class RetrieveAllActiveCardsByStackIdTest(ut.TestCase):
         stack_id = 1
 
         # Run the test
-        retrieve_cards = mcard.RetrieveAllActiveCardsByStackId()
+        retrieve_cards = cd.RetrieveAllActiveCardsByStackId()
         results = retrieve_cards.run(stack_id)
 
         # Assert result
@@ -76,7 +76,7 @@ class UpdateViewStatisticsTest(ut.TestCase):
         card_id = 1
 
         # Run the test
-        update_stats = mcard.UpdateViewStatistics()
+        update_stats = cd.UpdateViewStatistics()
         update_stats.run(card_id)
 
 class UpdateCardGroupTest(ut.TestCase):
@@ -85,10 +85,10 @@ class UpdateCardGroupTest(ut.TestCase):
     def runTest():
         # Setup parameter
         card_id = 2
-        group_cd = mcard.CardGroup.MIDDLE.value
+        group_cd = cd.CardGroup.MIDDLE.value
 
         # Run the test
-        update_card_group = mcard.UpdateCardGroup()
+        update_card_group = cd.UpdateCardGroup()
         update_card_group.run(card_id, group_cd)
 
 # Run specific tests

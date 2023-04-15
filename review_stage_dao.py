@@ -103,6 +103,26 @@ class CalculateEverySecondDayNextViewDate:
             return next_even_date
 
 """
+Update the review stage to daily.
+
+Jaco Koekemoer
+2023-04-15
+"""
+class UpdateDailyReviewStage:
+
+    def run(self, stack_id):
+        review_stage_cd = ReviewStage.DAILY.value
+
+        # Prepare SQL
+        sql = "update t_review_stage \
+        set review_stage_cd = {:d} \
+        where stack_id = {:d};".format(review_stage_cd, stack_id)
+
+        # Run the query
+        execute_query = qcards_db.QCardsExecuteQuery()
+        execute_query.execute(sql)
+
+"""
 Update the review stage to weekly, for the given weekday_cd and week_count.
 weekday_cd refers to t_lookup_weekday (Monday, Tuesday, etc)
 week_count column (1 = once a week, 2 = every 2nd week, 3 = every third week
@@ -183,3 +203,21 @@ class CalculateMonthlyNextViewDate:
         next_view_date = qdu.DateUtil().calculate_next_monthly_date(today, calendar_day, month_count)
         return next_view_date
 
+"""
+Retrieve the review stage by stack id
+
+Jaco Koekemoer
+2023-04-15
+"""
+class RetrieveReviewStageByStackId:
+
+    def run(self, stack_id):
+        # Prepare SQL
+        sql = "select review_stage_cd, odd_even_cd, weekday_cd, week_count, calendar_day, month_count \
+        from t_review_stage \
+        where stack_id = {:d}".format(stack_id)
+        print(sql)
+
+        # Run the query
+        execute_query = qcards_db.QCardsExecuteSelectQuery()
+        return execute_query.execute(sql)
