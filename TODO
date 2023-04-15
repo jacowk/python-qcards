@@ -19,8 +19,14 @@
     - Update the group_cd (1 = Front, 2 = Middle, 3 = Back)
     - Retrieve by group_cd asc, id asc
 8. Build Tkinter UI
-9. Sub categories
+9. Sub categories (Done)
     - Add parent_category_id to t_category
-10. Bookmark function. Create a table t_bookmark, manage_bookmarks.py
+10. Bookmark function. Create a table t_bookmark, bookmark_dao.py
+11. Build in a Business Layer, to convert between tuples and objects (Category, Stack, Card, Review Stage, Bookmark)
+    - category_bl.py (Category Business Layer)
+    - stack_bl.py (Stack Business Layer)
+    - card_bl.py (Card Business Layer)
+    - review_stage_bl.py (Review Stage Business Layer)
+    - bookmark_bl.py (Bookmark Business Layer)
 11. Ability to go forward and backward when reviewing cards
 12. Build in validations
