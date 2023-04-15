@@ -1,6 +1,4 @@
-import qcards_db as qcards_db
-import MySQLdb as mysql
-import qcards_util as qu
+from util import qcards_util as qu, qcards_db as qcards_db
 
 
 class Category:

@@ -1,8 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
-import tkinter.messagebox as tkmb
-import category_gui as cg
-import qcards_gui_util as u
+from ui import category_gui as cg, qcards_gui_util as u
+
 
 class QCardsApp:
 

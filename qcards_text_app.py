@@ -1,7 +1,7 @@
 from os import system
-import manage_categories as mc
-import manage_stacks as ms
-import manage_cards as mcard
+from dao.category import category_dao as mc
+from dao.stack import stack_dao as ms
+from dao.card import card_dao as mcard
 
 """
 The main class that runs the text based application

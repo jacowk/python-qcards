@@ -1,7 +1,13 @@
-import qcards_db as qcards_db
-import qcards_util as qu
-import qcards_date_util as du
+import os
+import sys
+sys.path.insert(0, '/home/jaco/Projects/python-projects/python_qcards')
+
+from util import qcards_util as qu
+from util import qcards_date_util as du
+from util import qcards_db as qcards_db
 from enum import Enum
+
+
 
 """
 An enum representing the data in t_lookup_group
@@ -9,7 +15,6 @@ An enum representing the data in t_lookup_group
 Jaco Koekemoer
 2023-04-13
 """
-
 
 class CardGroup(Enum):
     FRONT = 1

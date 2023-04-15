@@ -1,6 +1,5 @@
-import qcards_db as qcards_db
 from enum import Enum
-import qcards_date_util as qdu
+from util import qcards_date_util as qdu, qcards_db as qcards_db
 
 """
 An enum representing the data in t_lookup_review_stage

@@ -1,6 +1,6 @@
 import unittest as ut
-import manage_review_stage as mrs
-import qcards_date_util as qdu
+import review_stage_dao as rsd
+from util import qcards_date_util as qdu
 
 """
 A unit test for AddReviewStage
@@ -13,7 +13,7 @@ class AddReviewStageTest(ut.TestCase):
     @staticmethod
     def runTest():
         stack_id = 2
-        add_review_stage = mrs.AddReviewStage()
+        add_review_stage = rsd.AddReviewStage()
         add_review_stage.run(stack_id)
 
 """
@@ -27,9 +27,9 @@ class UpdateEverySecondDayReviewStageTest(ut.TestCase):
     @staticmethod
     def runTest():
         stack_id = 2
-        odd_even_cd = mrs.OddEven.ODD.value
+        odd_even_cd = rsd.OddEven.ODD.value
 
-        update_review_stage = mrs.UpdateEverySecondDayReviewStage()
+        update_review_stage = rsd.UpdateEverySecondDayReviewStage()
         update_review_stage.run(stack_id, odd_even_cd)
 
 """
@@ -43,10 +43,10 @@ class UpdateWeeklyReviewStageTest(ut.TestCase):
     @staticmethod
     def runTest():
         stack_id = 2
-        weekday_cd = mrs.Weekday.MONDAY.value
+        weekday_cd = rsd.Weekday.MONDAY.value
         week_count = 1 # Every week
 
-        update_review_stage = mrs.UpdateWeeklyReviewStage()
+        update_review_stage = rsd.UpdateWeeklyReviewStage()
         update_review_stage.run(stack_id, weekday_cd, week_count)
 
 """
@@ -63,7 +63,7 @@ class UpdateMonthlyReviewStageTest(ut.TestCase):
         calendar_day = 6
         month_count = 1
 
-        update_review_stage = mrs.UpdateMonthlyReviewStage()
+        update_review_stage = rsd.UpdateMonthlyReviewStage()
         update_review_stage.run(stack_id, calendar_day, month_count)
 
 """
@@ -77,8 +77,8 @@ class CalculateEverySecondDayNextViewDateWithOddTest(ut.TestCase):
     @staticmethod
     def runTest():
         stack_id = 1
-        odd_even_cd = mrs.OddEven.ODD.value
-        calculate_next_view_date = mrs.CalculateEverySecondDayNextViewDate()
+        odd_even_cd = rsd.OddEven.ODD.value
+        calculate_next_view_date = rsd.CalculateEverySecondDayNextViewDate()
         next_view_date = calculate_next_view_date.run(stack_id, odd_even_cd)
         next_view_date_string = qdu.DateUtil().get_date_as_string(next_view_date)
         expected_date_string = "2023-04-11"
@@ -95,8 +95,8 @@ class CalculateEverySecondDayNextViewDateWithEvenTest(ut.TestCase):
     @staticmethod
     def runTest():
         stack_id = 1
-        odd_even_cd = mrs.OddEven.EVEN.value
-        calculate_next_view_date = mrs.CalculateEverySecondDayNextViewDate()
+        odd_even_cd = rsd.OddEven.EVEN.value
+        calculate_next_view_date = rsd.CalculateEverySecondDayNextViewDate()
         next_view_date = calculate_next_view_date.run(stack_id, odd_even_cd)
         next_view_date_string = qdu.DateUtil().get_date_as_string(next_view_date)
         expected_date_string = "2023-04-12"
@@ -115,7 +115,7 @@ class CalculateWeeklyNextViewDateTest(ut.TestCase):
     def runTest():
         weekday_cd = 0  # Monday
         week_count = 2
-        calculate_next_view_date = mrs.CalculateWeeklyNextViewDate()
+        calculate_next_view_date = rsd.CalculateWeeklyNextViewDate()
         next_view_date = calculate_next_view_date.run(weekday_cd, week_count)
         next_view_date_string = qdu.DateUtil().get_date_as_string(next_view_date)
         expected_date_string = "2023-04-24"

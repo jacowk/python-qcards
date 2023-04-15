@@ -1,9 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
-import tkinter.messagebox as messagebox
-import manage_categories as mc
+from dao.category import category_dao as mc
 import qcards_gui_util as u
-import qcards_util as qu
+from util import qcards_util as qu
 
 """
 Description: A class for listing categories

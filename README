@@ -158,10 +158,10 @@ qcards_initial_db_test.py - An initial script to make a connection to the databa
 qcards_db.py - A script for performing database functions in a generic way.
 qcards_date_util.py - A script with functions to do all kinds of static date calculations
 qcards_util.py - A script with some utility static functions
-manage_categories.py - A script containing classes to manage categories, such as inserting categories to a database, updating categories, and retrieving categories.
-manage_stacks.py - CRUD operations on stacks
-manage_cards.py - CRUD operations on the qcards
-manage_review_stage.py - CRUD operations on the review stages for the qcards. Reviewing a card daily, 2nd daily, weekly or monthly?
+category_dao.py - CRUD operations on categories
+stack_dao.py - CRUD operations on stacks
+card_dao.py - CRUD operations on the qcards
+review_stage_dao.py - CRUD operations on the review stages for the qcards. Reviewing a card daily, 2nd daily, weekly or monthly?
 
 Review Stage Calculation Functions
 ==================================
@@ -169,7 +169,7 @@ Calculate the next odd date: qcards_date_util.py, DateUtil.calculate_next_odd_da
 Calculate the next even date: qcards_date_util.py, DateUtil.calculate_next_even_date()
 Calculate the next view date for every second day: manage_review_stage.py, CalculateEverySecondDayNextViewDate's run method. This method calls the first 2 methods.
 
-For updating the next view date, call UpdateNextViewDate's run method (manage_stacks.py)
+For updating the next view date, call UpdateNextViewDate's run method (stack_dao.py)
 
 Updating review stage configurations
 ====================================
@@ -182,44 +182,44 @@ Set the review stage to monthly - UpdateMonthlyReviewStage
 Typical Execution Order of Functions
 ====================================
 1. Run the UI application with qcards_app.py, or the text based application with qcards_text_app.py
-2. Add a category with the AddCategory class's run() function (manage_categories.py)
-3. Add a stack for the category with the AddStack class's run() funtion (manage_stacks.py)
-4. Add a qcard for in the stack with the AddCard class's run() function (manage_cards.py)
+2. Add a category with the AddCategory class's run() function (category_dao.py)
+3. Add a stack for the category with the AddStack class's run() funtion (stack_dao.py)
+4. Add a qcard for in the stack with the AddCard class's run() function (card_dao.py)
 5. Add the initial review stage for the card with AddReviewStage class's run() function (manage_review_stage.py) The initial review stage is to view the cards daily.
-6. To simply review all active cards by stack id, use the RetrieveAllActiveCardsByStackId class's run() function (manage_cards.py). This will not consider the review stage.
-7. Once a card is viewed and you go to the next card, update the view statistics using the UpdateViewStatistics class's run() function (manage_cards.py). Increment the view count by 1 and update the last view date.
+6. To simply review all active cards by stack id, use the RetrieveAllActiveCardsByStackId class's run() function (card_dao.py). This will not consider the review stage.
+7. Once a card is viewed and you go to the next card, update the view statistics using the UpdateViewStatistics class's run() function (card_dao.py). Increment the view count by 1 and update the last view date.
 8. To change the review stage to every 2nd day, call UpdateEverySecondDayReviewStage (manage_review_stage.py)
 9. To calculate the next view date for a 2nd daily view stage, call CalculateEverySecondDayNextViewDate (manage_review_stage.py)
-10. Once the next view date is calculated, update the next view date on stack level with UpdateNextViewDate (manage_stacks.py)
+10. Once the next view date is calculated, update the next view date on stack level with UpdateNextViewDate (stack_dao.py)
 11. To change the review stage to weekly, call UpdateWeeklyReviewStage (manage_review_stage.py)
 12. To calculate the next view date for a weekly view stage, call CalculateWeeklyNextViewDate (manage_review_stage.py)
-13. Update the next view date on stack level with UpdateNextViewDate (manage_stacks.py)
+13. Update the next view date on stack level with UpdateNextViewDate (stack_dao.py)
 14. To change the review stage to monthly, call UpdateMonthlyReviewStage (manage_review_stage.py)
 15. To calculate the next view date for a montly view stage, call CalculateMonthlyNextViewDate (manage_review_stage.py)
-16. Update the next view date on stack level with UpdateNextViewDate (manage_stacks.py)
-17. To retrieve stacks to review, call RetrieveStacksForReview (manage_stacks.py)
+16. Update the next view date on stack level with UpdateNextViewDate (stack_dao.py)
+17. To retrieve stacks to review, call RetrieveStacksForReview (stack_dao.py)
 
 General classes and functions
 =============================
-To retrieve a single stack, call RetrieveStackById (manage_stacks.py)
-To retrieve all stacks, call RetrieveAllStacks (manage_stacks.py)
-To retrieve active stacks by category id, call RetrieveActiveStacksByCategoryId (manage_stacks.py)
-To update a stack, call UpdateStack (manage_stacks.py)
+To retrieve a single stack, call RetrieveStackById (stack_dao.py)
+To retrieve all stacks, call RetrieveAllStacks (stack_dao.py)
+To retrieve active stacks by category id, call RetrieveActiveStacksByCategoryId (stack_dao.py)
+To update a stack, call UpdateStack (stack_dao.py)
 
-To retrieve a single card, call RetrieveCardById (manage_cards.py)
-To retrieve all cards, call RetrieveAllCards (manage_cards.py)
-To retrieve active cards by stack id, call RetrieveAllActiveCardsByStackId (manage_cards.py)
+To retrieve a single card, call RetrieveCardById (card_dao.py)
+To retrieve all cards, call RetrieveAllCards (card_dao.py)
+To retrieve active cards by stack id, call RetrieveAllActiveCardsByStackId (card_dao.py)
     - This class also can order by group cd or only by card id, depending on a flag provided when calling run()
-To update a card, call UpdateCard (manage_cards.py)
-To update a card group (Front, Middle or Back), call UpdateCardGroup (manage_cards.py)
+To update a card, call UpdateCard (card_dao.py)
+To update a card group (Front, Middle or Back), call UpdateCardGroup (card_dao.py)
 
 To setup a stack of cards using unit testing
 ============================================
 Until the UI development is done, stacks and cards can be set up with unit testing
-1. Add a category with AddCategoryTest (manage_categories_test.py)
+1. Add a category with AddCategoryTest (category_dao_test.py)
 2. Get the category id with this query, which is required to add a stack: select * from t_category;
-3. Add a stack with AddStackTest (manage_stacks_test.py)
+3. Add a stack with AddStackTest (stack_dao_test.py)
 4. Getting the stack id, which is required for adding cards: select * from t_stack;
 5. Prep the cards in a pipe delimited csv file with the following headings: summary|front_content|back_content
-6. Import the cards with AddMultipleCardsTest (manage_cards_test.py)
+6. Import the cards with AddMultipleCardsTest (card_dao_test.py)
 

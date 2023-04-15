@@ -1,4 +1,5 @@
-import qcards_db as db
+from util import qcards_db as db
+
 
 class QCardsApp:
 
