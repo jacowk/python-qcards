@@ -163,6 +163,7 @@ category_dao.py - A script containing classes to manage categories, such as inse
 stack_dao.py - CRUD operations on stacks
 card_dao.py - CRUD operations on the qcards
 review_stage_dao.py - CRUD operations on the review stages for the qcards. Reviewing a card daily, 2nd daily, weekly or monthly?
+bookmark_dao.pu - CRUD operations on bookmarks
 
 Review Stage Calculation Functions
 ==================================
@@ -213,6 +214,8 @@ To retrieve active cards by stack id, call RetrieveAllActiveCardsByStackId (card
     - This class also can order by group cd or only by card id, depending on a flag provided when calling run()
 To update a card, call UpdateCard (card_dao.py)
 To update a card group (Front, Middle or Back), call UpdateCardGroup (card_dao.py)
+
+To add a bookmark, call AddBookmark (bookmark_dao.py)
 
 To setup a stack of cards using unit testing
 ============================================

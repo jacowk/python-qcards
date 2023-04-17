@@ -30,7 +30,6 @@ class AddCategory:
         execute_query = qcards_db.QCardsExecuteQuery()
         execute_query.execute(sql)
 
-
 """
 Update a category
 
@@ -51,7 +50,6 @@ class UpdateCategory:
         execute_query = qcards_db.QCardsExecuteQuery()
         execute_query.execute(sql)
 
-
 """
 Retrieve a category by id
 
@@ -68,7 +66,6 @@ class RetrieveCategoryById:
         # Run the query
         execute_query = qcards_db.QCardsExecuteSelectQuery()
         return execute_query.execute(sql)
-
 
 """
 Retrieve all categories
@@ -96,7 +93,6 @@ def convert_active(categories):
         converted_category = (category[0], category[1], category[2], qcards_util.convert_tinyint_to_boolean(category[3]))
         converted_categories = converted_categories + (converted_category,)  # Building up a tuple of tuples
     return converted_categories
-
 
 """
 Retrieve all active categories
