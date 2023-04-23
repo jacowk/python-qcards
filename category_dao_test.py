@@ -2,7 +2,7 @@ import unittest as ut
 import category_dao as catd
 
 
-class AddCategoryTest(ut.TestCase):
+class AddCategoryDAOTest(ut.TestCase):
 
     @staticmethod
     def runTest():
@@ -10,7 +10,7 @@ class AddCategoryTest(ut.TestCase):
         parent_id = 2
         active = 1
 
-        add_category = catd.AddCategory()
+        add_category = catd.AddCategoryDAO()
         add_category.run(description, parent_id, active)
 
 
@@ -20,13 +20,13 @@ class AddMultipleCategoriesTest(ut.TestCase):
     def runTest():
         categories = ['Java', 'Python', 'HTML', 'CSS', 'Bootstrap', 'JavaScript', 'JQuery']
         for category in categories:
-            add_category = catd.AddCategory()
+            add_category = catd.AddCategoryDAO()
             parent_id = None
             active = True
             add_category.run(category, parent_id, active)
 
 
-class UpdateCategoryTest(ut.TestCase):
+class UpdateCategoryDAOTest(ut.TestCase):
 
     @staticmethod
     def runTest():
@@ -35,11 +35,11 @@ class UpdateCategoryTest(ut.TestCase):
         parent_id = 2
         active = 1
 
-        update_category = catd.UpdateCategory()
+        update_category = catd.UpdateCategoryDAO()
         update_category.run(id, description, parent_id, active)
 
 
-class RetrieveCategoryByIdTest(ut.TestCase):
+class RetrieveCategoryByIdDAOTest(ut.TestCase):
 
     @staticmethod
     def runTest():
@@ -47,7 +47,7 @@ class RetrieveCategoryByIdTest(ut.TestCase):
         id = 5
 
         # Run the test
-        retrieve_category = catd.RetrieveCategoryById()
+        retrieve_category = catd.RetrieveCategoryByIdDAO()
         result = retrieve_category.run(id)
 
         # Assert result
@@ -56,12 +56,12 @@ class RetrieveCategoryByIdTest(ut.TestCase):
         print(type(result))
 
 
-class RetrieveAllCategoriesTest(ut.TestCase):
+class RetrieveAllCategoriesDAOTest(ut.TestCase):
 
     @staticmethod
     def runTest():
         # Run the test
-        retrieve_category = catd.RetrieveAllCategories()
+        retrieve_category = catd.RetrieveAllCategoriesDAO()
         result = retrieve_category.run()
 
         # Assert result
@@ -76,10 +76,10 @@ class RetrieveAllCategoriesTest(ut.TestCase):
 # Run specific tests
 loader = ut.TestLoader()
 # suite = loader.loadTestsFromTestCase(AddMultipleCategoriesTest)
-# suite = loader.loadTestsFromTestCase(AddCategoryTest)
-# suite = loader.loadTestsFromTestCase(UpdateCategoryTest)
-# suite = loader.loadTestsFromTestCase(RetrieveCategoryByIdTest)
-suite = loader.loadTestsFromTestCase(RetrieveAllCategoriesTest)
+# suite = loader.loadTestsFromTestCase(AddCategoryDAOTest)
+# suite = loader.loadTestsFromTestCase(UpdateCategoryDAOTest)
+# suite = loader.loadTestsFromTestCase(RetrieveCategoryByIdDAOTest)
+suite = loader.loadTestsFromTestCase(RetrieveAllCategoriesDAOTest)
 
 runner = ut.TextTestRunner()
 runner.run(suite)

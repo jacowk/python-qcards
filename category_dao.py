@@ -1,16 +1,4 @@
 import qcards_db as qcards_db
-import qcards_util as qu
-
-class Category:
-
-    def __init__(self, id, description, parent_id, active):
-        self.id = id
-        self.description = description
-        self.parent_id = parent_id
-        self.active = active
-
-    def convert_to_list(self):
-        return [self.id, self.description, self.parent_id, self.active]
 
 """
 Add a category
@@ -18,12 +6,13 @@ Add a category
 Jaco Koekemoer
 2023-04-07
 """
-class AddCategory:
+class AddCategoryDAO:
 
     def run(self, description, parent_id, active):
         # Prepare SQL
-        sql = "insert into t_category(description, parent_id, active, create_date, last_modified_date) values('{:s}', {:d}, {}, current_timestamp(), current_timestamp());".format(
-            description, parent_id, active)
+        sql = "insert into t_category(description, parent_id, active, create_date, last_modified_date) \
+                values('{:s}', {}, {}, current_timestamp(), current_timestamp());".format(
+                description, "NULL" if parent_id is None else parent_id, active)
         # print(sql)
 
         # Run the query
@@ -36,14 +25,14 @@ Update a category
 Jaco Koekemoer
 2023-04-07
 """
-class UpdateCategory:
+class UpdateCategoryDAO:
 
     def run(self, id, description, parent_id, active):
         # Prepare SQL
         sql = "update t_category set description = '{:s}', \
-        parent_id = {:d}, \
+        parent_id = {}, \
         active = {} \
-        where id = {:d};".format(description, parent_id, active, id)
+        where id = {:d};".format(description, "NULL" if parent_id is None else parent_id, active, id)
         # print(sql)
 
         # Run the query
@@ -56,7 +45,7 @@ Retrieve a category by id
 Jaco Koekemoer
 2023-04-07
 """
-class RetrieveCategoryById:
+class RetrieveCategoryByIdDAO:
 
     def run(self, id):
         # Prepare SQL
@@ -73,26 +62,24 @@ Retrieve all categories
 Jaco Koekemoer
 2023-04-07
 """
-class RetrieveAllCategories:
+class RetrieveAllCategoriesDAO:
 
     def run(self):
         # Prepare SQL
-        sql = "select id, description, parent_id, active from t_category;"
+        # sql = "select id, description, parent_id, active from t_category;"
+        sql = "select c1.id, \
+                c1.description, \
+                c1.parent_id, \
+                c1.active, \
+                c2.description as parent_description \
+                from t_category c1 \
+                left join t_category c2 on c2.id = c1.parent_id \
+                order by c1.description asc;"
         # print(sql)
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteSelectQuery()
-        categories = execute_query.execute(sql)
-        return convert_active(categories)
-
-
-def convert_active(categories):
-    converted_categories = ()
-    qcards_util = qu.QCardsUtil()
-    for category in categories:
-        converted_category = (category[0], category[1], category[2], qcards_util.convert_tinyint_to_boolean(category[3]))
-        converted_categories = converted_categories + (converted_category,)  # Building up a tuple of tuples
-    return converted_categories
+        return execute_query.execute(sql)
 
 """
 Retrieve all active categories

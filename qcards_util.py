@@ -18,34 +18,30 @@ class QCardsUtil:
     def convert_boolean_to_tinyint(self, value):
         return 1 if value == True else 0
 
-"""
-# Test convert_tinyint_to_string
-value = 0
-cards_util = QCardsUtil()
-result = cards_util.convert_tinyint_to_string(value)
-print(result)
-"""
+    """
+    Given an dictionary, convert a value to an index. For example, I have the following dictionary:
+    If I have a dictionary in python. "apples":5, "bananas":7, "oranges":3. Apples is index 0, 
+    bananas is index 1 and oranges is index 2. Given 7, I want to get back index 1.
+    """
+    def convert_dict_value_to_index(self, dictionary, value):
+        value_list = list(dictionary.values())
+        return value_list.index(value)
 
-"""
-# Test convert_tinyint_to_string
-value = "No"
-cards_util = QCardsUtil()
-result = cards_util.convert_string_to_tinyint(value)
-print(result)
-"""
+    """
+    Given an dictionary, convert a given index to the value. For example, I have the following dictionary:
+    If I have a dictionary in python. "apples":5, "bananas":7, "oranges":3. Apples is index 0, 
+    bananas is index 1 and oranges is index 2. Given 2, I want to get back "bananas".
+    """
+    def convert_index_to_dict_key(self, dictionary, index):
+        value_list = list(dictionary.keys())
+        return value_list[index]
 
-"""
-# Test convert_tinyint_to_boolean
-value = 1
-cards_util = QCardsUtil()
-result = cards_util.convert_tinyint_to_boolean(value)
-print(result)
-"""
+    """
+    If the selected combobox value is -1, then return None, else return the value. This determines what to 
+    store in the database.
+    """
+    def get_selected_combobox_value(self, value):
+        if value == -1:
+            return None
+        return value
 
-"""
-# Test convert_boolean_to_tinyint
-value = False
-cards_util = QCardsUtil()
-result = cards_util.convert_boolean_to_tinyint(value)
-print(result)
-"""

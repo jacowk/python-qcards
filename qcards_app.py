@@ -12,7 +12,7 @@ class QCardsApp:
         self.main_window.title("QCards")
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(1400, 650)
+        self.calculate_screen_position(1300, 600)
 
         # Creating a ttk style object
         style = ttk.Style(self.main_window)

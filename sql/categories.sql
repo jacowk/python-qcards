@@ -34,3 +34,13 @@ select * from t_category;
 
 alter table t_category add column create_date timestamp after active;
 alter table t_category add column last_modified_date timestamp after active;
+
+select c1.id, c1.description, c1.parent_id, c1.active, c2.description as parent_description
+from t_category c1
+left join t_category c2 on c2.id = c1.parent_id;
+
+update t_category
+set parent_id = null
+where parent_id = 0;
+
+select * from t_category;
