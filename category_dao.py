@@ -87,7 +87,7 @@ Retrieve all active categories
 Jaco Koekemoer
 2023-04-07
 """
-class RetrieveAllActiveCategories:
+class RetrieveAllActiveCategoriesDAO:
 
     def run(self):
         # Prepare SQL
@@ -96,5 +96,4 @@ class RetrieveAllActiveCategories:
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteSelectQuery()
-        categories = execute_query.execute(sql)
-        return convert_active(categories)
+        return execute_query.execute(sql)

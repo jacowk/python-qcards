@@ -22,11 +22,13 @@
     - Add parent_category_id to t_category
 9. Bookmark function. Create a table t_bookmark, bookmark_dao.py. (Done)
 10. Build in a Business Layer, to convert between tuples and objects (Category, Stack, Card, Review Stage, Bookmark)
-    - category_bl.py (Category Business Layer)
+    - category_bl.py (Category Business Layer) (Done)
     - stack_bl.py (Stack Business Layer)
     - card_bl.py (Card Business Layer)
     - review_stage_bl.py (Review Stage Business Layer)
     - bookmark_bl.py (Bookmark Business Layer)
-11. Build Tkinter UI
+11. Build Tkinter UI (In progress)
 12. Ability to go forward and backward when reviewing cards
 13. Build in validations
+14. Build a category tree
+15. Add a background image on the main window

@@ -1,27 +1,5 @@
 import qcards_db as qcards_db
-import MySQLdb as mysql
 import qcards_util as qu
-
-"""
-A class representing a Stack.
-
-Jaco Koekemoer
-2023-04-07
-"""
-class Stack:
-
-    def __init__(self, id, description, active, source, category_id, last_view_date, next_view_date):
-        self.id = id
-        self.description = description
-        self.active = active
-        self.source = source
-        self.category_id = category_id
-        self.last_view_date = last_view_date
-        self.next_view_date = next_view_date
-
-    def convert_to_list(self):
-        return [self.id, self.description, self.active, self.source, self.category_id, self.last_view_date,
-                self.next_view_date]
 
 """
 A class for creating a new stack in the database.
@@ -29,12 +7,13 @@ A class for creating a new stack in the database.
 Jaco Koekemoer
 2023-04-07
 """
-class AddStack:
+class AddStackDAO:
 
     def run(self, description, active, source, category_id):
         # Prepare SQL
         sql = "insert into t_stack(description, active, source, category_id, create_date) \
-            values('{:s}', {}, '{:s}', {:d}, now());".format(description, active, source, category_id);
+            values('{:s}', {}, '{:s}', {}, now());".format(description, active, source,
+                                                           "NULL" if category_id is None else category_id);
         #print(sql);
 
         # Run the query
@@ -47,7 +26,7 @@ A class for updating a stack in the database.
 Jaco Koekemoer
 2023-04-07
 """
-class UpdateStack:
+class UpdateStackDAO:
 
     def run(self, id, description, active, source, category_id):
 
@@ -56,8 +35,8 @@ class UpdateStack:
             set description = '{:s}', \
             active = {}, \
             source = '{:s}', \
-            category_id = {:d}, \
-            where id = {:d};".format(description, active, source, category_id, id)
+            category_id = {} \
+            where id = {:d};".format(description, active, source, "NULL" if category_id is None else category_id, id)
         #print(sql)
 
         # Run the query
@@ -70,7 +49,7 @@ A class to update the next_view_date for a stack.
 Jaco Koekemoer
 2023-04-10
 """
-class UpdateNextViewDate:
+class UpdateNextViewDateDAO:
 
     def run(self, stack_id, next_view_date):
         # Prepare SQL
@@ -86,12 +65,11 @@ A class for retrieving a stack by id
 Jaco Koekemoer
 2023-04-07
 """
-class RetrieveStackById:
+class RetrieveStackByIdDAO:
 
     def run(self, id):
         # Prepare SQL
-        sql = "select id, description, active, source, category_id, next_view_date from t_stack where id = {:d};".format(
-            id)
+        sql = "select id, description, active, source, category_id, next_view_date from t_stack where id = {:d};".format(id)
         # print(sql)
 
         # Run the query
@@ -104,27 +82,20 @@ A class for retrieving all stacks
 Jaco Koekemoer
 2023-04-07
 """
-class RetrieveAllStacks:
+class RetrieveAllStacksDAO:
 
     def run(self):
         # Prepare SQL
-        sql = "select id, description, active, source, category_id, next_view_date from t_stack;"
+        # sql = "select id, description, active, source, category_id, next_view_date from t_stack;"
+        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, c.description \
+            from t_stack s \
+            left join t_category c on c.id = s.category_id \
+            order by s.description asc;"
         # print(sql)
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteSelectQuery()
-        # stacks = execute_query.execute(sql);
-        # return self.convert_active(stacks)
         return execute_query.execute(sql)
-
-    def convert_active(self, stacks):
-        converted_stacks = ()
-        qcards_util = qu.QCardsUtil()
-        for stack in stacks:
-            converted_stack = (stack[0], stack[1], qcards_util.convert_tinyint_to_boolean(stack[2]), stack[3], stack[4])
-            converted_stacks = converted_stacks + (converted_stack,)  # Building up a tuple of tuples
-        return converted_stacks
-
 
 """
 A class for retrieving a stacks by category id
@@ -132,30 +103,25 @@ A class for retrieving a stacks by category id
 Jaco Koekemoer
 2023-04-07
 """
-class RetrieveActiveStacksByCategoryId:
+class RetrieveActiveStacksByCategoryIdDAO:
 
-    def run(self, category_id):
+    def run(self, category_id, active = None):
         # Prepare SQL
-        sql = "select id, description, active, source, category_id, next_view_date \
-        from t_stack \
-        where category_id = {:d}\
-        and active = 1;".format(
-            category_id)
-        # print(sql)
+        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, c.description \
+                from t_stack s \
+                left join t_category c on c.id = s.category_id \
+                where s.category_id = {:d}".format(category_id)
+        active_sql = " and s.active = 1"
+        order_by_sql = " order by s.description asc;"
+        if active == None:
+            sql += order_by_sql
+        else:
+            sql += active_sql + order_by_sql
+            # print(sql)
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteSelectQuery()
-        # stacks = execute_query.execute(sql);
-        # return self.convert_active(stacks)
         return execute_query.execute(sql)
-
-    def convert_active(self, stacks):
-        converted_stacks = ()
-        qcards_util = qu.QCardsUtil()
-        for stack in stacks:
-            converted_stack = (stack[0], stack[1], qcards_util.convert_tinyint_to_boolean(stack[2]), stack[3], stack[4])
-            converted_stacks = converted_stacks + (converted_stack,)  # Building up a tuple of tuples
-        return converted_stacks
 
 """
 A class for retrieving a stacks which are active and scheduled for view today
@@ -165,13 +131,14 @@ and rs.review_stage_cd != 1 - Not daily review stage
 Jaco Koekemoer
 2023-04-12
 """
-class RetrieveScheduledActiveStacks:
+class RetrieveScheduledActiveStacksDAO:
 
     def run(self):
         # Prepare SQL
-        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, rs.review_stage_cd \
-            from t_stack s, t_review_stage rs \
+        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, rs.review_stage_cd, c.description \
+            from t_stack s, t_review_stage rs, t_category c \
             where s.id = rs.stack_id \
+            and s.category_id = c.id \
             and s.active = 1 \
             and s.next_view_date <= curdate() \
             and rs.review_stage_cd != 1;"
@@ -190,13 +157,14 @@ Daily will not have a next_review_date set
 Jaco Koekemoer
 2023-04-12
 """
-class RetrieveDailyActiveStacks:
+class RetrieveDailyActiveStacksDAO:
 
     def run(self):
         # Prepare SQL
-        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, rs.review_stage_cd \
-            from t_stack s, t_review_stage rs \
+        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, rs.review_stage_cd, c.description \
+            from t_stack s, t_review_stage rs, t_category c \
             where s.id = rs.stack_id \
+            and s.category_id = c.id \
             and s.active = 1 \
             and rs.review_stage_cd = 1;"
         # print(sql)
@@ -204,23 +172,3 @@ class RetrieveDailyActiveStacks:
         # Run the query
         execute_query = qcards_db.QCardsExecuteSelectQuery()
         return execute_query.execute(sql)
-
-"""
-A class for retrieving a stacks to be reviewed
-
-Jaco Koekemoer
-2023-04-12
-"""
-class RetrieveStacksForReview:
-
-    def run(self):
-        # Retrieve scheduled stacks
-        retrieve_scheduled_stacks = RetrieveScheduledActiveStacks()
-        scheduled_stacks = retrieve_scheduled_stacks.run()
-
-        # Retrieve active stacks
-        retrieve_daily_stacks = RetrieveDailyActiveStacks()
-        daily_stacks = retrieve_daily_stacks.run()
-
-        # Combine stacks and return
-        return scheduled_stacks + daily_stacks

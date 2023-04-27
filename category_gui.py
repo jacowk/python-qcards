@@ -181,8 +181,8 @@ class AddCategoryGui:
         self.add_category_window.grab_set()
 
     def populate_parent_categories(self):
-        retrieve_all_parent_categories = catbl.RetrieveAllParentCategoriesDict()
-        return retrieve_all_parent_categories.run()
+        retrieve_all_categories = catbl.RetrieveAllCategoriesDict()
+        return retrieve_all_categories.run()
 
     # Define a function to get the selected value from the dictionary
     def get_selected_parent(self):
@@ -309,8 +309,8 @@ class UpdateCategoryGui:
         self.update_category_window.grab_set()
 
     def populate_parent_categories(self):
-        retrieve_all_parent_categories = catbl.RetrieveAllParentCategoriesDict()
-        return retrieve_all_parent_categories.run()
+        retrieve_all_categories = catbl.RetrieveAllCategoriesDict()
+        return retrieve_all_categories.run()
 
     # Define a function to get the selected value from the dictionary
     def get_selected_parent(self):

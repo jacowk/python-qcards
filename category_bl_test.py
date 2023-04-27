@@ -100,12 +100,12 @@ A test class for RetrieveAllParentCategories
 Jaco Koekemoer
 2023-04-21
 """
-class RetrieveAllParentCategoriesDictTest(ut.TestCase):
+class RetrieveActiveCategoriesDictTest(ut.TestCase):
 
     @staticmethod
     def runTest():
         # Run the test
-        retrieve_parent_categories = catbl.RetrieveAllParentCategoriesDict()
+        retrieve_parent_categories = catbl.RetrieveActiveCategoriesDict()
         result = retrieve_parent_categories.run()
         print(result)
         print(type(result))
@@ -117,9 +117,9 @@ class RetrieveAllParentCategoriesDictTest(ut.TestCase):
 loader = ut.TestLoader()
 # suite = loader.loadTestsFromTestCase(AddCategoryTest)
 # suite = loader.loadTestsFromTestCase(UpdateCategoryTest)
-suite = loader.loadTestsFromTestCase(RetrieveCategoryByIdTest)
+# suite = loader.loadTestsFromTestCase(RetrieveCategoryByIdTest)
 # suite = loader.loadTestsFromTestCase(RetrieveAllCategoriesTest)
-# suite = loader.loadTestsFromTestCase(RetrieveAllParentCategoriesDictTest)
+suite = loader.loadTestsFromTestCase(RetrieveActiveCategoriesDictTest)
 
 runner = ut.TextTestRunner()
 runner.run(suite)

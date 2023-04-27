@@ -2,8 +2,14 @@ import tkinter as tk
 from tkinter import ttk
 import tkinter.messagebox as tkmb
 import category_gui as cg
+import stack_gui as sg
 import qcards_gui_util as u
 
+"""
+Description: The main class for this QCards app
+Author: Jaco Koekemoer
+Date: 2023-03-30
+"""
 class QCardsApp:
 
     def run(self):
@@ -27,6 +33,7 @@ class QCardsApp:
         # Add the Category menu
         main_menu = tk.Menu(menubar, tearoff=0)
         main_menu.add_command(label="Categories", command=self.open_category_window)
+        main_menu.add_command(label="Stacks", command=self.open_stack_window)
         main_menu.add_separator()
         main_menu.add_command(label="Exit", command=self.main_window.quit)
 
@@ -48,6 +55,9 @@ class QCardsApp:
 
     def open_category_window(self):
         list_categories_gui = cg.ListCategoriesGui(self.main_window)
+
+    def open_stack_window(self):
+        list_stacks_gui = sg.ListStacksGui(self.main_window)
 
 app = QCardsApp()
 app.run()

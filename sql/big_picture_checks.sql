@@ -1,5 +1,7 @@
 select * from t_category;
+describe t_category;
 select * from t_stack where id = 5;
+describe t_stack;
 select * from t_card where stack_id = 5;
 select * from t_review_stage where stack_id = 5;
 select * from t_review_stage;

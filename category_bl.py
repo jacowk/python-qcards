@@ -43,6 +43,7 @@ Jaco Koekemoer
 class CategoryConstants(Enum):
 
     SELECT_PARENT = "Select Parent"
+    SELECT_CATEGORY = "Select Category"
 
 """
 Business layer for adding categories
@@ -117,12 +118,12 @@ class RetrieveAllCategories:
         return converted_categories
 
 """
-Business layer for retrieving all categories as parents
+Business layer for retrieving all categories as a dictionary
 
 Jaco Koekemoer
 2023-04-21
 """
-class RetrieveAllParentCategoriesDict:
+class RetrieveAllCategoriesDict:
 
     def run(self):
         # Retrieve all categories via the DAO
@@ -131,7 +132,7 @@ class RetrieveAllParentCategoriesDict:
 
         # Convert data for front-end display
         parent_dictionary = dict()
-        parent_dictionary[CategoryConstants.SELECT_PARENT.value] = -1
+        parent_dictionary[CategoryConstants.SELECT_CATEGORY.value] = -1
         for category in categories:
             parent_dictionary[category[1]] = category[0] # id: description
         return parent_dictionary

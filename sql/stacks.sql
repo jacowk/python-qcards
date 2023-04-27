@@ -6,7 +6,7 @@ sudo /usr/local/squirrel-sql-4.5.1/squirrel-sql.sh
 /* Stacks */
 CREATE TABLE t_stack (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-		description VARCHAR(100),
+	description VARCHAR(100),
     active BOOLEAN,
 	source VARCHAR(300),
 	category_id INT(6),
