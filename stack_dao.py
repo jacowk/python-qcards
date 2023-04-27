@@ -107,7 +107,13 @@ class RetrieveActiveStacksByCategoryIdDAO:
 
     def run(self, category_id, active = None):
         # Prepare SQL
-        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, c.description \
+        sql = "select s.id, \
+                s.description, \
+                s.active, \
+                s.source, \
+                s.category_id, \
+                s.next_view_date, \
+                c.description \
                 from t_stack s \
                 left join t_category c on c.id = s.category_id \
                 where s.category_id = {:d}".format(category_id)
@@ -117,7 +123,7 @@ class RetrieveActiveStacksByCategoryIdDAO:
             sql += order_by_sql
         else:
             sql += active_sql + order_by_sql
-            # print(sql)
+        # print(sql)
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteSelectQuery()

@@ -1,8 +1,9 @@
 import unittest as ut
 import card_dao as cd
+import card_constant as cc
 import csv  # https://docs.python.org/3/library/csv.html
 
-class AddCardTest(ut.TestCase):
+class AddCardDAOTest(ut.TestCase):
 
     @staticmethod
     def runTest():
@@ -12,11 +13,11 @@ class AddCardTest(ut.TestCase):
         stack_id = 1
         active = 1
 
-        add_card = cd.AddCard()
+        add_card = cd.AddCardDAO()
         add_card.run(summary, front_content, back_content, stack_id, active)
 
 
-class AddMultipleCardsTest(ut.TestCase):
+class AddMultipleCardsDAOTest(ut.TestCase):
 
     @staticmethod
     def runTest():
@@ -47,11 +48,11 @@ class AddMultipleCardsTest(ut.TestCase):
 
                 print(summary, front_content, back_content, stack_id, active)
 
-                add_card = cd.AddCard()
+                add_card = cd.AddCardDAO()
                 add_card.run(summary, front_content, back_content, stack_id, active)
 
 
-class RetrieveAllActiveCardsByStackIdTest(ut.TestCase):
+class RetrieveActiveCardsByStackIdDAOTest(ut.TestCase):
 
     @staticmethod
     def runTest():
@@ -59,7 +60,7 @@ class RetrieveAllActiveCardsByStackIdTest(ut.TestCase):
         stack_id = 1
 
         # Run the test
-        retrieve_cards = cd.RetrieveAllActiveCardsByStackId()
+        retrieve_cards = cd.RetrieveActiveCardsByStackIdDAO()
         results = retrieve_cards.run(stack_id)
 
         # Assert result
@@ -68,7 +69,7 @@ class RetrieveAllActiveCardsByStackIdTest(ut.TestCase):
             print(result)
 
 
-class UpdateViewStatisticsTest(ut.TestCase):
+class UpdateViewStatisticsDAOTest(ut.TestCase):
 
     @staticmethod
     def runTest():
@@ -76,7 +77,7 @@ class UpdateViewStatisticsTest(ut.TestCase):
         card_id = 1
 
         # Run the test
-        update_stats = cd.UpdateViewStatistics()
+        update_stats = cd.UpdateViewStatisticsDAO()
         update_stats.run(card_id)
 
 class UpdateCardGroupTest(ut.TestCase):
@@ -85,17 +86,17 @@ class UpdateCardGroupTest(ut.TestCase):
     def runTest():
         # Setup parameter
         card_id = 2
-        group_cd = cd.CardGroup.MIDDLE.value
+        group_cd = cc.CardGroup.MIDDLE.value
 
         # Run the test
-        update_card_group = cd.UpdateCardGroup()
+        update_card_group = cd.UpdateCardGroupDAO()
         update_card_group.run(card_id, group_cd)
 
 # Run specific tests
 loader = ut.TestLoader()
 # suite = loader.loadTestsFromTestCase(AddCardTest)
 # suite = loader.loadTestsFromTestCase(AddMultipleCardsTest)
-suite = loader.loadTestsFromTestCase(RetrieveAllActiveCardsByStackIdTest)
+suite = loader.loadTestsFromTestCase(RetrieveActiveCardsByStackIdDAOTest)
 # suite = loader.loadTestsFromTestCase(UpdateViewStatisticsTest)
 # suite = loader.loadTestsFromTestCase(UpdateCardGroupTest)
 

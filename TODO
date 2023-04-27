@@ -32,3 +32,6 @@
 13. Build in validations
 14. Build a category tree
 15. Add a background image on the main window
+
+On cards, add Category and Stack descriptions.
+The back content is not properly populated.

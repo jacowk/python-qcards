@@ -1,6 +1,6 @@
 import stack_dao as sd
 import qcards_util as qu
-from enum import Enum
+import stack_constant as sc
 
 """
 A stack domain class
@@ -235,3 +235,43 @@ class RetrieveStacksForReview:
 
         # Combine stacks and return
         return scheduled_stacks + daily_stacks
+
+"""
+Business layer for retrieving all stacks as a dictionary
+
+Jaco Koekemoer
+2023-04-27
+"""
+class RetrieveAllStacksDict:
+
+    def run(self):
+        # Retrieve all categories via the DAO
+        retrieve_stack = sd.RetrieveAllStacksDAO()
+        stacks = retrieve_stack.run()
+
+        # Convert data for front-end display
+        stack_dictionary = dict()
+        stack_dictionary[sc.StackConstant.SELECT_STACK.value] = -1
+        for stack in stacks:
+            stack_dictionary[stack[1]] = stack[0] # description: id
+        return stack_dictionary
+
+"""
+Business layer for retrieving stacks by category id as a dictionary
+
+Jaco Koekemoer
+2023-04-27
+"""
+class RetrieveStacksByCategoryIdDict:
+
+    def run(self, category_id):
+        # Retrieve all categories via the DAO
+        retrieve_stack = sd.RetrieveActiveStacksByCategoryIdDAO()
+        stacks = retrieve_stack.run(category_id)
+
+        # Convert data for front-end display
+        stack_dictionary = dict()
+        stack_dictionary[sc.StackConstant.SELECT_STACK.value] = -1
+        for stack in stacks:
+            stack_dictionary[stack[1]] = stack[0] # description: id
+        return stack_dictionary

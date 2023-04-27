@@ -1,6 +1,6 @@
 import category_dao as catd
 import qcards_util as qu
-from enum import Enum
+import category_constant as catc
 
 """
 A category domain class
@@ -33,17 +33,6 @@ class Category:
 
     def set_active(self, active):
         self.active = active
-
-"""
-An enum related to Categories
-
-Jaco Koekemoer
-2023-04-23
-"""
-class CategoryConstants(Enum):
-
-    SELECT_PARENT = "Select Parent"
-    SELECT_CATEGORY = "Select Category"
 
 """
 Business layer for adding categories
@@ -132,8 +121,7 @@ class RetrieveAllCategoriesDict:
 
         # Convert data for front-end display
         parent_dictionary = dict()
-        parent_dictionary[CategoryConstants.SELECT_CATEGORY.value] = -1
+        parent_dictionary[catc.CategoryConstants.SELECT_CATEGORY.value] = -1
         for category in categories:
             parent_dictionary[category[1]] = category[0] # id: description
         return parent_dictionary
-

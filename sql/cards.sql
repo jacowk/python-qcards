@@ -38,7 +38,7 @@ select id, stack_id, view_cnt, last_view_date from t_card;
 insert into t_card(summary, front_content, back_content, stack_id, view_cnt, group_cnt, active, create_date)
 values('Front 1', 'Back 1', 1, 0, 1, True, NOW());
 
-select * from t_card where id = 24;
+select * from t_card where id = 26;
 select * from t_card where stack_id = 1;
 
 update t_card
@@ -77,4 +77,35 @@ insert into t_lookup_group (description) values('Back');
 
 select * from t_lookup_group;
 
+select c.id, 
+c.summary, 
+c.front_content, 
+c.back_content, 
+c.stack_id, 
+c.view_count, 
+c.group_cd, 
+c.active, 
+c.last_view_date,
+s.description,
+cat.description
+from t_card c
+left join t_stack s on c.stack_id = s.id
+left join t_category cat on s.category_id = cat.id
+where c.stack_id = 1;
 
+
+select c.id, 
+c.summary, 
+c.front_content, 
+c.back_content, 
+c.stack_id, 
+c.view_count, 
+c.group_cd, 
+c.active, 
+c.last_view_date,
+s.description,
+cat.description
+from t_card c
+left join t_stack s on c.stack_id = s.id
+left join t_category cat on s.category_id = cat.id
+where c.id = 1;

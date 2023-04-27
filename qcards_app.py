@@ -1,8 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import PhotoImage
+from tkinter import Canvas
 import tkinter.messagebox as tkmb
-import category_gui as cg
+import category_gui as catg
 import stack_gui as sg
+import card_gui as cg
 import qcards_gui_util as u
 
 """
@@ -34,6 +37,7 @@ class QCardsApp:
         main_menu = tk.Menu(menubar, tearoff=0)
         main_menu.add_command(label="Categories", command=self.open_category_window)
         main_menu.add_command(label="Stacks", command=self.open_stack_window)
+        main_menu.add_command(label="Cards", command=self.open_card_window)
         main_menu.add_separator()
         main_menu.add_command(label="Exit", command=self.main_window.quit)
 
@@ -54,10 +58,13 @@ class QCardsApp:
         self.main_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
 
     def open_category_window(self):
-        list_categories_gui = cg.ListCategoriesGui(self.main_window)
+        list_categories_gui = catg.ListCategoriesGui(self.main_window)
 
     def open_stack_window(self):
         list_stacks_gui = sg.ListStacksGui(self.main_window)
+
+    def open_card_window(self):
+        list_cards_gui = cg.ListCardsGui(self.main_window)
 
 app = QCardsApp()
 app.run()
