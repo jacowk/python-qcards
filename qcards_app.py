@@ -6,6 +6,7 @@ import tkinter.messagebox as tkmb
 import category_gui as catg
 import stack_gui as sg
 import card_gui as cg
+import review_gui as rg
 import qcards_gui_util as u
 
 """
@@ -39,6 +40,8 @@ class QCardsApp:
         main_menu.add_command(label="Stacks", command=self.open_stack_window)
         main_menu.add_command(label="Cards", command=self.open_card_window)
         main_menu.add_separator()
+        main_menu.add_command(label="Review", command=self.open_review_window)
+        main_menu.add_separator()
         main_menu.add_command(label="Exit", command=self.main_window.quit)
 
         menubar.add_cascade(label="Menu", menu=main_menu)
@@ -65,6 +68,9 @@ class QCardsApp:
 
     def open_card_window(self):
         list_cards_gui = cg.ListCardsGui(self.main_window)
+
+    def open_review_window(self):
+        review_gui = rg.ReviewGui(self.main_window)
 
 app = QCardsApp()
 app.run()

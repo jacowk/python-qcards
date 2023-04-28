@@ -94,11 +94,13 @@ class ListCardsGui:
 
         # Add buttons
         add_card_button = ttk.Button(self.button_frame, text="Add Card", command=self.add_card)
-        add_card_button.grid(row=1, column=0, padx=10, pady=10)
+        add_card_button.grid(row=0, column=0, padx=10, pady=10)
         update_card_button = ttk.Button(self.button_frame, text="Update Card", command=self.update_card)
-        update_card_button.grid(row=1, column=1, padx=10, pady=10)
+        update_card_button.grid(row=0, column=1, padx=10, pady=10)
         refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
-        refresh_button.grid(row=1, column=3, padx=10, pady=10)
+        refresh_button.grid(row=0, column=2, padx=10, pady=10)
+        close_button = tk.Button(self.button_frame, text="Close", command=self.card_window.destroy)
+        close_button.grid(row=0, column=3, padx=10, pady=10)
 
         # Populate the grid with data
         self.populate_cards()

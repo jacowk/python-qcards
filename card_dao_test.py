@@ -61,7 +61,7 @@ class RetrieveActiveCardsByStackIdDAOTest(ut.TestCase):
 
         # Run the test
         retrieve_cards = cd.RetrieveActiveCardsByStackIdDAO()
-        results = retrieve_cards.run(stack_id)
+        results = retrieve_cards.run(stack_id, True, True)
 
         # Assert result
         # ut.TestCase.assertTrue(len(result) > 0)

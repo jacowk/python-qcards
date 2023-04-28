@@ -190,9 +190,9 @@ Jaco Koekemoer
 """
 class RetrieveActiveCardsByStackId:
 
-    def run(self, stack_id):
+    def run(self, stack_id, active = None, order_group = False):
         retrieve_all_cards = cd.RetrieveActiveCardsByStackIdDAO()
-        cards = retrieve_all_cards.run(stack_id)  # Returns 2 dimensional tuple
+        cards = retrieve_all_cards.run(stack_id, active, order_group)  # Returns 2 dimensional tuple
         # id, summary, front_content, back_content, stack_id, view_count, group_cd, active, last_view_date
 
         # Convert data for front-end display

@@ -141,13 +141,14 @@ class RetrieveScheduledActiveStacksDAO:
 
     def run(self):
         # Prepare SQL
-        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, rs.review_stage_cd, c.description \
-            from t_stack s, t_review_stage rs, t_category c \
-            where s.id = rs.stack_id \
-            and s.category_id = c.id \
-            and s.active = 1 \
-            and s.next_view_date <= curdate() \
-            and rs.review_stage_cd != 1;"
+        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, rs.review_stage_cd, c.description, lrs.description \
+                from t_stack s, t_review_stage rs, t_category c, t_lookup_review_stage lrs \
+                where s.id = rs.stack_id \
+                and s.category_id = c.id \
+                and rs.review_stage_cd = lrs.id \
+                and s.active = 1 \
+                and s.next_view_date <= curdate() \
+                and rs.review_stage_cd != 1;"
         # print(sql)
 
         # Run the query
@@ -167,12 +168,13 @@ class RetrieveDailyActiveStacksDAO:
 
     def run(self):
         # Prepare SQL
-        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, rs.review_stage_cd, c.description \
-            from t_stack s, t_review_stage rs, t_category c \
-            where s.id = rs.stack_id \
-            and s.category_id = c.id \
-            and s.active = 1 \
-            and rs.review_stage_cd = 1;"
+        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, rs.review_stage_cd, c.description, lrs.description \
+                from t_stack s, t_review_stage rs, t_category c, t_lookup_review_stage lrs \
+                where s.id = rs.stack_id \
+                and s.category_id = c.id \
+                and rs.review_stage_cd = lrs.id \
+                and s.active = 1 \
+                and rs.review_stage_cd = 1;"
         # print(sql)
 
         # Run the query

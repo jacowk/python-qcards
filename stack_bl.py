@@ -171,16 +171,16 @@ class RetrieveScheduledActiveStacks:
         converted_stacks = ()
         qcards_util = qu.QCardsUtil()
         for stack in stacks:
-            # s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, rs.review_stage_cd, c.description
             converted_category = (
                 stack[0], # id
                 stack[1], # description
                 qcards_util.convert_tinyint_to_boolean(stack[2]), # active
                 stack[3], # source
                 stack[4], # category_id
-                stack[5], # next_view_date
+                stack[5] if stack[5] is not None else '', # next_view_date
                 stack[6], # review_stage_cd
-                stack[7] if stack[7] != None else '' # category_description
+                stack[7] if stack[7] != None else '', # category_description
+                stack[8]  # review stage description
             )
             converted_stacks = converted_stacks + (converted_category,)  # Building up a tuple of tuples
         return converted_stacks
@@ -202,16 +202,16 @@ class RetrieveDailyActiveStacks:
         converted_stacks = ()
         qcards_util = qu.QCardsUtil()
         for stack in stacks:
-            # s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, rs.review_stage_cd, c.description
             converted_category = (
                 stack[0], # id
                 stack[1], # description
                 qcards_util.convert_tinyint_to_boolean(stack[2]), # active
                 stack[3], # source
                 stack[4], # category_id
-                stack[5], # next_view_date
+                stack[5] if stack[5] is not None else '', # next_view_date
                 stack[6], # review_stage_cd
-                stack[7] if stack[7] != None else '' # category_description
+                stack[7] if stack[7] is not None else '', # category_description
+                stack[8]  # review stage description
             )
             converted_stacks = converted_stacks + (converted_category,)  # Building up a tuple of tuples
         return converted_stacks

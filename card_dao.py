@@ -135,7 +135,7 @@ Jaco Koekemoer
 """
 class RetrieveActiveCardsByStackIdDAO:
 
-    def run(self, stack_id, order_group = False):
+    def run(self, stack_id, active = None, order_group = False):
         # Prepare SQL
         sql = "select c.id, \
                 c.summary, \
@@ -152,7 +152,13 @@ class RetrieveActiveCardsByStackIdDAO:
                 left join t_stack s on c.stack_id = s.id \
                 left join t_category cat on s.category_id = cat.id \
                 where c.stack_id = {:d}".format(stack_id)
-        if order_group == True:
+
+        # Add the active clause, to be used mostly for reviewing the cards
+        if active:
+            sql += " and c.active = 1"
+
+        # Add the group clause, to be used mostly for reviewing the cards
+        if order_group:
             sql += " order by group_cd asc, id asc;"
         else:
             sql += " order by id asc;"

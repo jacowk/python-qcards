@@ -66,6 +66,8 @@ class ListCategoriesGui:
         update_category_button.grid(row=0, column=1, padx=10, pady=10)
         refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
         refresh_button.grid(row=0, column=2, padx=10, pady=10)
+        close_button = tk.Button(self.button_frame, text="Close", command=self.category_window.destroy)
+        close_button.grid(row=0, column=3, padx=10, pady=10)
 
         # Populate the grid with data
         self.populate_categories()
