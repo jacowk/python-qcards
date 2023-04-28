@@ -44,4 +44,3 @@ class QCardsUtil:
         if value == -1:
             return None
         return value
-

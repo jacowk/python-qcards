@@ -15,7 +15,7 @@ class AddCardDAO:
         sql = "insert into t_card(summary, front_content, back_content, stack_id, view_count, group_cd, active, create_date) \
             values(\"{:s}\", \"{:s}\", \"{:s}\", {:d}, 0, 1, {}, now());".format(summary, front_content, back_content,
                                                                                  stack_id, active)
-        print(sql)
+        #print(sql)
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteQuery()

@@ -32,6 +32,6 @@
 13. Build in validations
 14. Build a category tree
 15. Add a background image on the main window
-
-On cards, add Category and Stack descriptions.
-The back content is not properly populated.
+16. Build review stage screen
+17. Export cards to PDF
+18. Import new cards from CSV
