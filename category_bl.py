@@ -123,5 +123,5 @@ class RetrieveAllCategoriesDict:
         parent_dictionary = dict()
         parent_dictionary[catc.CategoryConstants.SELECT_CATEGORY.value] = -1
         for category in categories:
-            parent_dictionary[category[1]] = category[0] # id: description
+            parent_dictionary[category[1]] = category[0] # description: id
         return parent_dictionary

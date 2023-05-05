@@ -6,7 +6,7 @@ import tkinter.messagebox as tkmb
 import category_gui as catg
 import stack_gui as sg
 import card_gui as cg
-import review_gui as rg
+import review_stack_gui as rg
 import qcards_gui_util as u
 
 """

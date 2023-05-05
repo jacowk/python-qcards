@@ -44,3 +44,15 @@ class QCardsUtil:
         if value == -1:
             return None
         return value
+
+    """
+    For a dictionary, return the key where the value matches.
+    For example for a dictionary where "Test Stack":3, then if the value is 3, return the key
+    """
+    def get_dictionary_key_from_value(self, dictionary, value):
+        if value is None:
+            return None
+        for key in dictionary.keys():
+            if dictionary[key] == value:
+                return key
+        return None

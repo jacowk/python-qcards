@@ -51,3 +51,39 @@ update t_stack set next_view_date = '2023-04-10' where id = 4;
 
 select * from t_stack;
 
+/* Retrieve all stacks */
+select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, c.description 
+from t_stack s 
+left join t_category c on c.id = s.category_id 
+order by s.description asc;
+
+select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, c.description, rs.id 
+from t_stack s 
+left join t_category c on c.id = s.category_id 
+left join t_review_stage rs on rs.stack_id = s.id
+order by s.description asc;
+
+select s.id, 
+s.description, 
+s.active, 
+s.source, 
+s.category_id, 
+s.next_view_date, 
+c.description, 
+rs.id 
+from t_stack s 
+left join t_category c on c.id = s.category_id 
+left join t_review_stage rs on rs.stack_id = s.id
+where s.category_id = 2;
+
+/* Retrieve stack by stack id */
+select s.id, 
+s.description, 
+s.active, 
+s.source, 
+s.category_id, 
+s.next_view_date, 
+rs.id
+from t_stack s 
+left join t_review_stage rs on rs.stack_id = s.id
+where s.id = 7;

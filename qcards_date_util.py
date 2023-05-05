@@ -38,6 +38,7 @@ class DateUtil:
 
     @staticmethod
     def get_string_as_date(year, month, day):
+        print(year, month, day)
         return datetime.date(int(year), int(month), int(day))
 
     @staticmethod
@@ -136,7 +137,7 @@ class DateUtil:
     def calculate_next_weekly_date(from_date, weekday_cd, week_count):
         # Calculate the no of days to add
         days_to_add = week_count * 7
-        print("days_to_add = {:d}".format(days_to_add))
+        print("days_to_add = {:d}".format(int(days_to_add)))
 
         # Add the days to the from_date
         adjusted_date = DateUtil.add_days(from_date, days_to_add)

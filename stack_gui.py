@@ -5,6 +5,9 @@ import stack_bl as sbl
 import qcards_gui_util as u
 import qcards_util as qu
 import category_bl as catbl
+import category_constant as catc
+import review_stage_bl as rsbl
+import review_stage_gui as rsg
 
 """
 Description: A class for listing stacks
@@ -45,7 +48,7 @@ class ListStacksGui:
         self.category_filter_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_category())
 
         # Define the columns
-        columns = ('id', 'description', 'category', 'next_view_date', 'active')
+        columns = ('id', 'description', 'category', 'next_view_date', 'review_stage_id', 'active')
 
         # Create a TreeView (Table)
         self.tree = ttk.Treeview(self.stack_window, columns=columns, show='headings')
@@ -55,6 +58,7 @@ class ListStacksGui:
         self.tree.heading('description', text="Description")
         self.tree.heading('category', text="Category")
         self.tree.heading('next_view_date', text="Next View Date")
+        self.tree.heading('review_stage_id', text="Review Stage ID")
         self.tree.heading('active', text="Active")
 
         # Change column widths
@@ -79,13 +83,19 @@ class ListStacksGui:
 
         # Add buttons
         add_stack_button = ttk.Button(self.button_frame, text="Add Stack", command=self.add_stack)
-        add_stack_button.grid(row=0, column=0, padx=10, pady=10)
+        add_stack_button.grid(row=0, column=0, padx=1, pady=1)
         update_stack_button = ttk.Button(self.button_frame, text="Update Stack", command=self.update_stack)
-        update_stack_button.grid(row=0, column=1, padx=10, pady=10)
+        update_stack_button.grid(row=0, column=1, padx=1, pady=1)
+        setup_review_stage_button = ttk.Button(self.button_frame, text="Setup Review Stage", command=self.setup_review_stage)
+        setup_review_stage_button.grid(row=0, column=2, padx=1, pady=1)
+        review_stage_button = tk.Button(self.button_frame, text="Update Review Stage", command=self.update_review_stage)
+        review_stage_button.grid(row=0, column=3, pady=(2, 2))
+        calculate_next_view_date_button = ttk.Button(self.button_frame, text="Calc Next View Date",command=self.calculate_next_view_date)
+        calculate_next_view_date_button.grid(row=0, column=4, padx=1, pady=1)
         refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
-        refresh_button.grid(row=0, column=2, padx=10, pady=10)
+        refresh_button.grid(row=0, column=5, padx=1, pady=1)
         close_button = tk.Button(self.button_frame, text="Close", command=self.stack_window.destroy)
-        close_button.grid(row=0, column=3, padx=10, pady=10)
+        close_button.grid(row=0, column=6, padx=1, pady=1)
 
         # Populate the grid with data
         self.populate_stacks()
@@ -109,8 +119,10 @@ class ListStacksGui:
             # Retrieve stacks by category_filter_id
             retrieve_stacks_by_category_id = sbl.RetrieveActiveStacksByCategoryId()
             all_stacks = retrieve_stacks_by_category_id.run(category_filter_id)
+
+        # Prepare columns
         for stack in all_stacks:
-            values = (stack[0], stack[1], stack[6], stack[5], stack[2])
+            values = (stack[0], stack[1], stack[6], stack[5], stack[7], stack[2])
             self.tree.insert('', tk.END, values=values)
 
     def add_stack(self):
@@ -119,6 +131,11 @@ class ListStacksGui:
     def update_stack(self):
         # Get values
         selected_item = self.tree.focus()
+
+        # If no selection was made, display an error message
+        if len(selected_item) == 0:
+            messagebox.showerror("Error", "Please select a stack to update")
+            return
 
         # Current_item is a dictionary
         current_item = self.tree.item(selected_item)
@@ -135,6 +152,89 @@ class ListStacksGui:
 
         # Run the update GUI
         update_stack_gui = UpdateStackGui(self.stack_window, self, stack)
+
+    def setup_review_stage(self):
+        # Get values
+        selected_item = self.tree.focus()
+
+        # If no selection was made, display an error message
+        if len(selected_item) == 0:
+            messagebox.showerror("Error", "Please select a stack to update")
+            return
+
+        # Current_item is a dictionary
+        current_item = self.tree.item(selected_item)
+
+        # Get the values index from the dictionary, which contains a list
+        values = current_item['values']
+
+        # Each item in the list corresponds with the columns in the TreeView
+        stack_id = values[0]
+
+        # Create the first daily review stage
+        setup_review_stage = rsbl.SetupInitialReviewStage()
+        setup_review_stage.run(stack_id)
+
+        self.refresh_table()
+        messagebox.showinfo("Review Stage Setup", "Review stage setup is done")
+
+    def update_review_stage(self):
+        # Get values
+        selected_item = self.tree.focus()
+
+        # If no selection was made, display an error message
+        if len(selected_item) == 0:
+            messagebox.showerror("Error", "Please select a stack to view it's review stage")
+            return
+
+        # Current_item is a dictionary
+        current_item = self.tree.item(selected_item)
+
+        # Get the values index from the dictionary, which contains a list
+        values = current_item['values']
+
+        # Each item in the list corresponds with the columns in the TreeView
+        stack_id = values[0]
+
+        # Retrieve the stack
+        retrieve_stack_by_id = sbl.RetrieveStackById()
+        stack = retrieve_stack_by_id.run(stack_id)
+        stack.set_id(stack_id)
+
+        # Retrieve the review stage
+        retrieve_review_stage_by_stack_id = rsbl.RetrieveReviewStageByStackId()
+        review_stage = retrieve_review_stage_by_stack_id.run(stack_id)
+
+        # Open Review Stage screen
+        review_stage_gui = rsg.ReviewStageGui(self.stack_window, stack, review_stage)
+
+    def calculate_next_view_date(self):
+        # Get values
+        selected_item = self.tree.focus()
+
+        # If no selection was made, display an error message
+        if len(selected_item) == 0:
+            messagebox.showerror("Error", "Please select a stack to update")
+            return
+
+        # Current_item is a dictionary
+        current_item = self.tree.item(selected_item)
+
+        # Get the values index from the dictionary, which contains a list
+        values = current_item['values']
+
+        # Each item in the list corresponds with the columns in the TreeView
+        stack_id = values[0]
+
+        # Calculate and update the next view date
+        calc_update_next_view_date = rsbl.CalculateAndUpdateNextViewDate()
+        next_view_date = calc_update_next_view_date.run(stack_id)
+
+        self.refresh_table()
+        if next_view_date is not None:
+            messagebox.showinfo("Calculate Next View Date", "Next view date calculated: {:%Y-%m-%d}".format(next_view_date))
+        else:
+            messagebox.showinfo("Calculate Next View Date", "No next view date calculated")
 
     def refresh_table(self):
         for item in self.tree.get_children():
@@ -305,6 +405,8 @@ class UpdateStackGui:
         self.id_var = tk.IntVar(value=stack.get_id())
         self.description_var = tk.StringVar(value=stack.get_description())
         self.source_var = tk.StringVar(value=stack.get_source())
+        self.next_view_date = tk.StringVar(value=stack.get_next_view_date())
+        self.review_stage_id = tk.IntVar(value=stack.get_review_stage_id())
         self.active_var = tk.BooleanVar(value=stack.get_active())
 
         # Id field
@@ -324,21 +426,17 @@ class UpdateStackGui:
         self.category_label.grid(column=0, row=2, sticky="w")
         # Load the dictionary for the combobox
         self.category_dict = self.populate_categories()
-        # The values are the keys of the dictionary of stacks, which contains the descriptions of the stacks
-        self.category_combobox = ttk.Combobox(self.frame, values=list(self.category_dict.keys()), width=80)
-        self.category_combobox.grid(column=1, row=2, sticky="w", pady=(1, 2))
 
-        # Preselect the value of the combobox
-        if stack.get_category_id() == None:
-            self.selected_category_index = 0
-            self.selected_category_id = None
-            self.selected_category = catbl.CategoryConstants.SELECT_CATEGORY.value
-        else:
-            qcards_util = qu.QCardsUtil()
-            self.selected_category_index = qcards_util.convert_dict_value_to_index(self.category_dict, stack.get_category_id())
-            self.selected_category_id = stack.get_category_id()
-            self.selected_category = qcards_util.convert_index_to_dict_key(self.category_dict, self.selected_category_index)
-        self.category_combobox.current(self.selected_category_index)
+        # Preselect the combobox with the appropriate value
+        qcards_util = qu.QCardsUtil()
+        self.selected_category = qcards_util.get_dictionary_key_from_value(self.category_dict, stack.get_category_id())
+        self.selected_category = catc.CategoryConstants.SELECT_CATEGORY.value if self.selected_category is None else self.selected_category
+        self.selected_category_id = stack.get_category_id()
+
+        # The values are the keys of the dictionary of stacks, which contains the descriptions of the stacks
+        self.category_combobox = ttk.Combobox(self.frame, textvariable=self.selected_category, values=list(self.category_dict.keys()), width=80)
+        self.category_combobox.grid(column=1, row=2, sticky="w", pady=(1, 2))
+        self.category_combobox.set(self.selected_category)
 
         # Bind the function to the Combobox selection event
         self.category_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_category())
@@ -384,6 +482,8 @@ class UpdateStackGui:
         qcards_util = qu.QCardsUtil()
         category_id = qcards_util.get_selected_combobox_value(self.selected_category_id)
         source = self.source_entry.get()
+        next_view_date = self.next_view_date.get()
+        review_stage_id = self.review_stage_id.get()
         active = self.active_var.get()
         active_converted = qu.QCardsUtil().convert_boolean_to_tinyint(active)
 
@@ -393,6 +493,7 @@ class UpdateStackGui:
         stack.set_description(description)
         stack.set_category_id(category_id)
         stack.set_source(source)
+        stack.set_next_view_date(next_view_date)
         stack.set_active(active)
 
         # Store the new Stack in a database
@@ -401,9 +502,12 @@ class UpdateStackGui:
 
         # Update the stack to the stack tree view
         selected_item = self.list_stacks_gui.tree.focus()
-        self.list_stacks_gui.tree.item(selected_item, values=(id, description,
-                                                                  "" if self.selected_category == catbl.CategoryConstants.SELECT_CATEGORY.value else self.selected_category,
-                                                                    active))
+        self.list_stacks_gui.tree.item(selected_item, values=(id,
+                                                              description,
+                                                              "" if self.selected_category == catc.CategoryConstants.SELECT_CATEGORY.value else self.selected_category,
+                                                              next_view_date,
+                                                              review_stage_id,
+                                                              active))
 
         # Close the form
         self.update_stack_window.destroy()

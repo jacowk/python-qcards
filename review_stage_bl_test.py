@@ -130,7 +130,7 @@ class CalculateEverySecondDayNextViewDateWithOddTest(ut.TestCase):
     def runTest():
         stack_id = 1
         odd_even_cd = rsc.OddEven.ODD.value
-        calculate_next_view_date = rsc.CalculateEverySecondDayNextViewDate()
+        calculate_next_view_date = rsbl.CalculateEverySecondDayNextViewDate()
         next_view_date = calculate_next_view_date.run(stack_id, odd_even_cd)
         next_view_date_string = qdu.DateUtil().get_date_as_string(next_view_date)
         expected_date_string = "2023-04-11"
@@ -148,7 +148,7 @@ class CalculateEverySecondDayNextViewDateWithEvenTest(ut.TestCase):
     def runTest():
         stack_id = 1
         odd_even_cd = rsc.OddEven.EVEN.value
-        calculate_next_view_date = rsc.CalculateEverySecondDayNextViewDate()
+        calculate_next_view_date = rsbl.CalculateEverySecondDayNextViewDate()
         next_view_date = calculate_next_view_date.run(stack_id, odd_even_cd)
         next_view_date_string = qdu.DateUtil().get_date_as_string(next_view_date)
         expected_date_string = "2023-04-12"
@@ -167,7 +167,7 @@ class CalculateWeeklyNextViewDateTest(ut.TestCase):
     def runTest():
         weekday_cd = 0  # Monday
         week_count = 2
-        calculate_next_view_date = rsc.CalculateWeeklyNextViewDate()
+        calculate_next_view_date = rsbl.CalculateWeeklyNextViewDate()
         next_view_date = calculate_next_view_date.run(weekday_cd, week_count)
         next_view_date_string = qdu.DateUtil().get_date_as_string(next_view_date)
         expected_date_string = "2023-04-24"
@@ -186,11 +186,69 @@ class CalculateMonthlyNextViewDateTest(ut.TestCase):
     def runTest():
         calendar_day = 6
         month_count = 1
-        calculate_next_view_date = rsc.CalculateMonthlyNextViewDate()
+        calculate_next_view_date = rsbl.CalculateMonthlyNextViewDate()
         next_view_date = calculate_next_view_date.run(calendar_day, month_count)
         next_view_date_string = qdu.DateUtil().get_date_as_string(next_view_date)
         expected_date_string = "2023-05-06"
         ut.TestCase.assertTrue(expected_date_string, next_view_date_string)
+
+"""
+A unit test for CalculateMonthlyNextViewDate
+
+Jaco Koekemoer
+2023-04-10
+"""
+class ReviewStageLookupDictTest(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        review_stage_lookup_dict = rsbl.ReviewStageLookupDict()
+        review_stage_dict = review_stage_lookup_dict.run()
+        print(review_stage_dict)
+
+"""
+A unit test for OddEvenLookupDict
+
+Jaco Koekemoer
+2023-04-10
+"""
+class OddEvenLookupDictTest(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        odd_even_lookup_dict = rsbl.OddEvenLookupDict()
+        odd_even_dict = odd_even_lookup_dict.run()
+        print(odd_even_dict)
+
+"""
+A unit test for WeekdayLookupDict
+
+Jaco Koekemoer
+2023-04-10
+"""
+class WeekdayLookupDictTest(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        weekday_lookup_dict = rsbl.WeekdayLookupDict()
+        weekday_dict = weekday_lookup_dict.run()
+        print(weekday_dict)
+
+"""
+A unit test for SetupInitialReviewStage
+
+Jaco Koekemoer
+2023-05-05
+"""
+class SetupInitialReviewStageTest(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        stack_id = 3
+        setup_review_stage = rsbl.SetupInitialReviewStage()
+        setup_review_stage.run(stack_id)
+
+
 
 # Run specific tests
 loader = ut.TestLoader()
@@ -203,7 +261,11 @@ loader = ut.TestLoader()
 # suite = loader.loadTestsFromTestCase(CalculateEverySecondDayNextViewDateWithEvenTest)
 # suite = loader.loadTestsFromTestCase(CalculateWeeklyNextViewDateTest)
 # suite = loader.loadTestsFromTestCase(CalculateMonthlyNextViewDateTest)
-suite = loader.loadTestsFromTestCase(RetrieveReviewStageByStackIdTest)
+# suite = loader.loadTestsFromTestCase(RetrieveReviewStageByStackIdTest)
+# suite = loader.loadTestsFromTestCase(ReviewStageLookupDictTest)
+# suite = loader.loadTestsFromTestCase(OddEvenLookupDictTest)
+# suite = loader.loadTestsFromTestCase(WeekdayLookupDictTest)
+suite = loader.loadTestsFromTestCase(SetupInitialReviewStageTest)
 
 runner = ut.TextTestRunner()
 runner.run(suite)

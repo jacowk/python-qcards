@@ -69,7 +69,16 @@ class RetrieveStackByIdDAO:
 
     def run(self, id):
         # Prepare SQL
-        sql = "select id, description, active, source, category_id, next_view_date from t_stack where id = {:d};".format(id)
+        sql = "select s.id, \
+                s.description, \
+                s.active, \
+                s.source, \
+                s.category_id, \
+                s.next_view_date, \
+                rs.id \
+                from t_stack s \
+                left join t_review_stage rs on rs.stack_id = s.id \
+                where s.id = {:d};".format(id)
         # print(sql)
 
         # Run the query
@@ -87,10 +96,11 @@ class RetrieveAllStacksDAO:
     def run(self):
         # Prepare SQL
         # sql = "select id, description, active, source, category_id, next_view_date from t_stack;"
-        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, c.description \
-            from t_stack s \
-            left join t_category c on c.id = s.category_id \
-            order by s.description asc;"
+        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, c.description, rs.id \
+                from t_stack s \
+                left join t_category c on c.id = s.category_id \
+                left join t_review_stage rs on rs.stack_id = s.id \
+                order by s.description asc;"
         # print(sql)
 
         # Run the query
@@ -113,9 +123,11 @@ class RetrieveActiveStacksByCategoryIdDAO:
                 s.source, \
                 s.category_id, \
                 s.next_view_date, \
-                c.description \
+                c.description, \
+                rs.id \
                 from t_stack s \
                 left join t_category c on c.id = s.category_id \
+                left join t_review_stage rs on rs.stack_id = s.id \
                 where s.category_id = {:d}".format(category_id)
         active_sql = " and s.active = 1"
         order_by_sql = " order by s.description asc;"

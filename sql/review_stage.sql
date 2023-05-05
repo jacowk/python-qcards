@@ -95,3 +95,16 @@ insert into t_lookup_weekday (description) values('Sunday');
 
 select * from t_lookup_weekday;
 
+select * from t_stack s;
+select * from t_review_stage rs;
+
+update t_review_stage
+set odd_even_cd = -1,
+weekday_cd = -1,
+week_count = -1,
+calendar_day = -1,
+month_count = -1
+where id = 4
+
+insert into t_review_stage(stack_id, review_stage_cd, odd_even_cd, weekday_cd, week_count, calander_day, month_count, create_date)
+values({:d}, {:d}, -1, -1, -1, -1, -1, current_timestamp());

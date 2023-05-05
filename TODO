@@ -28,10 +28,12 @@
     - review_stage_bl.py (Review Stage Business Layer)
     - bookmark_bl.py (Bookmark Business Layer)
 11. Build Tkinter UI (In progress)
-12. Ability to go forward and backward when reviewing cards
+12. Ability to go forward and backward when reviewing cards (Done)
 13. Build in validations
 14. Build a category tree
 15. Add a background image on the main window
-16. Build review stage screen
+16. Build review stage screen (Done)
 17. Export cards to PDF
 18. Import new cards from CSV
+19. Do a database dump to a specified directory and filename
+20. For cards, change the Front field to a text area

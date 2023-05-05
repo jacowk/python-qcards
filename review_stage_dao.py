@@ -13,8 +13,8 @@ class AddReviewStageDAO:
         review_stage_cd = rsc.ReviewStage.DAILY.value
 
         # Prepare SQL
-        sql = "insert into t_review_stage(stack_id, review_stage_cd, create_date) \
-                values({:d}, {:d}, current_timestamp());".format(stack_id, review_stage_cd)
+        sql = "insert into t_review_stage(stack_id, review_stage_cd, odd_even_cd, weekday_cd, week_count, calendar_day, month_count, create_date) \
+                values({:d}, {:d}, -1, -1, -1, -1, -1, current_timestamp());".format(stack_id, review_stage_cd)
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteQuery()
@@ -79,7 +79,7 @@ class UpdateWeeklyReviewStageDAO:
         set review_stage_cd = {:d}, \
         weekday_cd = {:d}, \
         week_count = {:d} \
-        where stack_id = {:d};".format(review_stage_cd, weekday_cd, week_count, stack_id)
+        where stack_id = {:d};".format(int(review_stage_cd), int(weekday_cd), int(week_count), int(stack_id))
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteQuery()
@@ -103,7 +103,7 @@ class UpdateMonthlyReviewStageDAO:
         set review_stage_cd = {:d}, \
         calendar_day = {:d}, \
         month_count = {:d} \
-        where stack_id = {:d};".format(review_stage_cd, calendar_day, month_count, stack_id)
+        where stack_id = {:d};".format(int(review_stage_cd), int(calendar_day), int(month_count), int(stack_id))
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteQuery()
@@ -122,7 +122,7 @@ class RetrieveReviewStageByStackIdDAO:
         sql = "select id, stack_id, review_stage_cd, odd_even_cd, weekday_cd, week_count, calendar_day, month_count \
         from t_review_stage \
         where stack_id = {:d}".format(stack_id)
-        print(sql)
+        #print(sql)
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteSelectQuery()

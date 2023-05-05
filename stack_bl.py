@@ -46,6 +46,12 @@ class Stack:
     def set_next_view_date(self, next_view_date):
         self.next_view_date = next_view_date
 
+    def get_review_stage_id(self):
+        return self.review_stage_id
+
+    def set_review_stage_id(self, review_stage_id):
+        self.review_stage_id = review_stage_id
+
 """
 Business layer for adding stacks
 
@@ -71,6 +77,18 @@ class UpdateStack:
         update_stack_dao.run(stack.id, stack.description, stack.active, stack.source, stack.category_id)
 
 """
+Business layer for updating the next view date for a stack
+
+Jaco Koekemoer
+2023-05-05
+"""
+class UpdateNextViewDate:
+
+    def run(self, stack):
+        update_next_view_date_dao = sd.UpdateNextViewDateDAO()
+        update_next_view_date_dao.run(stack.get_id(), stack.get_next_view_date())
+
+"""
 Business layer for retrieve a stack by id
 
 Jaco Koekemoer
@@ -92,6 +110,7 @@ class RetrieveStackById:
         stack.set_source(result[0][3])
         stack.set_category_id(result[0][4])
         stack.set_next_view_date(result[0][5])
+        stack.set_review_stage_id(result[0][6])
         return stack
 
 """
@@ -120,6 +139,7 @@ class RetrieveAllStacks:
                 stack[4], # category_id
                 stack[5] if stack[5] is not None else '', # next_view_date
                 stack[6] if stack[6] != None else '', # category_description
+                stack[7] # review stage id
             )
             converted_stacks = converted_stacks + (converted_category,)  # Building up a tuple of tuples
         return converted_stacks
@@ -149,7 +169,8 @@ class RetrieveActiveStacksByCategoryId:
                 stack[3],  # source
                 stack[4],  # category_id
                 stack[5] if stack[5] is not None else '',  # next_view_date
-                stack[6] if stack[6] is not None else '' # category_description
+                stack[6] if stack[6] is not None else '', # category_description
+                stack[7] # review stage id
             )
             converted_stacks = converted_stacks + (converted_stack,)  # Building up a tuple of tuples
         return converted_stacks

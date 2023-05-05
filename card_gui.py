@@ -6,6 +6,7 @@ import card_bl as cbl
 import qcards_gui_util as u
 import qcards_util as qu
 import category_bl as catbl
+import category_constant as catc
 import stack_bl as sbl
 import stack_constant as sc
 
@@ -58,18 +59,18 @@ class ListCardsGui:
         self.stack_filter_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_stack())
 
         # Define the columns
-        columns = ('id', 'summary', 'front_content', 'last_view_date', 'stack', 'category', 'active')
+        columns = ('id', 'category', 'stack', 'summary', 'front_content', 'last_view_date', 'active')
 
         # Create a TreeView (Table)
         self.tree = ttk.Treeview(self.card_window, columns=columns, show='headings')
 
         # Define the headings
         self.tree.heading('id', text="ID")
+        self.tree.heading('category', text="Category")
+        self.tree.heading('stack', text="Stack")
         self.tree.heading('summary', text="Summary")
         self.tree.heading('front_content', text="Front")
         self.tree.heading('last_view_date', text="Last View Date")
-        self.tree.heading('stack', text="Stack")
-        self.tree.heading('category', text="Category")
         self.tree.heading('active', text="Active")
 
         # Change column widths
@@ -126,7 +127,7 @@ class ListCardsGui:
             all_cards = retrieve_cards_by_stack_id.run(stack_filter_id)
         for card in all_cards:
             # id, summary, front_content, back_content, stack_id, view_count, group_cd, active, last_view_date
-            values = (card[0], card[1], card[2], card[8], card[9], card[10], card[7])
+            values = (card[0], card[10], card[9], card[1], card[2], card[8], card[7])
             self.tree.insert('', tk.END, values=values)
 
     def add_card(self):
@@ -135,6 +136,11 @@ class ListCardsGui:
     def update_card(self):
         # Get values
         selected_item = self.tree.focus()
+
+        # If no selection was made, display an error message
+        if len(selected_item) == 0:
+            messagebox.showerror("Error", "Please select a card to update")
+            return
 
         # Current_item is a dictionary
         current_item = self.tree.item(selected_item)
@@ -235,11 +241,8 @@ class AddCardGui:
         # Stack dropdown
         self.stack_label = ttk.Label(self.frame, text="Stack:")
         self.stack_label.grid(column=0, row=1, sticky="w")
-        #self.stack_dict = self.populate_stacks()
-        #self.stack_combobox = ttk.Combobox(self.frame, values=list(self.stack_dict.keys()), width=80)
         self.stack_combobox = ttk.Combobox(self.frame, width=80)
         self.stack_combobox.grid(column=1, row=1, sticky="w", pady=(1, 2))
-        #self.stack_combobox.current(0)
         self.selected_stack_id = None
 
         # Bind the function to the Combobox selection event
@@ -390,8 +393,6 @@ class UpdateCardGui:
         self.back_content_var = card.get_back_content()
         self.active_var = tk.BooleanVar(value=card.get_active())
         self.last_view_date_var = card.get_last_view_date() if card.get_last_view_date() is not None else ""
-        self.stack_description_var = card.get_stack_description()
-        self.category_description_var = card.get_category_description()
 
         # Id field
         self.id_label = ttk.Label(self.frame, text="ID:")
@@ -404,23 +405,17 @@ class UpdateCardGui:
         self.category_label.grid(column=0, row=1, sticky="w")
         # Load the dictionary for the combobox
         self.category_dict = self.populate_categories()
-        # The values are the keys of the dictionary of stacks, which contains the descriptions of the stacks
-        self.category_combobox = ttk.Combobox(self.frame, values=list(self.category_dict.keys()), width=80)
-        self.category_combobox.grid(column=1, row=1, sticky="w", pady=(1, 2))
 
-        # Preselect the value of the combobox
-        if card.get_category_id() == None:
-            self.selected_category_index = 0
-            self.selected_category_id = None
-            self.selected_category = catbl.CategoryConstants.SELECT_CATEGORY.value
-        else:
-            qcards_util = qu.QCardsUtil()
-            self.selected_category_index = qcards_util.convert_dict_value_to_index(self.category_dict,
-                                                                                   card.get_category_id())
-            self.selected_category_id = card.get_category_id()
-            self.selected_category = qcards_util.convert_index_to_dict_key(self.category_dict,
-                                                                           self.selected_category_index)
-        self.category_combobox.current(self.selected_category_index)
+        # Preselect the combobox with the appropriate value
+        qcards_util = qu.QCardsUtil()
+        self.selected_category = qcards_util.get_dictionary_key_from_value(self.category_dict, card.get_category_id())
+        self.selected_category = catc.CategoryConstants.SELECT_CATEGORY.value if self.selected_category is None else self.selected_category
+        self.selected_category_id = card.get_category_id()
+
+        # The values are the keys of the dictionary of stacks, which contains the descriptions of the stacks
+        self.category_combobox = ttk.Combobox(self.frame, textvariable=self.selected_category, values=list(self.category_dict.keys()), width=80)
+        self.category_combobox.grid(column=1, row=1, sticky="w", pady=(1, 2))
+        self.category_combobox.set(self.selected_category)
 
         # Bind the function to the Combobox selection event
         self.category_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_category())
@@ -430,21 +425,17 @@ class UpdateCardGui:
         self.stack_label.grid(column=0, row=2, sticky="w")
         # Load the dictionary for the combobox
         self.stack_dict = self.populate_stacks()
-        # The values are the keys of the dictionary of cards, which contains the descriptions of the cards
-        self.stack_combobox = ttk.Combobox(self.frame, values=list(self.stack_dict.keys()), width=80)
-        self.stack_combobox.grid(column=1, row=2, sticky="w", pady=(1, 2))
 
-        # Preselect the value of the combobox
-        if card.get_stack_id() == None:
-            self.selected_stack_index = 0
-            self.selected_stack_id = None
-            self.selected_stack = sc.StackConstant.SELECT_STACK.value
-        else:
-            qcards_util = qu.QCardsUtil()
-            self.selected_stack_index = qcards_util.convert_dict_value_to_index(self.stack_dict, card.get_stack_id())
-            self.selected_stack_id = card.get_stack_id()
-            self.selected_stack = qcards_util.convert_index_to_dict_key(self.stack_dict, self.selected_stack_index)
-        self.stack_combobox.current(self.selected_stack_index)
+        # Preselect the combobox with the appropriate value
+        qcards_util = qu.QCardsUtil()
+        self.selected_stack = qcards_util.get_dictionary_key_from_value(self.stack_dict, card.get_stack_id())
+        self.selected_stack = sc.StackConstant.SELECT_STACK.value if self.selected_stack is None else self.selected_stack
+        self.selected_stack_id = card.get_stack_id()
+
+        # The values are the keys of the dictionary of cards, which contains the descriptions of the cards
+        self.stack_combobox = ttk.Combobox(self.frame, textvariable=self.selected_stack, values=list(self.stack_dict.keys()), width=80)
+        self.stack_combobox.grid(column=1, row=2, sticky="w", pady=(1, 2))
+        self.stack_combobox.set(self.selected_stack)
 
         # Bind the function to the Combobox selection event
         self.stack_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_stack())
@@ -500,8 +491,8 @@ class UpdateCardGui:
 
     def get_selected_category(self):
         # Get th selected category
-        selected_category = self.category_combobox.get()
-        self.selected_category_filter_id = self.category_dict[selected_category]
+        self.selected_category = self.category_combobox.get()
+        self.selected_category_id = self.category_dict[self.selected_category]
 
         # Retrieve all stacks
         retrieve_all_stacks = sbl.RetrieveStacksByCategoryIdDict()
@@ -520,8 +511,8 @@ class UpdateCardGui:
 
     # Define a function to get the selected value from the dictionary
     def get_selected_stack(self):
-        selected_stack = self.stack_combobox.get()
-        self.selected_stack_id = self.stack_dict[selected_stack]
+        self.selected_stack = self.stack_combobox.get()
+        self.selected_stack_id = self.stack_dict[self.selected_stack]
 
     def save_card(self):
         id = self.id_var.get()
@@ -548,11 +539,11 @@ class UpdateCardGui:
         # Update the card to the card tree view
         selected_item = self.list_cards_gui.tree.focus()
         self.list_cards_gui.tree.item(selected_item, values=(id,
+                                                             self.selected_category,
+                                                             self.selected_stack,
                                                              summary,
                                                              front_content,
                                                              self.last_view_date_var,
-                                                             self.stack_description_var,
-                                                             self.category_description_var,
                                                              active))
 
         # Close the form

@@ -4,6 +4,7 @@ import tkinter.messagebox as messagebox
 import category_bl as catbl
 import qcards_gui_util as u
 import qcards_util as qu
+import category_constant as catc
 
 """
 Description: A class for listing categories
@@ -94,6 +95,11 @@ class ListCategoriesGui:
     def update_category(self):
         # Get values
         selected_item = self.tree.focus()
+
+        # If no selection was made, display an error message
+        if len(selected_item) == 0:
+            messagebox.showerror("Error", "Please select a category to update")
+            return
 
         # Current_item is a dictionary
         current_item = self.tree.item(selected_item)
@@ -272,11 +278,20 @@ class UpdateCategoryGui:
         self.parent_label.grid(column=0, row=2, sticky="w")
         # Load the dictionary for the combobox
         self.parent_category_dict = self.populate_parent_categories()
+
+        # Preselect the combobox with the appropriate value
+        qcards_util = qu.QCardsUtil()
+        self.selected_parent = qcards_util.get_dictionary_key_from_value(self.parent_category_dict, category.get_parent_id())
+        self.selected_parent = catc.CategoryConstants.SELECT_PARENT.value if self.selected_parent is None else self.selected_parent
+        self.selected_parent_id = category.get_parent_id()
+
         # The values are the keys of the dictionary of categories, which contains the descriptions of the categories
-        self.parent_combobox = ttk.Combobox(self.frame, values=list(self.parent_category_dict.keys()))
+        self.parent_combobox = ttk.Combobox(self.frame, textvariable=self.selected_parent, values=list(self.parent_category_dict.keys()))
         self.parent_combobox.grid(column=1, row=2, sticky="w", pady=(1, 2))
+        self.parent_combobox.set(self.selected_parent)
 
         # Preselect the value of the combobox
+        """
         if category.get_parent_id() == None:
             self.selected_parent_index = 0
             self.selected_parent_id = None
@@ -287,6 +302,7 @@ class UpdateCategoryGui:
             self.selected_parent_id = category.get_parent_id()
             self.selected_parent = qcards_util.convert_index_to_dict_key(self.parent_category_dict, self.selected_parent_index)
         self.parent_combobox.current(self.selected_parent_index)
+        """
 
         # Bind the function to the Combobox selection event
         self.parent_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_parent())
@@ -342,7 +358,7 @@ class UpdateCategoryGui:
         # Update the category to the category tree view
         selected_item = self.list_categories_gui.tree.focus()
         self.list_categories_gui.tree.item(selected_item, values=(id, description,
-                                                                  "" if self.selected_parent == catbl.CategoryConstants.SELECT_PARENT.value else self.selected_parent,
+                                                                  "" if self.selected_parent == catc.CategoryConstants.SELECT_PARENT.value else self.selected_parent,
                                                                     active))
 
         # Close the form
