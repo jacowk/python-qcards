@@ -24,8 +24,8 @@ class AddMultipleCardsDAOTest(ut.TestCase):
         # Read from a file, and loop to insert
         # filename = "card_imports/creational_design_patterns.csv"
         # filename = "card_imports/structural_design_patterns.csv"
-        # filename = "card_imports/behavioral_design_patterns.csv"
-        filename = "card_imports/test_import.csv"
+        filename = "card_imports/behavioral_design_patterns.csv"
+        # filename = "card_imports/test_import.csv"
 
         print ("Importing {:s}".format(filename))
         stack_id = int(input("Enter the stack id: "))
@@ -94,9 +94,9 @@ class UpdateCardGroupTest(ut.TestCase):
 
 # Run specific tests
 loader = ut.TestLoader()
-# suite = loader.loadTestsFromTestCase(AddCardTest)
-# suite = loader.loadTestsFromTestCase(AddMultipleCardsTest)
-suite = loader.loadTestsFromTestCase(RetrieveActiveCardsByStackIdDAOTest)
+# suite = loader.loadTestsFromTestCase(AddCardDAOTest)
+suite = loader.loadTestsFromTestCase(AddMultipleCardsDAOTest)
+# suite = loader.loadTestsFromTestCase(RetrieveActiveCardsByStackIdDAOTest)
 # suite = loader.loadTestsFromTestCase(UpdateViewStatisticsTest)
 # suite = loader.loadTestsFromTestCase(UpdateCardGroupTest)
 

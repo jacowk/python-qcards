@@ -375,14 +375,14 @@ class ReviewStackGui:
         self.reset_fields(card_for_review)
 
     def reveal_back_content(self):
+        # First update the view statistics for the current card
+        update_view_statistics = cbl.UpdateViewStatistics()
+        update_view_statistics.run(self.id_var.get())
+        
         # Reveal the back content again by changing the color to black
         self.back_content_text.tag_add("black", "1.0", tk.END)
 
     def next_card(self):
-        # First update the view statistics for the current card
-        update_view_statistics = cbl.UpdateViewStatistics()
-        update_view_statistics.run(self.id_var.get())
-
         # Load the next card
         self.card_review_index += 1
         if self.card_review_index >= len(self.cards_for_review):
