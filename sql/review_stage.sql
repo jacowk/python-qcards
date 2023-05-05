@@ -95,8 +95,8 @@ insert into t_lookup_weekday (description) values('Sunday');
 
 select * from t_lookup_weekday;
 
-select * from t_stack s;
-select * from t_review_stage rs;
+select * from t_stack s where s.id = 6;
+select * from t_review_stage rs where rs.id = 8;
 
 update t_review_stage
 set odd_even_cd = -1,

@@ -1,5 +1,6 @@
 import unittest as ut
 import category_bl as catbl
+import json
 
 """
 A test class for AddCategory
@@ -110,6 +111,21 @@ class RetrieveActiveCategoriesDictTest(ut.TestCase):
         print(result)
         print(type(result))
 
+"""
+A test class for RetrieveCategoryTree
+
+Jaco Koekemoer
+2023-05-05
+"""
+class RetrieveCategoryTreeTest(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        retrieve_category_tree = catbl.RetrieveCategoryTree()
+        tree = retrieve_category_tree.run()
+        # Print the tree structure (for testing purposes)
+        print(json.dumps(tree, indent=4))
+
 # Run all tests
 # ut.main()
 
@@ -119,7 +135,8 @@ loader = ut.TestLoader()
 # suite = loader.loadTestsFromTestCase(UpdateCategoryTest)
 # suite = loader.loadTestsFromTestCase(RetrieveCategoryByIdTest)
 # suite = loader.loadTestsFromTestCase(RetrieveAllCategoriesTest)
-suite = loader.loadTestsFromTestCase(RetrieveActiveCategoriesDictTest)
+# suite = loader.loadTestsFromTestCase(RetrieveActiveCategoriesDictTest)
+suite = loader.loadTestsFromTestCase(RetrieveCategoryTreeTest)
 
 runner = ut.TextTestRunner()
 runner.run(suite)

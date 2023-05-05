@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import PhotoImage
 from tkinter import Canvas
 import tkinter.messagebox as tkmb
+import category_tree_gui as ctg
 import category_gui as catg
 import stack_gui as sg
 import card_gui as cg
@@ -36,6 +37,9 @@ class QCardsApp:
 
         # Add the Category menu
         main_menu = tk.Menu(menubar, tearoff=0)
+
+        main_menu.add_command(label="Category Tree", command=self.open_category_tree_window)
+        main_menu.add_separator()
         main_menu.add_command(label="Categories", command=self.open_category_window)
         main_menu.add_command(label="Stacks", command=self.open_stack_window)
         main_menu.add_command(label="Cards", command=self.open_card_window)
@@ -59,6 +63,9 @@ class QCardsApp:
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.main_window.winfo_screenwidth(), self.main_window.winfo_screenheight())
         self.main_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+
+    def open_category_tree_window(self):
+        category_tree_gui = ctg.CategoryTreeGui(self.main_window)
 
     def open_category_window(self):
         list_categories_gui = catg.ListCategoriesGui(self.main_window)

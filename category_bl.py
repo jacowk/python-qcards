@@ -102,6 +102,7 @@ class RetrieveAllCategories:
                 category[1], # description
                 category[4] if category[4] != None else '', # parent_description
                 qcards_util.convert_tinyint_to_boolean(category[3]), # active
+                category[2],  # parent_id
             )
             converted_categories = converted_categories + (converted_category,)  # Building up a tuple of tuples
         return converted_categories
@@ -125,3 +126,30 @@ class RetrieveAllCategoriesDict:
         for category in categories:
             parent_dictionary[category[1]] = category[0] # description: id
         return parent_dictionary
+
+"""
+Business layer for retrieving all categories as a tree
+
+Jaco Koekemoer
+2023-05-05
+"""
+class RetrieveCategoryTree:
+
+    def run(self):
+        retrieve_categories = RetrieveAllCategories()
+        categories = retrieve_categories.run()
+
+        # Call the build_tree function to generate the tree structure
+        tree = self.build_tree(categories)
+        return tree
+
+    def build_tree(self, categories, parent_id = None):
+        tree = []
+        for id, description, parent_description, active, pid in categories:
+            if pid == parent_id:
+                # tree[id] = {'description': description, 'children': self.build_tree(categories, id)}
+                # tree[description] = {'description': description, 'children': self.build_tree(categories, id)}
+                node = {'name': description, 'children': self.build_tree(categories, id)}
+                tree.append(node)
+        return tree
+
