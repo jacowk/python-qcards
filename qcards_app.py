@@ -9,6 +9,7 @@ import stack_gui as sg
 import card_gui as cg
 import review_stack_gui as rg
 import qcards_gui_util as u
+import card_csv_import_gui as ci
 
 """
 Description: The main class for this QCards app
@@ -46,6 +47,8 @@ class QCardsApp:
         main_menu.add_separator()
         main_menu.add_command(label="Review", command=self.open_review_window)
         main_menu.add_separator()
+        main_menu.add_command(label="Import Cards", command=self.open_import_cards_window)
+        main_menu.add_separator()
         main_menu.add_command(label="Exit", command=self.main_window.quit)
 
         menubar.add_cascade(label="Menu", menu=main_menu)
@@ -78,6 +81,9 @@ class QCardsApp:
 
     def open_review_window(self):
         review_gui = rg.ReviewGui(self.main_window)
+
+    def open_import_cards_window(self):
+        card_import = ci.CardCSVImportGui(self.main_window)
 
 app = QCardsApp()
 app.run()

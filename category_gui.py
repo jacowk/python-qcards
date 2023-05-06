@@ -19,7 +19,7 @@ class ListCategoriesGui:
         self.category_window.transient(main_window)
         self.category_window.title("List Categories")
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(600, 500)
+        self.calculate_screen_position(600, 520)
 
         # Creating a ttk style object
         style = ttk.Style()
@@ -62,13 +62,13 @@ class ListCategoriesGui:
 
         # Add buttons
         add_category_button = ttk.Button(self.button_frame, text="Add Category", command=self.add_category)
-        add_category_button.grid(row=0, column=0, padx=10, pady=10)
+        add_category_button.grid(row=0, column=0, pady=(2, 2))
         update_category_button = ttk.Button(self.button_frame, text="Update Category", command=self.update_category)
-        update_category_button.grid(row=0, column=1, padx=10, pady=10)
+        update_category_button.grid(row=0, column=1, pady=(2, 2))
         refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
-        refresh_button.grid(row=0, column=2, padx=10, pady=10)
+        refresh_button.grid(row=0, column=2, pady=(2, 2))
         close_button = tk.Button(self.button_frame, text="Close", command=self.category_window.destroy)
-        close_button.grid(row=0, column=3, padx=10, pady=10)
+        close_button.grid(row=0, column=3, pady=(2, 2))
 
         # Populate the grid with data
         self.populate_categories()
@@ -141,7 +141,7 @@ class AddCategoryGui:
         self.frame.grid(column=0, row=0, padx=10, pady=10)
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(350, 150)
+        self.calculate_screen_position(620, 130)
 
         # Creating a ttk style object
         style = ttk.Style()
@@ -153,14 +153,14 @@ class AddCategoryGui:
         # Description field
         self.desc_label = ttk.Label(self.frame, text="Description:")
         self.desc_label.grid(column=0, row=0, sticky="w")
-        self.desc_entry = ttk.Entry(self.frame)
+        self.desc_entry = ttk.Entry(self.frame, width=61)
         self.desc_entry.grid(column=1, row=0, sticky="w", pady=(1, 2))
 
         # Parent dropdown
         self.parent_label = ttk.Label(self.frame, text="Parent:")
         self.parent_label.grid(column=0, row=1, sticky="w")
         self.parent_category_dict = self.populate_parent_categories()
-        self.parent_combobox = ttk.Combobox(self.frame, values=list(self.parent_category_dict.keys()))
+        self.parent_combobox = ttk.Combobox(self.frame, values=list(self.parent_category_dict.keys()), width=61)
         self.parent_combobox.grid(column=1, row=1, sticky="w", pady=(1, 2))
         self.parent_combobox.current(0)
         self.selected_parent_id = None
@@ -177,13 +177,13 @@ class AddCategoryGui:
 
         # Button frame
         self.button_frame = tk.Frame(self.frame)
-        self.button_frame.grid(column=0, row=3)
+        self.button_frame.grid(column=0, row=3, columnspan=2)
 
         # Buttons
         self.add_button = tk.Button(self.button_frame, text="Add", command=self.add_category)
-        self.add_button.grid(column=0, row=0)
+        self.add_button.grid(column=0, row=0, pady=(2, 2))
         self.cancel_button = tk.Button(self.button_frame, text="Cancel", command=self.add_category_window.destroy)
-        self.cancel_button.grid(column=1, row=0)
+        self.cancel_button.grid(column=1, row=0, pady=(2, 2))
 
         self.add_category_window.wait_visibility()
         self.add_category_window.grab_set()
@@ -247,7 +247,7 @@ class UpdateCategoryGui:
         self.frame.grid(column=0, row=0, padx=10, pady=10)
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(350, 150)
+        self.calculate_screen_position(628, 150)
 
         # Creating a ttk style object
         style = ttk.Style()
@@ -270,7 +270,7 @@ class UpdateCategoryGui:
         # Description field
         self.desc_label = ttk.Label(self.frame, text="Description:")
         self.desc_label.grid(column=0, row=1, sticky="w")
-        self.desc_entry = ttk.Entry(self.frame, textvariable=self.description_var)
+        self.desc_entry = ttk.Entry(self.frame, textvariable=self.description_var, width=61)
         self.desc_entry.grid(column=1, row=1, sticky="w", pady=(1, 1))
 
         # Parent dropdown
@@ -286,23 +286,9 @@ class UpdateCategoryGui:
         self.selected_parent_id = category.get_parent_id()
 
         # The values are the keys of the dictionary of categories, which contains the descriptions of the categories
-        self.parent_combobox = ttk.Combobox(self.frame, textvariable=self.selected_parent, values=list(self.parent_category_dict.keys()))
+        self.parent_combobox = ttk.Combobox(self.frame, textvariable=self.selected_parent, values=list(self.parent_category_dict.keys()), width=61)
         self.parent_combobox.grid(column=1, row=2, sticky="w", pady=(1, 2))
         self.parent_combobox.set(self.selected_parent)
-
-        # Preselect the value of the combobox
-        """
-        if category.get_parent_id() == None:
-            self.selected_parent_index = 0
-            self.selected_parent_id = None
-            self.selected_parent = catbl.CategoryConstants.SELECT_PARENT.value
-        else:
-            qcards_util = qu.QCardsUtil()
-            self.selected_parent_index = qcards_util.convert_dict_value_to_index(self.parent_category_dict, category.get_parent_id())
-            self.selected_parent_id = category.get_parent_id()
-            self.selected_parent = qcards_util.convert_index_to_dict_key(self.parent_category_dict, self.selected_parent_index)
-        self.parent_combobox.current(self.selected_parent_index)
-        """
 
         # Bind the function to the Combobox selection event
         self.parent_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_parent())
@@ -315,13 +301,13 @@ class UpdateCategoryGui:
 
         # Button frame
         self.button_frame = tk.Frame(self.frame)
-        self.button_frame.grid(column=0, row=4)
+        self.button_frame.grid(column=0, row=4, columnspan=2)
 
         # Buttons
         self.save_button = tk.Button(self.button_frame, text="Save", command=self.save_category)
-        self.save_button.grid(column=0, row=0)
+        self.save_button.grid(column=0, row=0, pady=(2, 2))
         self.cancel_button = tk.Button(self.button_frame, text="Cancel", command=self.update_category_window.destroy)
-        self.cancel_button.grid(column=1, row=0)
+        self.cancel_button.grid(column=1, row=0, pady=(2, 2))
 
         self.update_category_window.wait_visibility()
         self.update_category_window.grab_set()

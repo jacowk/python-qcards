@@ -39,7 +39,7 @@ class ListStacksGui:
         self.category_filter_label = ttk.Label(self.category_filter_frame, text="Category:")
         self.category_filter_label.grid(column=0, row=0, sticky="w")
         self.category_filter_dict = self.populate_categories()
-        self.category_filter_combobox = ttk.Combobox(self.category_filter_frame, values=list(self.category_filter_dict.keys()), width=80)
+        self.category_filter_combobox = ttk.Combobox(self.category_filter_frame, values=list(self.category_filter_dict.keys()), width=61)
         self.category_filter_combobox.grid(column=1, row=0, sticky="w", pady=(1, 2))
         self.category_filter_combobox.current(0)
         self.selected_category_filter_id = None
@@ -83,19 +83,19 @@ class ListStacksGui:
 
         # Add buttons
         add_stack_button = ttk.Button(self.button_frame, text="Add Stack", command=self.add_stack)
-        add_stack_button.grid(row=0, column=0, padx=1, pady=1)
+        add_stack_button.grid(row=0, column=0, pady=(2, 2))
         update_stack_button = ttk.Button(self.button_frame, text="Update Stack", command=self.update_stack)
-        update_stack_button.grid(row=0, column=1, padx=1, pady=1)
+        update_stack_button.grid(row=0, column=1, pady=(2, 2))
         setup_review_stage_button = ttk.Button(self.button_frame, text="Setup Review Stage", command=self.setup_review_stage)
-        setup_review_stage_button.grid(row=0, column=2, padx=1, pady=1)
+        setup_review_stage_button.grid(row=0, column=2, pady=(2, 2))
         review_stage_button = tk.Button(self.button_frame, text="Update Review Stage", command=self.update_review_stage)
         review_stage_button.grid(row=0, column=3, pady=(2, 2))
         calculate_next_view_date_button = ttk.Button(self.button_frame, text="Calc Next View Date",command=self.calculate_next_view_date)
-        calculate_next_view_date_button.grid(row=0, column=4, padx=1, pady=1)
+        calculate_next_view_date_button.grid(row=0, column=4, pady=(2, 2))
         refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
-        refresh_button.grid(row=0, column=5, padx=1, pady=1)
+        refresh_button.grid(row=0, column=5, pady=(2, 2))
         close_button = tk.Button(self.button_frame, text="Close", command=self.stack_window.destroy)
-        close_button.grid(row=0, column=6, padx=1, pady=1)
+        close_button.grid(row=0, column=6, pady=(2, 2))
 
         # Populate the grid with data
         self.populate_stacks()
@@ -278,7 +278,7 @@ class AddStackGui:
         self.frame.grid(column=0, row=0, padx=10, pady=10)
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(800, 150)
+        self.calculate_screen_position(620, 150)
 
         # Creating a ttk style object
         style = ttk.Style()
@@ -290,14 +290,14 @@ class AddStackGui:
         # Description field
         self.desc_label = ttk.Label(self.frame, text="Description:")
         self.desc_label.grid(column=0, row=0, sticky="w")
-        self.desc_entry = ttk.Entry(self.frame, width=80)
+        self.desc_entry = ttk.Entry(self.frame, width=61)
         self.desc_entry.grid(column=1, row=0, sticky="w", pady=(1, 2))
 
         # Category dropdown
         self.category_label = ttk.Label(self.frame, text="Category:")
         self.category_label.grid(column=0, row=1, sticky="w")
         self.category_dict = self.populate_categories()
-        self.category_combobox = ttk.Combobox(self.frame, values=list(self.category_dict.keys()), width=80)
+        self.category_combobox = ttk.Combobox(self.frame, values=list(self.category_dict.keys()), width=61)
         self.category_combobox.grid(column=1, row=1, sticky="w", pady=(1, 2))
         self.category_combobox.current(0)
         self.selected_category_id = None
@@ -308,7 +308,7 @@ class AddStackGui:
         # Source field
         self.source_label = ttk.Label(self.frame, text="Source:")
         self.source_label.grid(column=0, row=2, sticky="w")
-        self.source_entry = ttk.Entry(self.frame, width=80)
+        self.source_entry = ttk.Entry(self.frame, width=61)
         self.source_entry.grid(column=1, row=2, sticky="w", pady=(1, 2))
 
         # Active checkbox
@@ -320,13 +320,13 @@ class AddStackGui:
 
         # Button frame
         self.button_frame = tk.Frame(self.frame)
-        self.button_frame.grid(column=0, row=4)
+        self.button_frame.grid(column=0, row=4, columnspan=2)
 
         # Buttons
         self.add_button = tk.Button(self.button_frame, text="Add", command=self.add_stack)
-        self.add_button.grid(column=0, row=0)
+        self.add_button.grid(column=0, row=0, pady=(2, 2))
         self.cancel_button = tk.Button(self.button_frame, text="Cancel", command=self.add_stack_window.destroy)
-        self.cancel_button.grid(column=1, row=0)
+        self.cancel_button.grid(column=1, row=0, pady=(2, 2))
 
         self.add_stack_window.wait_visibility()
         self.add_stack_window.grab_set()
@@ -392,7 +392,7 @@ class UpdateStackGui:
         self.frame.grid(column=0, row=0, padx=10, pady=10)
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(810, 170)
+        self.calculate_screen_position(620, 170)
 
         # Creating a ttk style object
         style = ttk.Style()
@@ -418,7 +418,7 @@ class UpdateStackGui:
         # Description field
         self.desc_label = ttk.Label(self.frame, text="Description:")
         self.desc_label.grid(column=0, row=1, sticky="w")
-        self.desc_entry = ttk.Entry(self.frame, textvariable=self.description_var, width=80)
+        self.desc_entry = ttk.Entry(self.frame, textvariable=self.description_var, width=61)
         self.desc_entry.grid(column=1, row=1, sticky="w", pady=(1, 1))
 
         # Category dropdown
@@ -434,7 +434,7 @@ class UpdateStackGui:
         self.selected_category_id = stack.get_category_id()
 
         # The values are the keys of the dictionary of stacks, which contains the descriptions of the stacks
-        self.category_combobox = ttk.Combobox(self.frame, textvariable=self.selected_category, values=list(self.category_dict.keys()), width=80)
+        self.category_combobox = ttk.Combobox(self.frame, textvariable=self.selected_category, values=list(self.category_dict.keys()), width=61)
         self.category_combobox.grid(column=1, row=2, sticky="w", pady=(1, 2))
         self.category_combobox.set(self.selected_category)
 
@@ -444,7 +444,7 @@ class UpdateStackGui:
         # Source field
         self.source_label = ttk.Label(self.frame, text="Source:")
         self.source_label.grid(column=0, row=3, sticky="w")
-        self.source_entry = ttk.Entry(self.frame, textvariable=self.source_var, width=80)
+        self.source_entry = ttk.Entry(self.frame, textvariable=self.source_var, width=61)
         self.source_entry.grid(column=1, row=3, sticky="w", pady=(1, 2))
 
         # Active checkbox
@@ -455,13 +455,13 @@ class UpdateStackGui:
 
         # Button frame
         self.button_frame = tk.Frame(self.frame)
-        self.button_frame.grid(column=0, row=5)
+        self.button_frame.grid(column=0, row=5, columnspan=2)
 
         # Buttons
         self.save_button = tk.Button(self.button_frame, text="Save", command=self.save_stack)
-        self.save_button.grid(column=0, row=0)
+        self.save_button.grid(column=0, row=0, pady=(2, 2))
         self.cancel_button = tk.Button(self.button_frame, text="Cancel", command=self.update_stack_window.destroy)
-        self.cancel_button.grid(column=1, row=0)
+        self.cancel_button.grid(column=1, row=0, pady=(2, 2))
 
         self.update_stack_window.wait_visibility()
         self.update_stack_window.grab_set()

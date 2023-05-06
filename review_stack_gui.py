@@ -227,7 +227,7 @@ class ReviewStackGui:
         self.frame.grid(column=0, row=0, padx=10, pady=10)
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(810, 380)
+        self.calculate_screen_position(640, 680)
 
         # Creating a ttk style object
         style = ttk.Style()
@@ -246,7 +246,7 @@ class ReviewStackGui:
         # Set initial fields
         self.id_var = tk.IntVar(value=card_for_review[0])
         self.summary_var = tk.StringVar(value=card_for_review[1])
-        self.front_content_var = tk.StringVar(value=card_for_review[2])
+        self.front_content_var = card_for_review[2]
         self.back_content_var = card_for_review[3]
         self.current_view_count_var = tk.IntVar(value=card_for_review[5])
         self.last_view_date_var = tk.StringVar(value=card_for_review[8])
@@ -264,36 +264,43 @@ class ReviewStackGui:
         # Category field
         self.category_label = ttk.Label(self.frame, text="Category:")
         self.category_label.grid(column=0, row=1, sticky="w")
-        self.category_entry = ttk.Entry(self.frame, textvariable=self.category_description_var, width=80, state="readonly")
+        self.category_entry = ttk.Entry(self.frame, textvariable=self.category_description_var, width=61, state="readonly")
         self.category_entry.grid(column=1, row=1, sticky="w", pady=(1, 1))
 
         # Stack field
         self.category_label = ttk.Label(self.frame, text="Stack:")
         self.category_label.grid(column=0, row=2, sticky="w")
-        self.category_entry = ttk.Entry(self.frame, textvariable=self.stack_description_var, width=80,
+        self.category_entry = ttk.Entry(self.frame, textvariable=self.stack_description_var, width=61,
                                         state="readonly")
         self.category_entry.grid(column=1, row=2, sticky="w", pady=(1, 1))
 
         # Summary field
         self.summary_label = ttk.Label(self.frame, text="Summary:")
         self.summary_label.grid(column=0, row=3, sticky="w")
-        self.summary_entry = ttk.Entry(self.frame, textvariable=self.summary_var, width=80, state="readonly")
+        self.summary_entry = ttk.Entry(self.frame, textvariable=self.summary_var, width=61, state="readonly")
         self.summary_entry.grid(column=1, row=3, sticky="w", pady=(1, 1))
 
         # Front field
+        font_name = "Courier New"
+        font_size = 10
         self.front_content_label = ttk.Label(self.frame, text="Front:")
         self.front_content_label.grid(column=0, row=4, sticky="w")
-        self.front_content_entry = ttk.Entry(self.frame, textvariable=self.front_content_var, width=80, state="readonly")
-        self.front_content_entry.grid(column=1, row=4, sticky="w", pady=(1, 1))
+        self.front_content_text = scrolledtext.ScrolledText(self.frame,
+                                                           width=61,
+                                                           height=14,
+                                                           padx=5,
+                                                           pady=5,
+                                                           font=(font_name, font_size),
+                                                           wrap="word")
+        self.front_content_text.insert("1.0", self.front_content_var)
+        self.front_content_text.grid(column=1, row=4, sticky="w", pady=(1, 1))
 
         # Back field
         self.back_content_label = ttk.Label(self.frame, text="Back:")
         self.back_content_label.grid(column=0, row=5, sticky="w")
-        font_name = "Courier New"
-        font_size = 10
         self.back_content_text = scrolledtext.ScrolledText(self.frame,
-                                                           width=80,
-                                                           height=8,
+                                                           width=61,
+                                                           height=14,
                                                            padx=5,
                                                            pady=5,
                                                            font=(font_name, font_size),
@@ -311,14 +318,14 @@ class ReviewStackGui:
         # View count field
         self.view_count_label = ttk.Label(self.frame, text="View Count:")
         self.view_count_label.grid(column=0, row=6, sticky="w")
-        self.view_count_entry = ttk.Entry(self.frame, textvariable=self.view_count_var, width=80,
+        self.view_count_entry = ttk.Entry(self.frame, textvariable=self.view_count_var, width=61,
                                              state="readonly")
         self.view_count_entry.grid(column=1, row=6, sticky="w", pady=(1, 1))
 
         # Last view date field
         self.last_view_date_label = ttk.Label(self.frame, text="Last View Date:")
         self.last_view_date_label.grid(column=0, row=7, sticky="w")
-        self.last_view_date_entry = ttk.Entry(self.frame, textvariable=self.last_view_date_var, width=80,
+        self.last_view_date_entry = ttk.Entry(self.frame, textvariable=self.last_view_date_var, width=61,
                                           state="readonly")
         self.last_view_date_entry.grid(column=1, row=7, sticky="w", pady=(1, 1))
 

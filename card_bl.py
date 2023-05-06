@@ -1,5 +1,6 @@
 import card_dao as cd
 import qcards_util as qu
+import csv
 
 """
 A card domain class
@@ -238,4 +239,32 @@ class UpdateCardGroup:
     def run(self, card_id, group_cd):
         update_card_group = cd.UpdateCardGroupDAO()
         update_card_group.run(card_id, group_cd)
+
+"""
+Business layer for importing cards from file
+
+Jaco Koekemoer
+2023-05-06
+"""
+class ImportCards:
+
+    def run(self, stack_id, filename):
+        with open(filename, newline='') as csvfile:
+            datareader = csv.reader(csvfile, delimiter='|')
+            cnt = 1
+
+            for row in datareader:
+                if cnt == 1:
+                    cnt += 1
+                    continue  # Skip first line with only column names
+
+                summary = row[0]
+                front_content = row[1]
+                back_content = row[2]
+                active = 1
+
+                print(summary, front_content, back_content, stack_id, active)
+
+                add_card = cd.AddCardDAO()
+                add_card.run(summary, front_content, back_content, stack_id, active)
 

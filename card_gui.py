@@ -95,13 +95,13 @@ class ListCardsGui:
 
         # Add buttons
         add_card_button = ttk.Button(self.button_frame, text="Add Card", command=self.add_card)
-        add_card_button.grid(row=0, column=0, padx=10, pady=10)
+        add_card_button.grid(row=0, column=0, pady=(2, 2))
         update_card_button = ttk.Button(self.button_frame, text="Update Card", command=self.update_card)
-        update_card_button.grid(row=0, column=1, padx=10, pady=10)
+        update_card_button.grid(row=0, column=1, pady=(2, 2))
         refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
-        refresh_button.grid(row=0, column=2, padx=10, pady=10)
+        refresh_button.grid(row=0, column=2, pady=(2, 2))
         close_button = tk.Button(self.button_frame, text="Close", command=self.card_window.destroy)
-        close_button.grid(row=0, column=3, padx=10, pady=10)
+        close_button.grid(row=0, column=3, pady=(2, 2))
 
         # Populate the grid with data
         self.populate_cards()
@@ -216,7 +216,7 @@ class AddCardGui:
         self.frame.grid(column=0, row=0, padx=10, pady=10)
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(850, 350)
+        self.calculate_screen_position(620, 630)
 
         # Creating a ttk style object
         style = ttk.Style()
@@ -230,7 +230,7 @@ class AddCardGui:
         self.category_filter_label.grid(column=0, row=0, sticky="w")
         self.category_filter_dict = self.populate_categories()
         self.category_filter_combobox = ttk.Combobox(self.frame,
-                                                     values=list(self.category_filter_dict.keys()), width=40)
+                                                     values=list(self.category_filter_dict.keys()), width=61)
         self.category_filter_combobox.grid(column=1, row=0, sticky="w", pady=(1, 2))
         self.category_filter_combobox.current(0)
         self.selected_category_filter_id = None
@@ -241,7 +241,7 @@ class AddCardGui:
         # Stack dropdown
         self.stack_label = ttk.Label(self.frame, text="Stack:")
         self.stack_label.grid(column=0, row=1, sticky="w")
-        self.stack_combobox = ttk.Combobox(self.frame, width=80)
+        self.stack_combobox = ttk.Combobox(self.frame, width=61)
         self.stack_combobox.grid(column=1, row=1, sticky="w", pady=(1, 2))
         self.selected_stack_id = None
 
@@ -251,14 +251,22 @@ class AddCardGui:
         # Summary field
         self.summary_label = ttk.Label(self.frame, text="Summary:")
         self.summary_label.grid(column=0, row=2, sticky="w")
-        self.summary_entry = ttk.Entry(self.frame, width=80)
+        self.summary_entry = ttk.Entry(self.frame, width=61)
         self.summary_entry.grid(column=1, row=2, sticky="w", pady=(1, 2))
 
         # Front field
         self.front_label = ttk.Label(self.frame, text="Front:")
         self.front_label.grid(column=0, row=3, sticky="w")
-        self.front_content_entry = ttk.Entry(self.frame, width=80)
-        self.front_content_entry.grid(column=1, row=3, sticky="w", pady=(1, 2))
+        font_name = "Courier New"
+        font_size = 10
+        self.front_content_text = scrolledtext.ScrolledText(self.frame,
+                                                            width=61,
+                                                            height=14,
+                                                            padx=5,
+                                                            pady=5,
+                                                            font=(font_name, font_size),
+                                                            wrap="word")
+        self.front_content_text.grid(column=1, row=3, sticky="w", pady=(1, 1))
 
         # Back field
         self.back_content_label = ttk.Label(self.frame, text="Back:")
@@ -266,11 +274,12 @@ class AddCardGui:
         font_name = "Courier New"
         font_size = 10
         self.back_content_text = scrolledtext.ScrolledText(self.frame,
-                                                           width=65,
-                                                           height=8,
+                                                           width=61,
+                                                           height=14,
                                                            padx=5,
                                                            pady=5,
-                                                           font=(font_name, font_size))
+                                                           font=(font_name, font_size),
+                                                           wrap="word")
         self.back_content_text.grid(column=1, row=4, sticky="w", pady=(1, 2))
 
         # Active checkbox
@@ -282,13 +291,13 @@ class AddCardGui:
 
         # Button frame
         self.button_frame = tk.Frame(self.frame)
-        self.button_frame.grid(column=0, row=6)
+        self.button_frame.grid(column=0, row=6, columnspan=2)
 
         # Buttons
         self.add_button = tk.Button(self.button_frame, text="Add", command=self.add_card)
-        self.add_button.grid(column=0, row=0)
+        self.add_button.grid(column=0, row=0, pady=(1, 2))
         self.cancel_button = tk.Button(self.button_frame, text="Cancel", command=self.add_card_window.destroy)
-        self.cancel_button.grid(column=1, row=0)
+        self.cancel_button.grid(column=1, row=0, pady=(1, 2))
 
         self.add_card_window.wait_visibility()
         self.add_card_window.grab_set()
@@ -325,7 +334,8 @@ class AddCardGui:
     def add_card(self):
         # summary, front_content, back_content, stack_id, active
         summary = self.summary_entry.get()
-        front_content = self.front_content_entry.get()
+        #front_content = self.front_content_entry.get()
+        front_content = self.front_content_text.get("1.0", tk.END)
         back_content = self.back_content_text.get("1.0", tk.END)
         qcards_util = qu.QCardsUtil()
         stack_id = qcards_util.get_selected_combobox_value(self.selected_stack_id)
@@ -377,7 +387,7 @@ class UpdateCardGui:
         self.frame.grid(column=0, row=0, padx=10, pady=10)
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(810, 360)
+        self.calculate_screen_position(620, 650)
 
         # Creating a ttk style object
         style = ttk.Style()
@@ -389,7 +399,7 @@ class UpdateCardGui:
         # Populate the update window with the selected item's values
         self.id_var = tk.IntVar(value=card.get_id())
         self.summary_var = tk.StringVar(value=card.get_summary())
-        self.front_content_var = tk.StringVar(value=card.get_front_content())
+        self.front_content_var = card.get_front_content()
         self.back_content_var = card.get_back_content()
         self.active_var = tk.BooleanVar(value=card.get_active())
         self.last_view_date_var = card.get_last_view_date() if card.get_last_view_date() is not None else ""
@@ -413,7 +423,7 @@ class UpdateCardGui:
         self.selected_category_id = card.get_category_id()
 
         # The values are the keys of the dictionary of stacks, which contains the descriptions of the stacks
-        self.category_combobox = ttk.Combobox(self.frame, textvariable=self.selected_category, values=list(self.category_dict.keys()), width=80)
+        self.category_combobox = ttk.Combobox(self.frame, textvariable=self.selected_category, values=list(self.category_dict.keys()), width=61)
         self.category_combobox.grid(column=1, row=1, sticky="w", pady=(1, 2))
         self.category_combobox.set(self.selected_category)
 
@@ -433,7 +443,7 @@ class UpdateCardGui:
         self.selected_stack_id = card.get_stack_id()
 
         # The values are the keys of the dictionary of cards, which contains the descriptions of the cards
-        self.stack_combobox = ttk.Combobox(self.frame, textvariable=self.selected_stack, values=list(self.stack_dict.keys()), width=80)
+        self.stack_combobox = ttk.Combobox(self.frame, textvariable=self.selected_stack, values=list(self.stack_dict.keys()), width=61)
         self.stack_combobox.grid(column=1, row=2, sticky="w", pady=(1, 2))
         self.stack_combobox.set(self.selected_stack)
 
@@ -443,26 +453,35 @@ class UpdateCardGui:
         # Summary field
         self.summary_label = ttk.Label(self.frame, text="Summary:")
         self.summary_label.grid(column=0, row=3, sticky="w")
-        self.summary_entry = ttk.Entry(self.frame, textvariable=self.summary_var, width=80)
+        self.summary_entry = ttk.Entry(self.frame, textvariable=self.summary_var, width=61)
         self.summary_entry.grid(column=1, row=3, sticky="w", pady=(1, 1))
 
         # Front field
         self.front_content_label = ttk.Label(self.frame, text="Front:")
         self.front_content_label.grid(column=0, row=4, sticky="w")
-        self.front_content_entry = ttk.Entry(self.frame, textvariable=self.front_content_var, width=80)
-        self.front_content_entry.grid(column=1, row=4, sticky="w", pady=(1, 1))
+
+        font_name = "Courier New"
+        font_size = 10
+        self.front_content_text = scrolledtext.ScrolledText(self.frame,
+                                                           width=61,
+                                                           height=14,
+                                                           padx=5,
+                                                           pady=5,
+                                                           font=(font_name, font_size),
+                                                            wrap="word")
+        self.front_content_text.insert(tk.END, self.front_content_var)
+        self.front_content_text.grid(column=1, row=4, sticky="w", pady=(1, 1))
 
         # Back field
         self.back_content_label = ttk.Label(self.frame, text="Back:")
         self.back_content_label.grid(column=0, row=5, sticky="w")
-        font_name = "Courier New"
-        font_size = 10
         self.back_content_text = scrolledtext.ScrolledText(self.frame,
-                                                           width=80,
-                                                           height=8,
+                                                           width=61,
+                                                           height=14,
                                                            padx=5,
                                                            pady=5,
-                                                           font=(font_name, font_size))
+                                                           font=(font_name, font_size),
+                                                           wrap="word")
         self.back_content_text.insert(tk.END, self.back_content_var)
         self.back_content_text.grid(column=1, row=5, sticky="w", pady=(1, 1))
 
@@ -474,13 +493,13 @@ class UpdateCardGui:
 
         # Button frame
         self.button_frame = tk.Frame(self.frame)
-        self.button_frame.grid(column=0, row=7)
+        self.button_frame.grid(column=0, row=7, columnspan=2)
 
         # Buttons
         self.save_button = tk.Button(self.button_frame, text="Save", command=self.save_card)
-        self.save_button.grid(column=0, row=0)
+        self.save_button.grid(column=0, row=0, pady=(2, 2))
         self.cancel_button = tk.Button(self.button_frame, text="Cancel", command=self.update_card_window.destroy)
-        self.cancel_button.grid(column=1, row=0)
+        self.cancel_button.grid(column=1, row=0, pady=(2, 2))
 
         self.update_card_window.wait_visibility()
         self.update_card_window.grab_set()
@@ -517,7 +536,7 @@ class UpdateCardGui:
     def save_card(self):
         id = self.id_var.get()
         summary = self.summary_entry.get()
-        front_content = self.front_content_entry.get()
+        front_content = self.front_content_text.get("1.0", tk.END)
         back_content = self.back_content_text.get("1.0", tk.END)
         qcards_util = qu.QCardsUtil()
         stack_id = qcards_util.get_selected_combobox_value(self.selected_stack_id)

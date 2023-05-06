@@ -1,0 +1,8 @@
+summary|front_content|back_content
+Model View Controller Definition|Model View Controller (330)|Splits user interface interaction into three distinct roles.
+Page Controller Definition|Page Controller (333)|An object that handles a request for a specific page or action on a Web site.
+Front Controller Definition|Front Controller (344)|A controller that handles all requests for a Web site.
+Template View Definition|Template View (350)|Renders information into HTML by embedding markers in an HTML page.
+Transform View Definition|Transform View (361)|A view that processes domain data element by element and transforms it into HTML.
+Two-Step View Definition|Two-Step View (365)|Turns domain data into HTML in two steps: first by forming some kind of logical page, then rendering the logical page into HTML.
+Application Controller Definition|Application Controller (379)|A centralized point for handling screen navigation and the flow of an application.
