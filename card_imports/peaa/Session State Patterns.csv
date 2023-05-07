@@ -1,4 +1,0 @@
-summary|front_content|back_content
-Client Session State Definition|Client Session State (456)|Stores session state on the client.
-Server Session State Definition|Server Session State (458)|Keeps the session state on a server system in a serialized form
-Database Session State Definition|Database Session State (462)|Stores session data as committed data in the database.

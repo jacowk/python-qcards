@@ -1,4 +1,0 @@
-summary|front_content|back_content
-Metadata Mapping Definition|Metadata Mapping (306)|Holds details of object-relational mapping in metadata.
-Query Object Definition|Query Object (316)|An object that represents a database query.
-Repository Definition|Repository (322)|Mediates between the domain and data mapping layers using a collection-like interface for accessing domain objects.

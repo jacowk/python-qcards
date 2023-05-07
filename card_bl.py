@@ -91,6 +91,16 @@ Jaco Koekemoer
 class AddCard:
 
     def run(self, card):
+        # Massage the data
+        util = qu.QCardsUtil()
+        card.set_front_content(util.strip_trailing_new_line(card.get_front_content()))
+        card.set_front_content(util.escape_single_quotes(card.get_front_content()))
+        card.set_front_content(util.escape_double_quotes(card.get_front_content()))
+        card.set_back_content(util.strip_trailing_new_line(card.get_back_content()))
+        card.set_back_content(util.escape_single_quotes(card.get_back_content()))
+        card.set_back_content(util.escape_double_quotes(card.get_back_content()))
+
+        # Call DAO
         add_card_dao = cd.AddCardDAO()
         # summary, front_content, back_content, stack_id, active
         add_card_dao.run(card.summary, card.front_content, card.back_content, card.stack_id, card.active)
@@ -104,6 +114,16 @@ Jaco Koekemoer
 class UpdateCard:
 
     def run(self, card):
+        # Massage the data
+        util = qu.QCardsUtil()
+        card.set_front_content(util.strip_trailing_new_line(card.get_front_content()))
+        card.set_front_content(util.escape_single_quotes(card.get_front_content()))
+        card.set_front_content(util.escape_double_quotes(card.get_front_content()))
+        card.set_back_content(util.strip_trailing_new_line(card.get_back_content()))
+        card.set_back_content(util.escape_single_quotes(card.get_back_content()))
+        card.set_back_content(util.escape_double_quotes(card.get_back_content()))
+
+        # Call DAO
         update_card_dao = cd.UpdateCardDAO()
         update_card_dao.run(card.id, card.summary, card.front_content, card.back_content, card.stack_id, card.active)
 

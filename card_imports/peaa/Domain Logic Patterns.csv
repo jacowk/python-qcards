@@ -1,8 +1,0 @@
-summary,front_content,back_content
-Transaction Script Definition|Transaction Script (110)|Organizes business logic by procedures where each procedure handles a single request from the presentation.
-Domain Model Definition|Domain Model (116)|An object model of the domain that incorporates both behavior and data.
-Table Module Definition|Table Module (125)|A single instance that handles the business logic for all rows in a database table or view.
-Service Layer Definition|Service Layer (133)|Defines an application's boundary with a layer of services that establishes a set of available operations and coordinates the application's response in each operation.
-
-
-

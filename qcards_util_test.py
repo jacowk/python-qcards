@@ -52,6 +52,76 @@ class ConvertIndexToDictKeyTest(ut.TestCase):
         ut.TestCase.assertTrue(result == expected_key, True)
 
 """
+A test class for function strip_trailing_new_line(value)
+
+Jaco Koekemoer
+2023-05-07
+"""
+class StripTrailingNewLineTest(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        # Prepare variables
+        value = "test\n\n\n"
+
+        # Run the test
+        qcards_util = qu.QCardsUtil()
+        result = qcards_util.strip_trailing_new_line(value)
+        print(result)
+
+"""
+A test class for function escape_single_quotes(value)
+
+Jaco Koekemoer
+2023-05-07
+"""
+class EscapeSingleQuotesTest(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        # Prepare variables
+        value = "test\'"
+        print(value)
+
+        # Run the test
+        qcards_util = qu.QCardsUtil()
+        result = qcards_util.escape_single_quotes(value)
+        print(result)
+
+"""
+A test class for function escape_double_quotes(value)
+
+Jaco Koekemoer
+2023-05-07
+"""
+class EscapeDoubleQuotesTest(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        # Prepare variables
+        value = "test\""
+        print(value)
+
+        # Run the test
+        qcards_util = qu.QCardsUtil()
+        result = qcards_util.escape_double_quotes(value)
+        print(result)
+
+# Run all tests
+# ut.main()
+
+# Run specific tests
+loader = ut.TestLoader()
+# suite = loader.loadTestsFromTestCase(ConvertDictValueToIndexTest)
+# suite = loader.loadTestsFromTestCase(ConvertIndexToDictKeyTest)
+# suite = loader.loadTestsFromTestCase(StripTrailingNewLineTest)
+suite = loader.loadTestsFromTestCase(EscapeSingleQuotesTest)
+# suite = loader.loadTestsFromTestCase(EscapeDoubleQuotesTest)
+
+runner = ut.TextTestRunner()
+runner.run(suite)
+
+"""
 # Test convert_tinyint_to_string
 value = 0
 cards_util = QCardsUtil()
@@ -83,13 +153,4 @@ result = cards_util.convert_boolean_to_tinyint(value)
 print(result)
 """
 
-# Run all tests
-# ut.main()
 
-# Run specific tests
-loader = ut.TestLoader()
-# suite = loader.loadTestsFromTestCase(ConvertDictValueToIndexTest)
-suite = loader.loadTestsFromTestCase(ConvertIndexToDictKeyTest)
-
-runner = ut.TextTestRunner()
-runner.run(suite)

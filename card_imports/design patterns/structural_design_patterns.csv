@@ -1,8 +1,0 @@
-summary|front_content|back_content
-Structural Patterns|Adapter Pattern (139)|Convert the interface of a class into another interface clients expect. Adapter lets classes work together that couldn't otherwise, because of incompatible interfaces
-Structural Patterns|Bridge Pattern (151)|Decouple an abstraction from it's implementation so that the two can vary independently
-Structural Patterns|Composite Pattern (163)|Compose objects into tree structures to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly.
-Structural Patterns|Decorator Pattern (175)|Attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.
-Structural Patterns|Facade Pattern (185)|Provide a unified interface to a set of interfaces in a subsystem. Facade defines a higher-level interface that makes the subsystem easier to use.
-Structural Patterns|Flyweight Pattern (195)|Use sharing to support large numbers of fine-grained objects efficiently.
-Structural Patterns|Proxy Pattern (207)|Provide a surrogate or placeholder for another object to control access to it.

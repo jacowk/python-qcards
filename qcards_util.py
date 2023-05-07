@@ -56,3 +56,22 @@ class QCardsUtil:
             if dictionary[key] == value:
                 return key
         return None
+
+    """
+    Strip trailing new line characters from the given value.
+    """
+    def strip_trailing_new_line(self, value):
+        return value.rstrip('\n')
+
+    """
+    Escape single quotes to allow for database insert
+    """
+
+    def escape_single_quotes(self, value):
+        return value.replace("\'", "\\\'")
+
+    """
+    Escape double quotes to allow for database insert
+    """
+    def escape_double_quotes(self, value):
+        return value.replace("\"", "\\\"")

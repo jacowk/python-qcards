@@ -220,7 +220,6 @@ class ReviewStackGui:
         self.cards_for_review = cards_for_review
         self.review_stack_window = tk.Toplevel(self.main_review_list_window)
         self.review_stack_window.transient(self.main_review_list_window)
-        self.review_stack_window.title("Review Cards")
         self.review_stack_window.resizable(False, False)
 
         self.frame = tk.Frame(self.review_stack_window)
@@ -239,6 +238,10 @@ class ReviewStackGui:
         # Define the initial index of the list of cards for review. cards_for_review is a tuple, and we start at index 0
         # As the user clicks Next, we increment this variable with 1 to get the next card to review
         self.card_review_index = 0
+
+        # Set the heading
+        title = "Review Card {:d} of {:d}".format((self.card_review_index + 1), len(self.cards_for_review))
+        self.review_stack_window.title(title)
 
         # Get the initial card for review
         card_for_review = self.cards_for_review[self.card_review_index]
@@ -354,28 +357,26 @@ class ReviewStackGui:
         self.review_stack_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
 
     def restart(self):
-        # First update the view statistics for the current card
-        update_view_statistics = cbl.UpdateViewStatistics()
-        update_view_statistics.run(self.id_var.get())
-
         # Load the previous card
         self.card_review_index = 0
+
+        # Set the title
+        title = "Review Card {:d} of {:d}".format((self.card_review_index + 1), len(self.cards_for_review))
+        self.review_stack_window.title(title)
 
         # Get the card for review
         card_for_review = self.cards_for_review[self.card_review_index]
         self.reset_fields(card_for_review)
 
     def previous_card(self):
-        # First update the view statistics for the current card
-        update_view_statistics = cbl.UpdateViewStatistics()
-        update_view_statistics.run(self.id_var.get())
-
-        # Load the previous card
-        self.card_review_index -= 1
-        if self.card_review_index == -1:
+        if self.card_review_index == 0:
             messagebox.showinfo("Information", "You are already at the beginning of the stack")
-            self.card_review_index += 1
             return
+
+        # Update the title
+        self.card_review_index -= 1
+        title = "Review Card {:d} of {:d}".format((self.card_review_index + 1), len(self.cards_for_review))
+        self.review_stack_window.title(title)
 
         # Get the card for review
         card_for_review = self.cards_for_review[self.card_review_index]
@@ -390,12 +391,14 @@ class ReviewStackGui:
         self.back_content_text.tag_add("black", "1.0", tk.END)
 
     def next_card(self):
-        # Load the next card
-        self.card_review_index += 1
-        if self.card_review_index >= len(self.cards_for_review):
+        if self.card_review_index >= len(self.cards_for_review) - 1:
             messagebox.showinfo("Information", "No more cards to review")
-            self.card_review_index -= 1
             return
+
+        # Update the title
+        self.card_review_index += 1
+        title = "Review Card {:d} of {:d}".format((self.card_review_index + 1), len(self.cards_for_review))
+        self.review_stack_window.title(title)
 
         # Get the card for review
         card_for_review = self.cards_for_review[self.card_review_index]
@@ -405,13 +408,18 @@ class ReviewStackGui:
         # Populate the update window with the selected item's values
         self.id_var.set(card_for_review[0])
         self.summary_var.set(card_for_review[1])
-        self.front_content_var.set(card_for_review[2])
+        #self.front_content_var.set(card_for_review[2])
         self.current_view_count_var.set(card_for_review[5])
         self.last_view_date_var.set(card_for_review[8])
         self.stack_description_var.set(card_for_review[9])
         self.category_description_var.set(card_for_review[10])
         self.view_count_var.set(card_for_review[5])
         self.last_view_date_var.set(card_for_review[8])
+
+        # Update the front content ScrolledText
+        self.front_content_var = card_for_review[2]
+        self.front_content_text.delete("1.0", tk.END)
+        self.front_content_text.insert(tk.END, self.front_content_var)
 
         # Update the back content ScrolledText
         self.back_content_var = card_for_review[3]

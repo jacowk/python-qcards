@@ -1,3 +1,0 @@
-summary|front_content|back_content
-Remote Facade Definition|Remote Facade (388)|Provides a coarse-grained facade on fine-grained objects to improve efficiency over a network.
-Data Transfer Object Definition|Data Transfer Object (401)|An object that carries data between processes in order to reduce the number of method calls.

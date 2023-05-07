@@ -1,5 +1,0 @@
-summary|front_content|back_content
-Optimistic Offline Lock Definition|Optimistic Offline Lock (416)|Prevents conflicts between concurrent business transactions by detecting a conflict and rolling back the transaction.
-Pessimistic Offline Lock Definition|Pessimistic Offline Lock (426)|Prevents conflicts between concurrent business transactions by allowing only one business transaction at a time to access data.
-Coarse Grained Lock Definition|Coarse Grained Lock (438)|Locks a set of related objects with a single lock.
-Implicit Lock Definition|Implicit Lock (449)|Allows framework or layer supertype code to acquire offline locks.
