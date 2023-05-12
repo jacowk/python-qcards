@@ -21,7 +21,6 @@ class ListCardsGui:
         self.card_window = tk.Toplevel(main_window)
         # With transient(), the card_window will always be displayed on top of the main window
         self.card_window.transient(main_window)
-        self.card_window.title("List Cards")
         # Calculate the position of the center of the screen
         self.calculate_screen_position(1200, 500)
 
@@ -129,9 +128,10 @@ class ListCardsGui:
             # id, summary, front_content, back_content, stack_id, view_count, group_cd, active, last_view_date
             values = (card[0], card[10], card[9], card[1], card[2], card[8], card[7])
             self.tree.insert('', tk.END, values=values)
+        self.card_window.title("List Cards ({} cards)".format(len(all_cards)))
 
     def add_card(self):
-        add_card_gui = AddCardGui(self.card_window, self)
+        add_card_gui = AddCardGui(self.card_window, self, self.selected_category, self.selected_stack)
 
     def update_card(self):
         # Get values
@@ -170,8 +170,8 @@ class ListCardsGui:
     # Define a function to get the selected value from the dictionary
     def get_selected_category(self):
         # Get teh selected category
-        selected_category = self.category_filter_combobox.get()
-        self.selected_category_filter_id = self.category_filter_dict[selected_category]
+        self.selected_category = self.category_filter_combobox.get()
+        self.selected_category_filter_id = self.category_filter_dict[self.selected_category]
 
         # Retrieve all stacks
         retrieve_all_stacks = sbl.RetrieveStacksByCategoryIdDict()
@@ -187,8 +187,8 @@ class ListCardsGui:
     # Define a function to get the selected value from the dictionary
     def get_selected_stack(self):
         # Get the selected stack
-        selected_stack = self.stack_filter_combobox.get()
-        self.selected_stack_filter_id = self.stack_filter_dict[selected_stack]
+        self.selected_stack = self.stack_filter_combobox.get()
+        self.selected_stack_filter_id = self.stack_filter_dict[self.selected_stack]
 
         # Clear the table
         for item in self.tree.get_children():
@@ -204,9 +204,11 @@ Date: 31 March 2023
 """
 class AddCardGui:
 
-    def __init__(self, card_window, list_cards_gui):
+    def __init__(self, card_window, list_cards_gui, main_selected_category = None, main_selected_stack = None):
         self.list_cards_gui = list_cards_gui
         self.card_window = card_window
+        self.main_selected_category = main_selected_category
+        self.main_selected_stack = main_selected_stack
         self.add_card_window = tk.Toplevel(self.card_window)
         self.add_card_window.transient(self.card_window)
         self.add_card_window.title("Add Card")
@@ -232,8 +234,15 @@ class AddCardGui:
         self.category_filter_combobox = ttk.Combobox(self.frame,
                                                      values=list(self.category_filter_dict.keys()), width=61)
         self.category_filter_combobox.grid(column=1, row=0, sticky="w", pady=(1, 2))
-        self.category_filter_combobox.current(0)
-        self.selected_category_filter_id = None
+        if self.main_selected_category is None:
+            self.category_filter_combobox.current(0)
+            self.selected_category_filter_id = None
+        else:
+            # Prepopulate the category if a value was passed from the parent window
+            self.category_filter_combobox.set(self.main_selected_category)
+            print(self.category_filter_dict)
+            print(self.main_selected_category)
+            self.selected_category_filter_id = self.category_filter_dict[self.main_selected_category]
 
         # Bind the function to the Combobox selection event
         self.category_filter_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_category())
@@ -243,7 +252,19 @@ class AddCardGui:
         self.stack_label.grid(column=0, row=1, sticky="w")
         self.stack_combobox = ttk.Combobox(self.frame, width=61)
         self.stack_combobox.grid(column=1, row=1, sticky="w", pady=(1, 2))
-        self.selected_stack_id = None
+        if self.main_selected_stack is None:
+            self.selected_stack_id = None
+        else:
+            # Prepopulate the stack if a value was passed from the parent window
+            # Retrieve all stacks
+            retrieve_all_stacks = sbl.RetrieveStacksByCategoryIdDict()
+            self.stack_dict = retrieve_all_stacks.run(self.selected_category_filter_id)
+            self.selected_stack_id = self.stack_dict[self.main_selected_stack]
+
+            # Populate the stack dropdown
+            self.stack_combobox['values'] = list(self.stack_dict.keys())
+            self.stack_combobox.set(self.main_selected_stack)
+
 
         # Bind the function to the Combobox selection event
         self.stack_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_stack())
@@ -299,6 +320,7 @@ class AddCardGui:
         self.cancel_button = tk.Button(self.button_frame, text="Cancel", command=self.add_card_window.destroy)
         self.cancel_button.grid(column=1, row=0, pady=(1, 2))
 
+        self.set_tab_order()
         self.add_card_window.wait_visibility()
         self.add_card_window.grab_set()
 
@@ -367,6 +389,16 @@ class AddCardGui:
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.add_card_window.winfo_screenwidth(), self.add_card_window.winfo_screenheight())
         self.add_card_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+
+    def set_tab_order(self):
+        self.category_filter_combobox.lift()
+        self.stack_combobox.lift()
+        self.summary_entry.lift()
+        self.front_content_text.lift()
+        self.back_content_label.lift()
+        self.active_checkbutton.lift()
+        self.add_button.lift()
+        self.cancel_button.lift()
 
 """
 Description: A class for updating a card

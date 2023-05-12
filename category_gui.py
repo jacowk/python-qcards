@@ -17,7 +17,6 @@ class ListCategoriesGui:
         self.category_window = tk.Toplevel(main_window)
         # With transient(), the category_window will always be displayed on top of the main window
         self.category_window.transient(main_window)
-        self.category_window.title("List Categories")
         # Calculate the position of the center of the screen
         self.calculate_screen_position(600, 520)
 
@@ -88,6 +87,8 @@ class ListCategoriesGui:
         all_categories = retrieve_all_categories.run()
         for category in all_categories:
             self.tree.insert('', tk.END, values=category)
+
+        self.category_window.title("List Categories ({}) categories".format(len(all_categories)))
 
     def add_category(self):
         add_category_gui = AddCategoryGui(self.category_window, self)

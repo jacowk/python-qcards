@@ -20,7 +20,6 @@ class ListStacksGui:
         self.stack_window = tk.Toplevel(main_window)
         # With transient(), the stack_window will always be displayed on top of the main window
         self.stack_window.transient(main_window)
-        self.stack_window.title("List Stacks")
         # Calculate the position of the center of the screen
         self.calculate_screen_position(1000, 500)
 
@@ -124,6 +123,8 @@ class ListStacksGui:
         for stack in all_stacks:
             values = (stack[0], stack[1], stack[6], stack[5], stack[7], stack[2])
             self.tree.insert('', tk.END, values=values)
+
+        self.stack_window.title("List Stacks ({} stacks)".format(len(all_stacks)))
 
     def add_stack(self):
         add_stack_gui = AddStackGui(self.stack_window, self)
