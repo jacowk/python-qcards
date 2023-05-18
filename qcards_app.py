@@ -65,7 +65,7 @@ class QCardsApp:
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.main_window.winfo_screenwidth(), self.main_window.winfo_screenheight())
-        self.main_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+        self.main_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))
 
     def open_category_tree_window(self):
         category_tree_gui = ctg.CategoryTreeGui(self.main_window)

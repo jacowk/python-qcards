@@ -240,8 +240,8 @@ class AddCardGui:
         else:
             # Prepopulate the category if a value was passed from the parent window
             self.category_filter_combobox.set(self.main_selected_category)
-            print(self.category_filter_dict)
-            print(self.main_selected_category)
+            #print(self.category_filter_dict)
+            #print(self.main_selected_category)
             self.selected_category_filter_id = self.category_filter_dict[self.main_selected_category]
 
         # Bind the function to the Combobox selection event

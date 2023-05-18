@@ -110,6 +110,11 @@ class ListStacksGui:
         self.stack_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
 
     def populate_stacks(self, category_filter_id = None):
+        # Clear the tree
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+        # Populate the stacks
         all_stacks = []
         if category_filter_id == None or category_filter_id == -1:
             retrieve_all_stacks = sbl.RetrieveAllStacks()
@@ -127,7 +132,7 @@ class ListStacksGui:
         self.stack_window.title("List Stacks ({} stacks)".format(len(all_stacks)))
 
     def add_stack(self):
-        add_stack_gui = AddStackGui(self.stack_window, self)
+        add_stack_gui = AddStackGui(self.stack_window, self, self.selected_category_filter_id)
 
     def update_stack(self):
         # Get values
@@ -152,7 +157,7 @@ class ListStacksGui:
         stack = retrieve_stack.run(id)
 
         # Run the update GUI
-        update_stack_gui = UpdateStackGui(self.stack_window, self, stack)
+        update_stack_gui = UpdateStackGui(self.stack_window, self, stack, self.selected_category_filter_id)
 
     def setup_review_stage(self):
         # Get values
@@ -240,7 +245,7 @@ class ListStacksGui:
     def refresh_table(self):
         for item in self.tree.get_children():
             self.tree.delete(item)
-        self.populate_stacks()
+        self.populate_stacks(self.selected_category_filter_id)
 
     def populate_categories(self):
         retrieve_all_categories = catbl.RetrieveAllCategoriesDict()
@@ -267,9 +272,10 @@ Date: 31 March 2023
 """
 class AddStackGui:
 
-    def __init__(self, stack_window, list_stacks_gui):
+    def __init__(self, stack_window, list_stacks_gui, selected_category_filter_id):
         self.list_stacks_gui = list_stacks_gui
         self.stack_window = stack_window
+        self.selected_category_filter_id = selected_category_filter_id
         self.add_stack_window = tk.Toplevel(self.stack_window)
         self.add_stack_window.transient(self.stack_window)
         self.add_stack_window.title("Add Stack")
@@ -361,7 +367,7 @@ class AddStackGui:
 
         # Add the stack to the stack tree view
         #self.stack_window.tree.insert("", "end", text=desc, values=(active,))
-        self.list_stacks_gui.refresh_table()
+        self.list_stacks_gui.populate_stacks(self.selected_category_filter_id)
 
         # Show message
         #messagebox.showinfo("Stack added", f"{description} added to stacks.")
@@ -381,9 +387,10 @@ Date: 31 March 2023
 """
 class UpdateStackGui:
 
-    def __init__(self, stack_window, list_stacks_gui, stack):
+    def __init__(self, stack_window, list_stacks_gui, stack, selected_category_filter_id):
         self.list_stacks_gui = list_stacks_gui
         self.stack_window = stack_window
+        self.selected_category_filter_id = selected_category_filter_id
         self.update_stack_window = tk.Toplevel(self.stack_window)
         self.update_stack_window.transient(self.stack_window)
         self.update_stack_window.title("Update Stack")
