@@ -75,9 +75,11 @@ class RetrieveStackByIdDAO:
                 s.source, \
                 s.category_id, \
                 s.next_view_date, \
-                rs.id \
+                rs.id, \
+                lrs.description \
                 from t_stack s \
                 left join t_review_stage rs on rs.stack_id = s.id \
+                left join t_lookup_review_stage lrs on rs.review_stage_cd = lrs.id \
                 where s.id = {:d};".format(id)
         # print(sql)
 
@@ -96,10 +98,11 @@ class RetrieveAllStacksDAO:
     def run(self):
         # Prepare SQL
         # sql = "select id, description, active, source, category_id, next_view_date from t_stack;"
-        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, c.description, rs.id \
+        sql = "select s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, c.description, rs.id, lrs.description \
                 from t_stack s \
                 left join t_category c on c.id = s.category_id \
                 left join t_review_stage rs on rs.stack_id = s.id \
+                left join t_lookup_review_stage lrs on rs.review_stage_cd = lrs.id \
                 order by s.description asc;"
         # print(sql)
 
@@ -124,10 +127,12 @@ class RetrieveActiveStacksByCategoryIdDAO:
                 s.category_id, \
                 s.next_view_date, \
                 c.description, \
-                rs.id \
+                rs.id, \
+                lrs.description \
                 from t_stack s \
                 left join t_category c on c.id = s.category_id \
                 left join t_review_stage rs on rs.stack_id = s.id \
+                left join t_lookup_review_stage lrs on rs.review_stage_cd = lrs.id \
                 where s.category_id = {:d}".format(category_id)
         active_sql = " and s.active = 1"
         order_by_sql = " order by s.description asc;"
@@ -159,7 +164,7 @@ class RetrieveScheduledActiveStacksDAO:
                 and s.category_id = c.id \
                 and rs.review_stage_cd = lrs.id \
                 and s.active = 1 \
-                and s.next_view_date <= curdate() \
+                and (s.next_view_date <= curdate() or s.next_view_date is null) \
                 and rs.review_stage_cd != 1;"
         # print(sql)
 

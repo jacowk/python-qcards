@@ -76,15 +76,18 @@ class ReviewGui:
 
         # Add buttons
         review_stack_button = ttk.Button(self.button_frame, text="Review Stack", command=self.review_stack)
-        review_stack_button.grid(row=1, column=0, padx=5, pady=(2, 2))
+        review_stack_button.grid(row=1, column=0, pady=(1, 2))
         review_stage_button = tk.Button(self.button_frame, text="Update Review Stage", command=self.update_review_stage)
-        review_stage_button.grid(row=1, column=1, pady=(2, 2))
+        review_stage_button.grid(row=1, column=1, pady=(1, 2))
         calculate_next_view_date_button = ttk.Button(self.button_frame, text="Calc Next View Date", command=self.calculate_next_view_date)
-        calculate_next_view_date_button.grid(row=1, column=2, pady=(2, 2))
+        calculate_next_view_date_button.grid(row=1, column=2, pady=(1, 2))
         refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
-        refresh_button.grid(row=1, column=3, padx=5, pady=(2, 2))
+        refresh_button.grid(row=1, column=3, pady=(1, 2))
         close_button = tk.Button(self.button_frame, text="Close", command=self.stack_window.destroy)
-        close_button.grid(row=1, column=4, padx=5, pady=(2, 2))
+        close_button.grid(row=1, column=4, pady=(1, 2))
+
+        # Configure row weights
+        self.button_frame.grid_rowconfigure(0, weight=1)
 
         # Populate the grid with data
         self.populate_stacks_for_review()
@@ -97,7 +100,7 @@ class ReviewGui:
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.stack_window.winfo_screenwidth(), self.stack_window.winfo_screenheight())
-        self.stack_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+        self.stack_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))
 
     def populate_stacks_for_review(self):
         retrieve_stacks_for_review = sbl.RetrieveStacksForReview()
@@ -338,15 +341,15 @@ class ReviewStackGui:
 
         # Buttons
         restart_button = tk.Button(self.button_frame, text="Restart", command=self.restart)
-        restart_button.grid(column=0, row=0, pady=(2, 2))
+        restart_button.grid(column=0, row=0, pady=(1, 2))
         previous_card_button = tk.Button(self.button_frame, text="Previous Card", command=self.previous_card)
-        previous_card_button.grid(column=1, row=0, pady=(2, 2))
+        previous_card_button.grid(column=1, row=0, pady=(1, 2))
         reveal_back_button = tk.Button(self.button_frame, text="Reveal Back", command=self.reveal_back_content)
-        reveal_back_button.grid(column=2, row=0, pady=(2, 2))
+        reveal_back_button.grid(column=2, row=0, pady=(1, 2))
         next_card_button = tk.Button(self.button_frame, text="Next Card", command=self.next_card)
-        next_card_button.grid(column=3, row=0, pady=(2, 2))
+        next_card_button.grid(column=3, row=0, pady=(1, 2))
         close_button = tk.Button(self.button_frame, text="Close", command=self.review_stack_window.destroy)
-        close_button.grid(column=5, row=0, pady=(2, 2))
+        close_button.grid(column=5, row=0, pady=(1, 2))
 
         self.review_stack_window.wait_visibility()
         self.review_stack_window.grab_set()
@@ -354,7 +357,7 @@ class ReviewStackGui:
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.review_stack_window.winfo_screenwidth(), self.review_stack_window.winfo_screenheight())
-        self.review_stack_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+        self.review_stack_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))
 
     def restart(self):
         # Load the previous card

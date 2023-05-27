@@ -52,6 +52,12 @@ class Stack:
     def set_review_stage_id(self, review_stage_id):
         self.review_stage_id = review_stage_id
 
+    def get_review_stage(self):
+        return self.review_stage
+
+    def set_review_stage(self, review_stage):
+        self.review_stage = review_stage
+
 """
 Business layer for adding stacks
 
@@ -111,6 +117,7 @@ class RetrieveStackById:
         stack.set_category_id(result[0][4])
         stack.set_next_view_date(result[0][5])
         stack.set_review_stage_id(result[0][6])
+        stack.set_review_stage(result[0][7])
         return stack
 
 """
@@ -139,7 +146,8 @@ class RetrieveAllStacks:
                 stack[4], # category_id
                 stack[5] if stack[5] is not None else '', # next_view_date
                 stack[6] if stack[6] != None else '', # category_description
-                stack[7] # review stage id
+                stack[7], # review stage id
+                stack[8]  # review stage
             )
             converted_stacks = converted_stacks + (converted_category,)  # Building up a tuple of tuples
         return converted_stacks
@@ -170,7 +178,8 @@ class RetrieveActiveStacksByCategoryId:
                 stack[4],  # category_id
                 stack[5] if stack[5] is not None else '',  # next_view_date
                 stack[6] if stack[6] is not None else '', # category_description
-                stack[7] # review stage id
+                stack[7], # review stage id
+                stack[8]  # review stage
             )
             converted_stacks = converted_stacks + (converted_stack,)  # Building up a tuple of tuples
         return converted_stacks

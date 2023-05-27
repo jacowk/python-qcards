@@ -257,7 +257,7 @@ class CalculateWeeklyNextViewDate:
         today = qdu.DateUtil().get_now_as_date()
 
         # Calculate the next view date
-        next_view_date = qdu.DateUtil().calculate_next_weekly_date(today, weekday_cd, week_count)
+        next_view_date = qdu.DateUtil().calculate_next_weekly_date(today, int(weekday_cd), int(week_count))
         return next_view_date
 
 """
@@ -273,7 +273,7 @@ class CalculateMonthlyNextViewDate:
         today = qdu.DateUtil().get_now_as_date()
 
         # Calculate the next view date
-        next_view_date = qdu.DateUtil().calculate_next_monthly_date(today, calendar_day, month_count)
+        next_view_date = qdu.DateUtil().calculate_next_monthly_date(today, int(calendar_day), int(month_count))
         return next_view_date
 
 """

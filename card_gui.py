@@ -43,6 +43,7 @@ class ListCardsGui:
         self.category_filter_combobox.grid(column=1, row=0, sticky="w", pady=(1, 2))
         self.category_filter_combobox.current(0)
         self.selected_category_filter_id = None
+        self.selected_category = None
 
         # Bind the function to the Combobox selection event
         self.category_filter_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_category())
@@ -53,6 +54,7 @@ class ListCardsGui:
         self.stack_filter_combobox = ttk.Combobox(self.stack_filter_frame, width=40)
         self.stack_filter_combobox.grid(column=3, row=0, sticky="w", pady=(1, 2))
         self.selected_stack_filter_id = None
+        self.selected_stack = None
 
         # Bind the function to the Combobox selection event
         self.stack_filter_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_stack())
@@ -94,13 +96,13 @@ class ListCardsGui:
 
         # Add buttons
         add_card_button = ttk.Button(self.button_frame, text="Add Card", command=self.add_card)
-        add_card_button.grid(row=0, column=0, pady=(2, 2))
+        add_card_button.grid(row=0, column=0, pady=5)
         update_card_button = ttk.Button(self.button_frame, text="Update Card", command=self.update_card)
-        update_card_button.grid(row=0, column=1, pady=(2, 2))
+        update_card_button.grid(row=0, column=1, pady=5)
         refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
-        refresh_button.grid(row=0, column=2, pady=(2, 2))
+        refresh_button.grid(row=0, column=2, pady=5)
         close_button = tk.Button(self.button_frame, text="Close", command=self.card_window.destroy)
-        close_button.grid(row=0, column=3, pady=(2, 2))
+        close_button.grid(row=0, column=3, pady=5)
 
         # Populate the grid with data
         self.populate_cards()
@@ -113,7 +115,7 @@ class ListCardsGui:
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.card_window.winfo_screenwidth(), self.card_window.winfo_screenheight())
-        self.card_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+        self.card_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))
 
     def populate_cards(self, stack_filter_id = None):
         all_cards = []
@@ -388,7 +390,7 @@ class AddCardGui:
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.add_card_window.winfo_screenwidth(), self.add_card_window.winfo_screenheight())
-        self.add_card_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+        self.add_card_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))
 
     def set_tab_order(self):
         self.category_filter_combobox.lift()
@@ -529,9 +531,9 @@ class UpdateCardGui:
 
         # Buttons
         self.save_button = tk.Button(self.button_frame, text="Save", command=self.save_card)
-        self.save_button.grid(column=0, row=0, pady=(2, 2))
+        self.save_button.grid(column=0, row=0, pady=5)
         self.cancel_button = tk.Button(self.button_frame, text="Cancel", command=self.update_card_window.destroy)
-        self.cancel_button.grid(column=1, row=0, pady=(2, 2))
+        self.cancel_button.grid(column=1, row=0, pady=5)
 
         self.update_card_window.wait_visibility()
         self.update_card_window.grab_set()
@@ -603,4 +605,4 @@ class UpdateCardGui:
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.update_card_window.winfo_screenwidth(), self.update_card_window.winfo_screenheight())
-        self.update_card_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+        self.update_card_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))

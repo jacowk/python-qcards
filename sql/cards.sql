@@ -15,6 +15,8 @@ Mysql Driver (Platform Independent): https://dev.mysql.com/downloads/connector/j
 
 
 /* Cards */
+ALTER TABLE t_card MODIFY front_content varchar(1000);
+
 CREATE TABLE t_card (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     summary VARCHAR(100),

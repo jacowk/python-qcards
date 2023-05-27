@@ -70,6 +70,15 @@ insert into t_lookup_odd_even (description) values('Even');
 
 select * from t_lookup_odd_even;
 
+select * from t_lookup_review_stage;
+
+/* How many in Odd and Event */
+select oe.description, count(rs.id)
+from t_review_stage rs, t_lookup_odd_even oe
+where rs.odd_even_cd = oe.id
+and rs.review_stage_cd = 2
+group by rs.odd_even_cd;
+
 /* Weekday
 1 Monday (Python: 0)
 2 Tuesday

@@ -86,4 +86,11 @@ s.next_view_date,
 rs.id
 from t_stack s 
 left join t_review_stage rs on rs.stack_id = s.id
-where s.id = 7;
+where s.id = 3;
+
+
+select * from t_review_stage rs where rs.stack_id = 3;
+
+
+
+

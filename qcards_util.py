@@ -75,3 +75,9 @@ class QCardsUtil:
     """
     def escape_double_quotes(self, value):
         return value.replace("\"", "\\\"")
+
+    """
+    Escape semi-colon to allow for database insert
+    """
+    def escape_semi_colon(self, value):
+        return value.replace(";", "\;")

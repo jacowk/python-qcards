@@ -96,9 +96,12 @@ class AddCard:
         card.set_front_content(util.strip_trailing_new_line(card.get_front_content()))
         card.set_front_content(util.escape_single_quotes(card.get_front_content()))
         card.set_front_content(util.escape_double_quotes(card.get_front_content()))
+        card.set_front_content(util.escape_semi_colon(card.get_front_content()))
+
         card.set_back_content(util.strip_trailing_new_line(card.get_back_content()))
         card.set_back_content(util.escape_single_quotes(card.get_back_content()))
         card.set_back_content(util.escape_double_quotes(card.get_back_content()))
+        card.set_back_content(util.escape_semi_colon(card.get_back_content()))
 
         # Call DAO
         add_card_dao = cd.AddCardDAO()
@@ -119,9 +122,12 @@ class UpdateCard:
         card.set_front_content(util.strip_trailing_new_line(card.get_front_content()))
         card.set_front_content(util.escape_single_quotes(card.get_front_content()))
         card.set_front_content(util.escape_double_quotes(card.get_front_content()))
+        card.set_front_content(util.escape_semi_colon(card.get_front_content()))
+
         card.set_back_content(util.strip_trailing_new_line(card.get_back_content()))
         card.set_back_content(util.escape_single_quotes(card.get_back_content()))
         card.set_back_content(util.escape_double_quotes(card.get_back_content()))
+        card.set_back_content(util.escape_semi_colon(card.get_back_content()))
 
         # Call DAO
         update_card_dao = cd.UpdateCardDAO()

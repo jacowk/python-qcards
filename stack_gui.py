@@ -21,7 +21,7 @@ class ListStacksGui:
         # With transient(), the stack_window will always be displayed on top of the main window
         self.stack_window.transient(main_window)
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(1000, 500)
+        self.calculate_screen_position(1200, 500)
 
         # Creating a ttk style object
         style = ttk.Style()
@@ -47,7 +47,7 @@ class ListStacksGui:
         self.category_filter_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_category())
 
         # Define the columns
-        columns = ('id', 'description', 'category', 'next_view_date', 'review_stage_id', 'active')
+        columns = ('id', 'description', 'category', 'next_view_date', 'review_stage_id', 'review_stage', 'active')
 
         # Create a TreeView (Table)
         self.tree = ttk.Treeview(self.stack_window, columns=columns, show='headings')
@@ -58,6 +58,7 @@ class ListStacksGui:
         self.tree.heading('category', text="Category")
         self.tree.heading('next_view_date', text="Next View Date")
         self.tree.heading('review_stage_id', text="Review Stage ID")
+        self.tree.heading('review_stage', text="Review Stage")
         self.tree.heading('active', text="Active")
 
         # Change column widths
@@ -82,19 +83,19 @@ class ListStacksGui:
 
         # Add buttons
         add_stack_button = ttk.Button(self.button_frame, text="Add Stack", command=self.add_stack)
-        add_stack_button.grid(row=0, column=0, pady=(2, 2))
+        add_stack_button.grid(row=0, column=0, pady=5)
         update_stack_button = ttk.Button(self.button_frame, text="Update Stack", command=self.update_stack)
-        update_stack_button.grid(row=0, column=1, pady=(2, 2))
+        update_stack_button.grid(row=0, column=1, pady=5)
         setup_review_stage_button = ttk.Button(self.button_frame, text="Setup Review Stage", command=self.setup_review_stage)
-        setup_review_stage_button.grid(row=0, column=2, pady=(2, 2))
+        setup_review_stage_button.grid(row=0, column=2, pady=5)
         review_stage_button = tk.Button(self.button_frame, text="Update Review Stage", command=self.update_review_stage)
-        review_stage_button.grid(row=0, column=3, pady=(2, 2))
+        review_stage_button.grid(row=0, column=3, pady=5)
         calculate_next_view_date_button = ttk.Button(self.button_frame, text="Calc Next View Date",command=self.calculate_next_view_date)
-        calculate_next_view_date_button.grid(row=0, column=4, pady=(2, 2))
+        calculate_next_view_date_button.grid(row=0, column=4, pady=5)
         refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
-        refresh_button.grid(row=0, column=5, pady=(2, 2))
+        refresh_button.grid(row=0, column=5, pady=5)
         close_button = tk.Button(self.button_frame, text="Close", command=self.stack_window.destroy)
-        close_button.grid(row=0, column=6, pady=(2, 2))
+        close_button.grid(row=0, column=6, pady=5)
 
         # Populate the grid with data
         self.populate_stacks()
@@ -107,7 +108,7 @@ class ListStacksGui:
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.stack_window.winfo_screenwidth(), self.stack_window.winfo_screenheight())
-        self.stack_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+        self.stack_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))
 
     def populate_stacks(self, category_filter_id = None):
         # Clear the tree
@@ -126,13 +127,13 @@ class ListStacksGui:
 
         # Prepare columns
         for stack in all_stacks:
-            values = (stack[0], stack[1], stack[6], stack[5], stack[7], stack[2])
+            values = (stack[0], stack[1], stack[6], stack[5], stack[7], stack[8], stack[2])
             self.tree.insert('', tk.END, values=values)
 
         self.stack_window.title("List Stacks ({} stacks)".format(len(all_stacks)))
 
     def add_stack(self):
-        add_stack_gui = AddStackGui(self.stack_window, self, self.selected_category_filter_id)
+        add_stack_gui = AddStackGui(self.stack_window, self, self.selected_category)
 
     def update_stack(self):
         # Get values
@@ -254,8 +255,8 @@ class ListStacksGui:
     # Define a function to get the selected value from the dictionary
     def get_selected_category(self):
         # Get teh selected category
-        selected_category = self.category_filter_combobox.get()
-        self.selected_category_filter_id = self.category_filter_dict[selected_category]
+        self.selected_category = self.category_filter_combobox.get()
+        self.selected_category_filter_id = self.category_filter_dict[self.selected_category]
 
         # Clear the table
         for item in self.tree.get_children():
@@ -272,10 +273,10 @@ Date: 31 March 2023
 """
 class AddStackGui:
 
-    def __init__(self, stack_window, list_stacks_gui, selected_category_filter_id):
+    def __init__(self, stack_window, list_stacks_gui, main_selected_category = None):
         self.list_stacks_gui = list_stacks_gui
         self.stack_window = stack_window
-        self.selected_category_filter_id = selected_category_filter_id
+        self.main_selected_category = main_selected_category
         self.add_stack_window = tk.Toplevel(self.stack_window)
         self.add_stack_window.transient(self.stack_window)
         self.add_stack_window.title("Add Stack")
@@ -285,7 +286,7 @@ class AddStackGui:
         self.frame.grid(column=0, row=0, padx=10, pady=10)
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(620, 150)
+        self.calculate_screen_position(620, 160)
 
         # Creating a ttk style object
         style = ttk.Style()
@@ -306,8 +307,17 @@ class AddStackGui:
         self.category_dict = self.populate_categories()
         self.category_combobox = ttk.Combobox(self.frame, values=list(self.category_dict.keys()), width=61)
         self.category_combobox.grid(column=1, row=1, sticky="w", pady=(1, 2))
-        self.category_combobox.current(0)
-        self.selected_category_id = None
+
+        # Preselect the category
+        if self.main_selected_category is None:
+            self.category_combobox.current(0)
+            self.selected_category_id = None
+        else:
+            # Prepopulate the category if a value was passed from the parent window
+            self.category_combobox.set(self.main_selected_category)
+            #print(self.category_dict)
+            #print(self.main_selected_category)
+            self.selected_category_id = self.category_dict[self.main_selected_category]
 
         # Bind the function to the Combobox selection event
         self.category_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_category())
@@ -331,9 +341,9 @@ class AddStackGui:
 
         # Buttons
         self.add_button = tk.Button(self.button_frame, text="Add", command=self.add_stack)
-        self.add_button.grid(column=0, row=0, pady=(2, 2))
+        self.add_button.grid(column=0, row=0, pady=5)
         self.cancel_button = tk.Button(self.button_frame, text="Cancel", command=self.add_stack_window.destroy)
-        self.cancel_button.grid(column=1, row=0, pady=(2, 2))
+        self.cancel_button.grid(column=1, row=0, pady=5)
 
         self.add_stack_window.wait_visibility()
         self.add_stack_window.grab_set()
@@ -344,8 +354,8 @@ class AddStackGui:
 
     # Define a function to get the selected value from the dictionary
     def get_selected_category(self):
-        selected_category = self.category_combobox.get()
-        self.selected_category_id = self.category_dict[selected_category]
+        self.selected_category = self.category_combobox.get()
+        self.selected_category_id = self.category_dict[self.selected_category]
 
     def add_stack(self):
         description = self.desc_entry.get()
@@ -367,7 +377,7 @@ class AddStackGui:
 
         # Add the stack to the stack tree view
         #self.stack_window.tree.insert("", "end", text=desc, values=(active,))
-        self.list_stacks_gui.populate_stacks(self.selected_category_filter_id)
+        self.list_stacks_gui.populate_stacks(self.selected_category_id)
 
         # Show message
         #messagebox.showinfo("Stack added", f"{description} added to stacks.")
@@ -378,7 +388,7 @@ class AddStackGui:
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.add_stack_window.winfo_screenwidth(), self.add_stack_window.winfo_screenheight())
-        self.add_stack_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+        self.add_stack_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))
 
 """
 Description: A class for updating a stack
@@ -400,7 +410,7 @@ class UpdateStackGui:
         self.frame.grid(column=0, row=0, padx=10, pady=10)
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(620, 170)
+        self.calculate_screen_position(620, 180)
 
         # Creating a ttk style object
         style = ttk.Style()
@@ -415,6 +425,7 @@ class UpdateStackGui:
         self.source_var = tk.StringVar(value=stack.get_source())
         self.next_view_date = tk.StringVar(value=stack.get_next_view_date())
         self.review_stage_id = tk.IntVar(value=stack.get_review_stage_id())
+        self.review_stage = tk.StringVar(value=stack.get_review_stage())
         self.active_var = tk.BooleanVar(value=stack.get_active())
 
         # Id field
@@ -467,9 +478,9 @@ class UpdateStackGui:
 
         # Buttons
         self.save_button = tk.Button(self.button_frame, text="Save", command=self.save_stack)
-        self.save_button.grid(column=0, row=0, pady=(2, 2))
+        self.save_button.grid(column=0, row=0, pady=5)
         self.cancel_button = tk.Button(self.button_frame, text="Cancel", command=self.update_stack_window.destroy)
-        self.cancel_button.grid(column=1, row=0, pady=(2, 2))
+        self.cancel_button.grid(column=1, row=0, pady=5)
 
         self.update_stack_window.wait_visibility()
         self.update_stack_window.grab_set()
@@ -492,6 +503,7 @@ class UpdateStackGui:
         source = self.source_entry.get()
         next_view_date = self.next_view_date.get()
         review_stage_id = self.review_stage_id.get()
+        review_stage = self.review_stage.get()
         active = self.active_var.get()
         active_converted = qu.QCardsUtil().convert_boolean_to_tinyint(active)
 
@@ -514,7 +526,8 @@ class UpdateStackGui:
                                                               description,
                                                               "" if self.selected_category == catc.CategoryConstants.SELECT_CATEGORY.value else self.selected_category,
                                                               next_view_date,
-                                                              review_stage_id,
+                                                              None if review_stage_id == 0 else review_stage_id,
+                                                              None if len(review_stage) == 0 else review_stage,
                                                               active))
 
         # Close the form
@@ -523,4 +536,4 @@ class UpdateStackGui:
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.update_stack_window.winfo_screenwidth(), self.update_stack_window.winfo_screenheight())
-        self.update_stack_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+        self.update_stack_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))

@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import tkinter.messagebox as messagebox
 import review_stage_bl as rsbl
 import review_stage_constant as rsc
 import qcards_date_util as qdu
@@ -204,7 +205,7 @@ class ReviewStageGui:
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.review_stage_window.winfo_screenwidth(), self.review_stage_window.winfo_screenheight())
-        self.review_stage_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+        self.review_stage_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))
 
     def populate_review_stage_lookup_dict(self):
         review_stage_lookup = rsbl.ReviewStageLookupDict()
@@ -235,7 +236,7 @@ class ReviewStageGui:
         self.week_count = self.week_count_combobox.get()
 
     def get_selected_calendar_day(self):
-        self.calendar_day = self.week_count_combobox.get()
+        self.calendar_day = self.calendar_day_combobox.get()
 
     def get_selected_month_count(self):
         self.month_count = self.month_count_combobox.get()
@@ -275,9 +276,9 @@ class ReviewStageGui:
         update_review_stage = rsbl.UpdateReviewStage()
         update_review_stage.run(self.review_stage)
 
-        # Calculate the next view date
-        calculate_next_view_date = rsbl.CalculateNextViewDate()
-        calculate_next_view_date.run(self.review_stage)
+        # Display a message
+        messagebox.showinfo("Information", "Review stage updated. Remember to click on Calc Next View Date, to calculate " \
+                                           "a next view date based on the new review stage")
 
         # Close the form
         self.review_stage_window.destroy()

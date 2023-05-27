@@ -79,7 +79,7 @@ class CardCSVImportGui:
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.import_cards_window.winfo_screenwidth(), self.import_cards_window.winfo_screenheight())
-        self.import_cards_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+        self.import_cards_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))
 
     def populate_categories(self):
         retrieve_all_categories = catbl.RetrieveAllCategoriesDict()

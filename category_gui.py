@@ -61,13 +61,13 @@ class ListCategoriesGui:
 
         # Add buttons
         add_category_button = ttk.Button(self.button_frame, text="Add Category", command=self.add_category)
-        add_category_button.grid(row=0, column=0, pady=(2, 2))
+        add_category_button.grid(row=0, column=0, pady=5)
         update_category_button = ttk.Button(self.button_frame, text="Update Category", command=self.update_category)
-        update_category_button.grid(row=0, column=1, pady=(2, 2))
+        update_category_button.grid(row=0, column=1, pady=5)
         refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
-        refresh_button.grid(row=0, column=2, pady=(2, 2))
+        refresh_button.grid(row=0, column=2, pady=5)
         close_button = tk.Button(self.button_frame, text="Close", command=self.category_window.destroy)
-        close_button.grid(row=0, column=3, pady=(2, 2))
+        close_button.grid(row=0, column=3, pady=5)
 
         # Populate the grid with data
         self.populate_categories()
@@ -80,7 +80,7 @@ class ListCategoriesGui:
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.category_window.winfo_screenwidth(), self.category_window.winfo_screenheight())
-        self.category_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+        self.category_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))
 
     def populate_categories(self):
         retrieve_all_categories = catbl.RetrieveAllCategories()
@@ -182,9 +182,9 @@ class AddCategoryGui:
 
         # Buttons
         self.add_button = tk.Button(self.button_frame, text="Add", command=self.add_category)
-        self.add_button.grid(column=0, row=0, pady=(2, 2))
+        self.add_button.grid(column=0, row=0, pady=5)
         self.cancel_button = tk.Button(self.button_frame, text="Cancel", command=self.add_category_window.destroy)
-        self.cancel_button.grid(column=1, row=0, pady=(2, 2))
+        self.cancel_button.grid(column=1, row=0, pady=5)
 
         self.add_category_window.wait_visibility()
         self.add_category_window.grab_set()
@@ -227,7 +227,7 @@ class AddCategoryGui:
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.add_category_window.winfo_screenwidth(), self.add_category_window.winfo_screenheight())
-        self.add_category_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+        self.add_category_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))
 
 """
 Description: A class for updating a category
@@ -306,9 +306,9 @@ class UpdateCategoryGui:
 
         # Buttons
         self.save_button = tk.Button(self.button_frame, text="Save", command=self.save_category)
-        self.save_button.grid(column=0, row=0, pady=(2, 2))
+        self.save_button.grid(column=0, row=0, pady=5)
         self.cancel_button = tk.Button(self.button_frame, text="Cancel", command=self.update_category_window.destroy)
-        self.cancel_button.grid(column=1, row=0, pady=(2, 2))
+        self.cancel_button.grid(column=1, row=0, pady=5)
 
         self.update_category_window.wait_visibility()
         self.update_category_window.grab_set()
@@ -354,4 +354,4 @@ class UpdateCategoryGui:
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
         screen_coordinates = gui_util.calculate_window_center(x, y, self.update_category_window.winfo_screenwidth(), self.update_category_window.winfo_screenheight())
-        self.update_category_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1]))
+        self.update_category_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))
