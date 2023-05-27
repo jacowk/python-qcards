@@ -58,14 +58,14 @@ class QCardsTextApp:
 
                 # Get the csv fields
                 id = active_card[0]
-                summary = active_card[1]
+                title = active_card[1]
                 front_content = active_card[2]
                 back_content = active_card[3]
 
                 # Create output
                 print("Category: {:s}".format(selected_category_name))
                 print("Stack: {:s}".format(selected_stack_name))
-                print("Card Id: {:d} ({:d} of {:d})\nSummary: {:s}\nFront:\n{:s}".format(id, count, total, summary, front_content))
+                print("Card Id: {:d} ({:d} of {:d})\nTitle: {:s}\nFront:\n{:s}".format(id, count, total, title, front_content))
                 input("\nPress any key to view the back")
                 print("\nBack:\n{:s}".format(back_content))
                 update_view_statistics = mcard.UpdateViewStatistics()

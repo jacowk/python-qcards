@@ -60,7 +60,7 @@ class ListCardsGui:
         self.stack_filter_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_stack())
 
         # Define the columns
-        columns = ('id', 'category', 'stack', 'summary', 'front_content', 'last_view_date', 'active')
+        columns = ('id', 'category', 'stack', 'title', 'front_content', 'last_view_date', 'active')
 
         # Create a TreeView (Table)
         self.tree = ttk.Treeview(self.card_window, columns=columns, show='headings')
@@ -69,7 +69,7 @@ class ListCardsGui:
         self.tree.heading('id', text="ID")
         self.tree.heading('category', text="Category")
         self.tree.heading('stack', text="Stack")
-        self.tree.heading('summary', text="Summary")
+        self.tree.heading('title', text="Title")
         self.tree.heading('front_content', text="Front")
         self.tree.heading('last_view_date', text="Last View Date")
         self.tree.heading('active', text="Active")
@@ -127,7 +127,7 @@ class ListCardsGui:
             retrieve_cards_by_stack_id = cbl.RetrieveActiveCardsByStackId()
             all_cards = retrieve_cards_by_stack_id.run(stack_filter_id)
         for card in all_cards:
-            # id, summary, front_content, back_content, stack_id, view_count, group_cd, active, last_view_date
+            # id, title, front_content, back_content, stack_id, view_count, group_cd, active, last_view_date
             values = (card[0], card[10], card[9], card[1], card[2], card[8], card[7])
             self.tree.insert('', tk.END, values=values)
         self.card_window.title("List Cards ({} cards)".format(len(all_cards)))
@@ -271,11 +271,11 @@ class AddCardGui:
         # Bind the function to the Combobox selection event
         self.stack_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_stack())
 
-        # Summary field
-        self.summary_label = ttk.Label(self.frame, text="Summary:")
-        self.summary_label.grid(column=0, row=2, sticky="w")
-        self.summary_entry = ttk.Entry(self.frame, width=61)
-        self.summary_entry.grid(column=1, row=2, sticky="w", pady=(1, 2))
+        # Title field
+        self.title_label = ttk.Label(self.frame, text="Title:")
+        self.title_label.grid(column=0, row=2, sticky="w")
+        self.title_entry = ttk.Entry(self.frame, width=61)
+        self.title_entry.grid(column=1, row=2, sticky="w", pady=(1, 2))
 
         # Front field
         self.front_label = ttk.Label(self.frame, text="Front:")
@@ -356,8 +356,8 @@ class AddCardGui:
         self.selected_stack_id = self.stack_dict[selected_stack]
 
     def add_card(self):
-        # summary, front_content, back_content, stack_id, active
-        summary = self.summary_entry.get()
+        # title, front_content, back_content, stack_id, active
+        title = self.title_entry.get()
         #front_content = self.front_content_entry.get()
         front_content = self.front_content_text.get("1.0", tk.END)
         back_content = self.back_content_text.get("1.0", tk.END)
@@ -367,7 +367,7 @@ class AddCardGui:
 
         # Prepare Card
         card = cbl.Card()
-        card.set_summary(summary)
+        card.set_title(title)
         card.set_front_content(front_content)
         card.set_back_content(back_content)
         card.set_stack_id(stack_id)
@@ -395,7 +395,7 @@ class AddCardGui:
     def set_tab_order(self):
         self.category_filter_combobox.lift()
         self.stack_combobox.lift()
-        self.summary_entry.lift()
+        self.title_entry.lift()
         self.front_content_text.lift()
         self.back_content_label.lift()
         self.active_checkbutton.lift()
@@ -432,7 +432,7 @@ class UpdateCardGui:
 
         # Populate the update window with the selected item's values
         self.id_var = tk.IntVar(value=card.get_id())
-        self.summary_var = tk.StringVar(value=card.get_summary())
+        self.title_var = tk.StringVar(value=card.get_title())
         self.front_content_var = card.get_front_content()
         self.back_content_var = card.get_back_content()
         self.active_var = tk.BooleanVar(value=card.get_active())
@@ -484,11 +484,11 @@ class UpdateCardGui:
         # Bind the function to the Combobox selection event
         self.stack_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_stack())
 
-        # Summary field
-        self.summary_label = ttk.Label(self.frame, text="Summary:")
-        self.summary_label.grid(column=0, row=3, sticky="w")
-        self.summary_entry = ttk.Entry(self.frame, textvariable=self.summary_var, width=61)
-        self.summary_entry.grid(column=1, row=3, sticky="w", pady=(1, 1))
+        # Title field
+        self.title_label = ttk.Label(self.frame, text="Title:")
+        self.title_label.grid(column=0, row=3, sticky="w")
+        self.title_entry = ttk.Entry(self.frame, textvariable=self.title_var, width=61)
+        self.title_entry.grid(column=1, row=3, sticky="w", pady=(1, 1))
 
         # Front field
         self.front_content_label = ttk.Label(self.frame, text="Front:")
@@ -569,7 +569,7 @@ class UpdateCardGui:
 
     def save_card(self):
         id = self.id_var.get()
-        summary = self.summary_entry.get()
+        title = self.title_entry.get()
         front_content = self.front_content_text.get("1.0", tk.END)
         back_content = self.back_content_text.get("1.0", tk.END)
         qcards_util = qu.QCardsUtil()
@@ -579,7 +579,7 @@ class UpdateCardGui:
         # Prepare Card
         card = cbl.Card()
         card.set_id(id)
-        card.set_summary(summary)
+        card.set_title(title)
         card.set_front_content(front_content)
         card.set_back_content(back_content)
         card.set_stack_id(stack_id)
@@ -594,7 +594,7 @@ class UpdateCardGui:
         self.list_cards_gui.tree.item(selected_item, values=(id,
                                                              self.selected_category,
                                                              self.selected_stack,
-                                                             summary,
+                                                             title,
                                                              front_content,
                                                              self.last_view_date_var,
                                                              active))

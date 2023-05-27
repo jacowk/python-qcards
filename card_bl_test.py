@@ -12,14 +12,14 @@ class AddCardTest(ut.TestCase):
 
     @staticmethod
     def runTest():
-        summary = "Test summary 1"
+        title = "Test title 1"
         front_content = "Test front content 1"
         back_content = "Test back content 1"
         stack_id = 1
         active = 1
 
         card = cbl.Card()
-        card.set_summary(summary)
+        card.set_title(title)
         card.set_front_content(front_content)
         card.set_back_content(back_content)
         card.set_stack_id(stack_id)
@@ -39,7 +39,7 @@ class UpdateCardTest(ut.TestCase):
     @staticmethod
     def runTest():
         id = 26
-        summary = "Test summary 1 update"
+        title = "Test title 1 update"
         front_content = "Test front content 1 update"
         back_content = "Test back content 1 update"
         stack_id = 2
@@ -47,7 +47,7 @@ class UpdateCardTest(ut.TestCase):
 
         card = cbl.Card()
         card.set_id(id)
-        card.set_summary(summary)
+        card.set_title(title)
         card.set_front_content(front_content)
         card.set_back_content(back_content)
         card.set_stack_id(stack_id)
@@ -99,7 +99,7 @@ class RetrieveCardByIdTest(ut.TestCase):
         # Assert result
         ut.TestCase.assertFalse(card, None)
         print("ID: {:d}".format(card.get_id()))
-        print("Summary: {:s}".format(card.get_summary()))
+        print("Title: {:s}".format(card.get_title()))
         print("Front: {:s}".format(card.get_front_content()))
         print("Back: {:s}".format(card.get_back_content()))
         print("Stack Id: {:d}".format(card.get_stack_id()))

@@ -7,14 +7,14 @@ class AddCardDAOTest(ut.TestCase):
 
     @staticmethod
     def runTest():
-        summary = "Test summary 1"
+        title = "Test title 1"
         front_content = "Test Front 1"
         back_content = "Test Front 2"
         stack_id = 1
         active = 1
 
         add_card = cd.AddCardDAO()
-        add_card.run(summary, front_content, back_content, stack_id, active)
+        add_card.run(title, front_content, back_content, stack_id, active)
 
 
 class AddMultipleCardsDAOTest(ut.TestCase):
@@ -40,16 +40,16 @@ class AddMultipleCardsDAOTest(ut.TestCase):
                     cnt += 1
                     continue  # Skip first line with only column names
 
-                summary = row[0]
+                title = row[0]
                 front_content = row[1]
                 back_content = row[2]
                 #stack_id = 1
                 active = 1
 
-                print(summary, front_content, back_content, stack_id, active)
+                print(title, front_content, back_content, stack_id, active)
 
                 add_card = cd.AddCardDAO()
-                add_card.run(summary, front_content, back_content, stack_id, active)
+                add_card.run(title, front_content, back_content, stack_id, active)
 
 
 class RetrieveActiveCardsByStackIdDAOTest(ut.TestCase):

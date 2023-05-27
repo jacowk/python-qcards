@@ -38,14 +38,14 @@ class AddCardTest(ut.TestCase):
 
     @staticmethod
     def runTest():
-        summary = "Test summary 2"
+        title = "Test title 2"
         front_content = "Test Front 2"
         back_content = "Test Front 2"
         stack_id = 5
         active = 1
 
         add_card = cd.AddCard()
-        add_card.run(summary, front_content, back_content, stack_id, active)
+        add_card.run(title, front_content, back_content, stack_id, active)
 
 class AddReviewStageTest(ut.TestCase):
 

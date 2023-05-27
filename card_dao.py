@@ -1,5 +1,4 @@
 import qcards_db as qcards_db
-import qcards_util as qu
 import qcards_date_util as du
 
 """
@@ -10,10 +9,10 @@ Jaco Koekemoer
 """
 class AddCardDAO:
 
-    def run(self, summary, front_content, back_content, stack_id, active):
+    def run(self, title, front_content, back_content, stack_id, active):
         # Prepare SQL
-        sql = "insert into t_card(summary, front_content, back_content, stack_id, view_count, group_cd, active, create_date) \
-            values(\"{:s}\", \"{:s}\", \"{:s}\", {:d}, 0, 1, {}, now());".format(summary, front_content, back_content,
+        sql = "insert into t_card(title, front_content, back_content, stack_id, view_count, group_cd, active, create_date) \
+            values(\"{:s}\", \"{:s}\", \"{:s}\", {:d}, 0, 1, {}, now());".format(title, front_content, back_content,
                                                                                  stack_id, active)
         #print(sql)
 
@@ -30,15 +29,15 @@ Jaco Koekemoer
 """
 class UpdateCardDAO:
 
-    def run(self, id, summary, front_content, back_content, stack_id, active):
+    def run(self, id, title, front_content, back_content, stack_id, active):
         # Prepare SQL
         sql = "update t_card \
-            set summary = '{:s}', \
+            set title = '{:s}', \
             front_content = '{:s}', \
             back_content = '{:s}', \
             stack_id = {:d}, \
             active = {} \
-            where id = {:d};".format(summary, front_content, back_content, stack_id, active, id)
+            where id = {:d};".format(title, front_content, back_content, stack_id, active, id)
         #print(sql);
 
         # Run the query
@@ -76,7 +75,7 @@ class RetrieveCardByIdDAO:
     def run(self, id):
         # Prepare SQL
         sql = "select c.id, \
-                c.summary, \
+                c.title, \
                 c.front_content, \
                 c.back_content, \
                 c.stack_id, \
@@ -108,7 +107,7 @@ class RetrieveAllCardsDAO:
     def run(self):
         # Prepare SQL
         sql = "select c.id, \
-                c.summary, \
+                c.title, \
                 c.front_content, \
                 c.back_content, \
                 c.stack_id, \
@@ -138,7 +137,7 @@ class RetrieveActiveCardsByStackIdDAO:
     def run(self, stack_id, active = None, order_group = False):
         # Prepare SQL
         sql = "select c.id, \
-                c.summary, \
+                c.title, \
                 c.front_content, \
                 c.back_content, \
                 c.stack_id, \

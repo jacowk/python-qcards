@@ -226,5 +226,5 @@ Until the UI development is done, stacks and cards can be set up with unit testi
 2. Get the category id with this query, which is required to add a stack: select * from t_category;
 3. Add a stack with AddStackTest (stack_dao_test.py)
 4. Getting the stack id, which is required for adding cards: select * from t_stack;
-5. Prep the cards in a pipe delimited csv file with the following headings: summary|front_content|back_content
+5. Prep the cards in a pipe delimited csv file with the following headings: title|front_content|back_content
 6. Import the cards with AddMultipleCardsTest (card_dao_test.py)

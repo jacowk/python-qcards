@@ -52,7 +52,7 @@ DROP TABLE IF EXISTS `t_card`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_card` (
   `id` int(6) unsigned NOT NULL AUTO_INCREMENT,
-  `summary` varchar(100) DEFAULT NULL,
+  `title` varchar(100) DEFAULT NULL,
   `front_content` varchar(200) DEFAULT NULL,
   `back_content` varchar(1000) DEFAULT NULL,
   `stack_id` int(6) DEFAULT NULL,

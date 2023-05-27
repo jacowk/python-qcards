@@ -16,11 +16,11 @@ class Card:
     def set_id(self, id):
         self.id = id
 
-    def get_summary(self):
-        return self.summary
+    def get_title(self):
+        return self.title
 
-    def set_summary(self, summary):
-        self.summary = summary
+    def set_title(self, title):
+        self.title = title
 
     def get_front_content(self):
         return self.front_content
@@ -105,8 +105,8 @@ class AddCard:
 
         # Call DAO
         add_card_dao = cd.AddCardDAO()
-        # summary, front_content, back_content, stack_id, active
-        add_card_dao.run(card.summary, card.front_content, card.back_content, card.stack_id, card.active)
+        # title, front_content, back_content, stack_id, active
+        add_card_dao.run(card.title, card.front_content, card.back_content, card.stack_id, card.active)
 
 """
 Business layer for updating cards
@@ -131,7 +131,7 @@ class UpdateCard:
 
         # Call DAO
         update_card_dao = cd.UpdateCardDAO()
-        update_card_dao.run(card.id, card.summary, card.front_content, card.back_content, card.stack_id, card.active)
+        update_card_dao.run(card.id, card.title, card.front_content, card.back_content, card.stack_id, card.active)
 
 """
 Business layer for updating the view count for a card
@@ -156,12 +156,12 @@ class RetrieveCardById:
     def run(self, id):
         retrieve_card_dao = cd.RetrieveCardByIdDAO()
         result = retrieve_card_dao.run(id) # Returns 2 dimensional tuple
-        # id, summary, front_content, back_content, stack_id, view_count, group_cd, active, last_view_date
+        # id, title, front_content, back_content, stack_id, view_count, group_cd, active, last_view_date
 
         # Convert result to Category class
         card = Card()
         card.set_id(result[0][0])
-        card.set_summary(result[0][1])
+        card.set_title(result[0][1])
         card.set_front_content(result[0][2])
         card.set_back_content(result[0][3])
         card.set_stack_id(result[0][4])
@@ -187,7 +187,7 @@ class RetrieveAllCards:
     def run(self):
         retrieve_all_cards = cd.RetrieveAllCardsDAO()
         cards = retrieve_all_cards.run()  # Returns 2 dimensional tuple
-        # id, summary, front_content, back_content, stack_id, view_count, group_cd, active, last_view_date
+        # id, title, front_content, back_content, stack_id, view_count, group_cd, active, last_view_date
 
         # Convert data for front-end display
         converted_cards = ()
@@ -195,7 +195,7 @@ class RetrieveAllCards:
         for card in cards:
             converted_card = (
                 card[0],  # id
-                card[1],  # summary
+                card[1],  # title
                 card[2],  # front_content
                 card[3],  # back_content
                 card[4],  # stack_id
@@ -220,7 +220,7 @@ class RetrieveActiveCardsByStackId:
     def run(self, stack_id, active = None, order_group = False):
         retrieve_all_cards = cd.RetrieveActiveCardsByStackIdDAO()
         cards = retrieve_all_cards.run(stack_id, active, order_group)  # Returns 2 dimensional tuple
-        # id, summary, front_content, back_content, stack_id, view_count, group_cd, active, last_view_date
+        # id, title, front_content, back_content, stack_id, view_count, group_cd, active, last_view_date
 
         # Convert data for front-end display
         converted_cards = ()
@@ -228,7 +228,7 @@ class RetrieveActiveCardsByStackId:
         for card in cards:
             converted_card = (
                 card[0],  # id
-                card[1],  # summary
+                card[1],  # title
                 card[2],  # front_content
                 card[3],  # back_content
                 card[4],  # stack_id
@@ -284,13 +284,13 @@ class ImportCards:
                     cnt += 1
                     continue  # Skip first line with only column names
 
-                summary = row[0]
+                title = row[0]
                 front_content = row[1]
                 back_content = row[2]
                 active = 1
 
-                print(summary, front_content, back_content, stack_id, active)
+                #print(title, front_content, back_content, stack_id, active)
 
                 add_card = cd.AddCardDAO()
-                add_card.run(summary, front_content, back_content, stack_id, active)
+                add_card.run(title, front_content, back_content, stack_id, active)
 

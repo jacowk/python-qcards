@@ -251,7 +251,7 @@ class ReviewStackGui:
 
         # Set initial fields
         self.id_var = tk.IntVar(value=card_for_review[0])
-        self.summary_var = tk.StringVar(value=card_for_review[1])
+        self.title_var = tk.StringVar(value=card_for_review[1])
         self.front_content_var = card_for_review[2]
         self.back_content_var = card_for_review[3]
         self.current_view_count_var = tk.IntVar(value=card_for_review[5])
@@ -280,11 +280,11 @@ class ReviewStackGui:
                                         state="readonly")
         self.category_entry.grid(column=1, row=2, sticky="w", pady=(1, 1))
 
-        # Summary field
-        self.summary_label = ttk.Label(self.frame, text="Summary:")
-        self.summary_label.grid(column=0, row=3, sticky="w")
-        self.summary_entry = ttk.Entry(self.frame, textvariable=self.summary_var, width=61, state="readonly")
-        self.summary_entry.grid(column=1, row=3, sticky="w", pady=(1, 1))
+        # Title field
+        self.title_label = ttk.Label(self.frame, text="Title:")
+        self.title_label.grid(column=0, row=3, sticky="w")
+        self.title_entry = ttk.Entry(self.frame, textvariable=self.title_var, width=61, state="readonly")
+        self.title_entry.grid(column=1, row=3, sticky="w", pady=(1, 1))
 
         # Front field
         font_name = "Courier New"
@@ -410,7 +410,7 @@ class ReviewStackGui:
     def reset_fields(self, card_for_review):
         # Populate the update window with the selected item's values
         self.id_var.set(card_for_review[0])
-        self.summary_var.set(card_for_review[1])
+        self.title_var.set(card_for_review[1])
         #self.front_content_var.set(card_for_review[2])
         self.current_view_count_var.set(card_for_review[5])
         self.last_view_date_var.set(card_for_review[8])
