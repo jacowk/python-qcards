@@ -1,3 +1,8 @@
+drop database qcards;
+create database qcards;
+
+show tables;
+
 truncate t_category;
 truncate t_stack;
 truncate t_card;

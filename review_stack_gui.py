@@ -260,6 +260,7 @@ class ReviewStackGui:
         self.category_description_var = tk.StringVar(value=card_for_review[10])
         self.view_count_var = tk.IntVar(value=card_for_review[5])
         self.last_view_date_var = tk.StringVar(value=card_for_review[8])
+        self.back_revealed = False
 
         # Id field
         self.id_label = ttk.Label(self.frame, text="ID:")
@@ -372,6 +373,8 @@ class ReviewStackGui:
         self.reset_fields(card_for_review)
 
     def previous_card(self):
+        self.back_revealed = False
+
         if self.card_review_index == 0:
             messagebox.showinfo("Information", "You are already at the beginning of the stack")
             return
@@ -386,14 +389,18 @@ class ReviewStackGui:
         self.reset_fields(card_for_review)
 
     def reveal_back_content(self):
-        # First update the view statistics for the current card
-        update_view_statistics = cbl.UpdateViewStatistics()
-        update_view_statistics.run(self.id_var.get())
-        
         # Reveal the back content again by changing the color to black
         self.back_content_text.tag_add("black", "1.0", tk.END)
 
+        if self.back_revealed == False:
+            # First update the view statistics for the current card
+            update_view_statistics = cbl.UpdateViewStatistics()
+            update_view_statistics.run(self.id_var.get())
+            self.back_revealed = True
+
     def next_card(self):
+        self.back_revealed = False
+
         if self.card_review_index >= len(self.cards_for_review) - 1:
             messagebox.showinfo("Information", "No more cards to review")
             return

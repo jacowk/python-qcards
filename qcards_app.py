@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import PhotoImage
-from tkinter import Canvas
-import tkinter.messagebox as tkmb
+from PIL import ImageTk, Image
 import category_tree_gui as ctg
 import category_gui as catg
 import stack_gui as sg
@@ -24,7 +22,14 @@ class QCardsApp:
         self.main_window.title("QCards")
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(1300, 600)
+        self.calculate_screen_position(1024, 600)
+
+        # Image frame
+        self.image_frame = tk.Frame(self.main_window, width=1200, height=500)
+        self.image_frame.grid(row=0, column=0, columnspan=2)
+        img = ImageTk.PhotoImage(Image.open("images/pinetree.jpg"))
+        self.image_label = tk.Label(self.image_frame, image=img)
+        self.image_label.grid(row=0, column=0, columnspan=2)
 
         # Creating a ttk style object
         style = ttk.Style(self.main_window)

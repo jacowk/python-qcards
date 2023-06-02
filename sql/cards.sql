@@ -13,7 +13,11 @@ sudo /usr/local/squirrel-sql-4.5.1/squirrel-sql.sh
 Mysql Driver (Platform Independent): https://dev.mysql.com/downloads/connector/j/
 */
 
+drop database qcards;
+create database qcards;
+
 ALTER TABLE t_card CHANGE COLUMN summary title varchar(100);
+select * from t_card;
 
 /* Cards */
 ALTER TABLE t_card MODIFY front_content varchar(1000);
@@ -38,14 +42,14 @@ drop table t_card;
 truncate table t_card;
 select id, stack_id, view_cnt, last_view_date from t_card;
 
-insert into t_card(title, front_content, back_content, stack_id, view_cnt, group_cnt, active, create_date)
+insert into t_card(summary, front_content, back_content, stack_id, view_cnt, group_cnt, active, create_date)
 values('Front 1', 'Back 1', 1, 0, 1, True, NOW());
 
 select * from t_card where id = 26;
 select * from t_card where stack_id = 1;
 
 update t_card
-set title = 'title 1',
+set summary = 'summary 1',
 front_content = 'Front 1 updated',
 back_content = 'Back 1 updated',
 stack_id = 2,
@@ -82,7 +86,7 @@ insert into t_lookup_group (description) values('Back');
 select * from t_lookup_group;
 
 select c.id, 
-c.title,
+c.summary, 
 c.front_content, 
 c.back_content, 
 c.stack_id, 
@@ -99,7 +103,7 @@ where c.stack_id = 1;
 
 
 select c.id, 
-c.title,
+c.summary, 
 c.front_content, 
 c.back_content, 
 c.stack_id, 
