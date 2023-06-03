@@ -104,6 +104,13 @@ insert into t_lookup_weekday (description) values('Sunday');
 
 select * from t_lookup_weekday;
 
+/* How many in the different weekdays */
+select wd.description, count(rs.id)
+from t_review_stage rs, t_lookup_weekday wd
+where rs.weekday_cd = wd.id
+and rs.review_stage_cd = 3
+group by rs.weekday_cd;
+
 select * from t_stack s where s.id = 6;
 select * from t_review_stage rs where rs.id = 8;
 

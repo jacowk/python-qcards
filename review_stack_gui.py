@@ -110,6 +110,7 @@ class ReviewGui:
             # stack_id, stack, category, review_stage_cd, next_view_date, lrs.description
             values = (stack[0], stack[1], stack[7], stack[8], stack[5])
             self.tree.insert('', tk.END, values=values)
+        self.stack_window.title("Review Stacks ({} stacks)".format(len(stacks_for_review)))
 
     """
     Open a screen to review the active cards for the selected stack
