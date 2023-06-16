@@ -21,7 +21,7 @@ CREATE TABLE t_review_stage (
     last_modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-select * from t_review_stage;
+select * from t_review_stage where id = 8;
 truncate table t_review_stage;
 drop table t_review_stage;
 

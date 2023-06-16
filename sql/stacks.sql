@@ -18,11 +18,15 @@ CREATE TABLE t_stack (
 alter table t_stack drop column last_view_date;
 
 show tables;
-select * from t_stack;
+select * from t_stack where id = 33;
 describe t_stack;
 drop table t_stack;
 truncate table t_stack;
 select * from t_stack;
+
+update t_stack
+set next_view_date = "2023-06-16"
+where id = 33;
 
 insert into t_stack(description, active, source, category_id, create_date)
 values('HTML in W3Schools', True, 'www.w3schools.com', 3, NOW());
