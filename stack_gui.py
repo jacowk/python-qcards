@@ -7,7 +7,8 @@ import qcards_util as qu
 import category_bl as catbl
 import category_constant as catc
 import review_stage_bl as rsbl
-import review_stage_gui as rsg
+import review_stack_gui as rsg
+import card_bl as cbl
 
 """
 Description: A class for listing stacks
@@ -92,10 +93,13 @@ class ListStacksGui:
         review_stage_button.grid(row=0, column=3, pady=5)
         calculate_next_view_date_button = ttk.Button(self.button_frame, text="Calc Next View Date",command=self.calculate_next_view_date)
         calculate_next_view_date_button.grid(row=0, column=4, pady=5)
+        review_stack_button = ttk.Button(self.button_frame, text="Review Stack",
+                                                     command=self.review_stack)
+        review_stack_button.grid(row=0, column=5, pady=5)
         refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
-        refresh_button.grid(row=0, column=5, pady=5)
+        refresh_button.grid(row=0, column=6, pady=5)
         close_button = tk.Button(self.button_frame, text="Close", command=self.stack_window.destroy)
-        close_button.grid(row=0, column=6, pady=5)
+        close_button.grid(row=0, column=7, pady=5)
 
         # Populate the grid with data
         self.populate_stacks()
@@ -242,6 +246,36 @@ class ListStacksGui:
             messagebox.showinfo("Calculate Next View Date", "Next view date calculated: {:%Y-%m-%d}".format(next_view_date))
         else:
             messagebox.showinfo("Calculate Next View Date", "No next view date calculated")
+
+    def review_stack(self):
+        # Get values
+        selected_item = self.tree.focus()
+
+        # If no selection was made, display an error message
+        if len(selected_item) == 0:
+            messagebox.showerror("Error", "Please select a stack to review")
+            return
+
+        # Current_item is a dictionary
+        current_item = self.tree.item(selected_item)
+
+        # Get the values index from the dictionary, which contains a list
+        values = current_item['values']
+
+        # Each item in the list corresponds with the columns in the TreeView
+        stack_id = values[0]
+
+        # Retrieve the stack
+        retrieve_stack_by_id = sbl.RetrieveStackById()
+        stack = retrieve_stack_by_id.run(stack_id)
+        stack.set_id(stack_id)
+
+        # Retrieve all the cards for the stack to review, to be passed on to ReviewStackGui
+        retrieve_cards_by_stack_id = cbl.RetrieveActiveCardsByStackId()
+        cards_for_review = retrieve_cards_by_stack_id.run(stack_id)
+
+        # Open the review gui
+        review_stack_gui = rsg.ReviewStackGui(self.stack_window, stack, cards_for_review)
 
     def refresh_table(self):
         for item in self.tree.get_children():
