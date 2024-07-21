@@ -203,3 +203,7 @@ class DateUtil:
         adjusted_date = DateUtil.get_string_as_date(current_year, current_month, calendar_day)
         adjusted_date = DateUtil.add_months(adjusted_date, month_count)
         return adjusted_date
+
+    @staticmethod
+    def date1_after_date2(date1, date2):
+        return date1 > date2

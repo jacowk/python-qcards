@@ -342,16 +342,18 @@ class ReviewStackGui:
         self.button_frame.grid(column=0, row=8, columnspan=2)
 
         # Buttons
+        last_viewed_card_button = tk.Button(self.button_frame, text="Last Viewed", command=self.last_viewed)
+        last_viewed_card_button.grid(column=0, row=0, pady=(1, 2))
         close_button = tk.Button(self.button_frame, text="Close", command=self.review_stack_window.destroy)
-        close_button.grid(column=0, row=0, pady=(1, 2))
+        close_button.grid(column=1, row=0, pady=(1, 2))
         restart_button = tk.Button(self.button_frame, text="Restart", command=self.restart)
-        restart_button.grid(column=1, row=0, pady=(1, 2))
+        restart_button.grid(column=2, row=0, pady=(1, 2))
         previous_card_button = tk.Button(self.button_frame, text="Previous Card", command=self.previous_card)
-        previous_card_button.grid(column=2, row=0, pady=(1, 2))
+        previous_card_button.grid(column=3, row=0, pady=(1, 2))
         reveal_back_button = tk.Button(self.button_frame, text="Reveal Back", command=self.reveal_back_content)
-        reveal_back_button.grid(column=3, row=0, pady=(1, 2))
+        reveal_back_button.grid(column=4, row=0, pady=(1, 2))
         next_card_button = tk.Button(self.button_frame, text="Next Card", command=self.next_card)
-        next_card_button.grid(column=4, row=0, pady=(1, 2))
+        next_card_button.grid(column=5, row=0, pady=(1, 2))
 
         self.review_stack_window.wait_visibility()
         self.review_stack_window.grab_set()
@@ -408,6 +410,30 @@ class ReviewStackGui:
 
         # Update the title
         self.card_review_index += 1
+        title = "Review Card {:d} of {:d}".format((self.card_review_index + 1), len(self.cards_for_review))
+        self.review_stack_window.title(title)
+
+        # Get the card for review
+        card_for_review = self.cards_for_review[self.card_review_index]
+        self.reset_fields(card_for_review)
+
+    def last_viewed(self):
+        self.back_revealed = False
+
+        last_viewed_index = 0
+        last_viewed_date = self.cards_for_review[0][8] #Start with the last_viewed_date of the first card
+        current_index = 0
+        for last_viewed_card in self.cards_for_review:
+            print("Index: {}".format(current_index))
+            print("last_viewed_card[8]: {}".format(last_viewed_card[8]))
+            print("last_viewed_date: {}".format(last_viewed_date))
+            if last_viewed_card[8] > last_viewed_date:
+                last_viewed_date = last_viewed_card[8]
+                last_viewed_index = current_index
+            current_index += 1
+
+        # Update the title
+        self.card_review_index = last_viewed_index
         title = "Review Card {:d} of {:d}".format((self.card_review_index + 1), len(self.cards_for_review))
         self.review_stack_window.title(title)
 
