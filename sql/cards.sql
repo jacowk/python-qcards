@@ -20,7 +20,7 @@ ALTER TABLE t_card CHANGE COLUMN summary title varchar(100);
 select * from t_card;
 
 /* Cards */
-ALTER TABLE t_card MODIFY front_content varchar(1000);
+ALTER TABLE t_card MODIFY back_content varchar(2000);
 
 CREATE TABLE t_card (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,

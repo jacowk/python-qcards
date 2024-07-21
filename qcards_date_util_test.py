@@ -319,6 +319,31 @@ class CalculateNextWeeklyDateTest(ut.TestCase):
         ut.TestCase.assertTrue(next_view_date_str, expected_view_date)
 
 """
+A unit test for the calculate_next_weekly_date_v2() function in the DateUtil class
+
+Jaco Koekemoer
+2023-06-27
+"""
+class CalculateNextWeeklyDateV2Test(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        # Prepare parameters
+        from_date = qdu.DateUtil.get_string_as_date(2023, 6, 25)
+        #from_date = qdu.DateUtil.get_now_as_date()
+        weekday_cd = 2 # Monday = 1
+        week_count = 2
+
+        # Run the test
+        expected_view_date = "2023-07-04"
+        next_view_date = qdu.DateUtil.calculate_next_weekly_date_v2(from_date, weekday_cd, week_count)
+        next_view_date_str = qdu.DateUtil.get_date_as_string(next_view_date)
+        print(next_view_date_str)
+
+        # Assert result
+        ut.TestCase.assertTrue(next_view_date_str, expected_view_date)
+
+"""
 A unit test for the calculate_next_monthly_date() function in the DateUtil class
 
 Jaco Koekemoer
@@ -365,8 +390,9 @@ loader = ut.TestLoader()
 # suite = loader.loadTestsFromTestCase(CalculateNextEvenDateFromEvenDateTest)
 # suite = loader.loadTestsFromTestCase(CalculateNextEvenDateFromOddDateTest)
 # suite = loader.loadTestsFromTestCase(CalculateNextEvenDateFromEndOfMonthTest)
-suite = loader.loadTestsFromTestCase(CalculateNextWeeklyDateTest)
+# suite = loader.loadTestsFromTestCase(CalculateNextWeeklyDateTest)
 # suite = loader.loadTestsFromTestCase(CalculateNextMonthlyDateTest)
+suite = loader.loadTestsFromTestCase(CalculateNextWeeklyDateV2Test)
 
 runner = ut.TextTestRunner()
 runner.run(suite)

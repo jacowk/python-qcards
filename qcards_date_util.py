@@ -163,6 +163,30 @@ class DateUtil:
         return adjusted_date
 
     """
+    An alternative improved way of calculating the next weekly review date
+    
+    Jaco Koekemoer
+    2023-06-27
+    """
+    @staticmethod
+    def calculate_next_weekly_date_v2(from_date, weekday_cd, week_count): # Development in progress
+        # Step 1: If today's weekday = the scheduled weekday, then just add 7 days * the week_count to the date
+        from_weekday_cd = from_date.isoweekday()
+        if from_weekday_cd == weekday_cd:
+            from_date = DateUtil.add_days(from_date, (7 * week_count))
+            return from_date
+
+        # Step 2:
+        weekday_found_cnt = 0
+        while weekday_found_cnt < week_count:
+            from_weekday_cd = from_date.isoweekday()
+            if from_weekday_cd == weekday_cd:
+                weekday_found_cnt += 1
+            else:
+                from_date = DateUtil.add_days(from_date, 1)
+        return from_date
+
+    """
     A method to calculate the next view date for a monthly review stage
     Parameters:
     from_date: Represents the date you want to adjust

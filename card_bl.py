@@ -291,6 +291,18 @@ class ImportCards:
 
                 #print(title, front_content, back_content, stack_id, active)
 
-                add_card = cd.AddCardDAO()
-                add_card.run(title, front_content, back_content, stack_id, active)
+                #add_card = cd.AddCardDAO()
+                #add_card.run(title, front_content, back_content, stack_id, active)
+
+                card = Card()
+                card.set_title(title)
+                card.set_front_content(front_content)
+                card.set_back_content(back_content)
+                card.set_stack_id(stack_id)
+                card.set_active(active)
+
+                add_card = AddCard()
+                add_card.run(card)
+
+
 

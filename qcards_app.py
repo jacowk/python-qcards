@@ -13,6 +13,8 @@ import card_csv_import_gui as ci
 Description: The main class for this QCards app
 Author: Jaco Koekemoer
 Date: 2023-03-30
+
+Run Squirrel: sudo /usr/local/squirrel-sql-4.7.1/squirrel-sql.sh
 """
 class QCardsApp:
 

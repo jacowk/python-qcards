@@ -165,7 +165,8 @@ class RetrieveScheduledActiveStacksDAO:
                 and rs.review_stage_cd = lrs.id \
                 and s.active = 1 \
                 and (s.next_view_date <= curdate() or s.next_view_date is null) \
-                and rs.review_stage_cd != 1;"
+                and rs.review_stage_cd != 1 \
+                order by c.description asc, s.id asc;"
         # print(sql)
 
         # Run the query
@@ -191,7 +192,8 @@ class RetrieveDailyActiveStacksDAO:
                 and s.category_id = c.id \
                 and rs.review_stage_cd = lrs.id \
                 and s.active = 1 \
-                and rs.review_stage_cd = 1;"
+                and rs.review_stage_cd = 1 \
+                order by c.description asc, s.id asc;"
         # print(sql)
 
         # Run the query
