@@ -305,3 +305,34 @@ class RetrieveStacksByCategoryIdDict:
         for stack in stacks:
             stack_dictionary[stack[1]] = stack[0] # description: id
         return stack_dictionary
+
+
+"""
+A class for updating the hidden value of a given stack id to true
+
+Jaco Koekemoer
+2024-07-28
+"""
+class HideStack:
+
+    def run(self, stack_id):
+        hide_stack_dao = sd.HideStackDAO()
+        hide_stack_dao.run(stack_id)
+
+
+"""
+A class for updating the hidden value for all stacks to be reviewed to false
+
+Jaco Koekemoer
+2024-07-28
+"""
+class ShowAllActiveStacks:
+
+    def run(self):
+        # Show active scheduled stacks
+        show_all_active_scheduled_stacks = sd.ShowAllActiveScheduledStacksDAO()
+        show_all_active_scheduled_stacks.run()
+
+        # Show active daily stacks
+        show_all_active_daily_stacks = sd.ShowAllActiveDailyStacksDAO()
+        show_all_active_daily_stacks.run()

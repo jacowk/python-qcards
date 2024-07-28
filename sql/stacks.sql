@@ -8,6 +8,7 @@ CREATE TABLE t_stack (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	description VARCHAR(100),
     active BOOLEAN,
+    hidden BOOLEAN,
 	source VARCHAR(300),
 	category_id INT(6),
     next_view_date DATE NULL,
@@ -23,6 +24,17 @@ describe t_stack;
 drop table t_stack;
 truncate table t_stack;
 select * from t_stack;
+
+describe t_stack;
+alter table t_stack add hidden tinyint;
+alter table t_stack modify column hidden boolean;
+
+ALTER TABLE t_stack MODIFY COLUMN hidden BOOLEAN NOT NULL DEFAULT false;
+
+select * from t_stack s;
+update t_stack set hidden = false;
+
+
 
 update t_stack
 set next_view_date = "2023-06-16"
@@ -95,6 +107,14 @@ where s.id = 3;
 
 select * from t_review_stage rs where rs.stack_id = 3;
 
+describe t_stack;
+alter table t_stack add hidden tinyint;
+alter table t_stack modify column hidden boolean;
 
+select * from t_stack s;
+update t_stack set hidden = false;
+
+select * from t_stack s where s.id = 102;
+update t_stack s set s.hidden = true where s.id = 102;
 
 

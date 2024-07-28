@@ -81,10 +81,14 @@ class ReviewGui:
         review_stage_button.grid(row=1, column=1, pady=(1, 2))
         calculate_next_view_date_button = ttk.Button(self.button_frame, text="Calc Next View Date", command=self.calculate_next_view_date)
         calculate_next_view_date_button.grid(row=1, column=2, pady=(1, 2))
+        hide_stack_button = ttk.Button(self.button_frame, text="Hide Stack", command=self.hide_stack)
+        hide_stack_button.grid(row=1, column=3, pady=(1, 2))
+        show_all_stacks_button = ttk.Button(self.button_frame, text="Show All Stacks", command=self.show_all_stacks)
+        show_all_stacks_button.grid(row=1, column=4, pady=(1, 2))
         refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
-        refresh_button.grid(row=1, column=3, pady=(1, 2))
+        refresh_button.grid(row=1, column=5, pady=(1, 2))
         close_button = tk.Button(self.button_frame, text="Close", command=self.stack_window.destroy)
-        close_button.grid(row=1, column=4, pady=(1, 2))
+        close_button.grid(row=1, column=6, pady=(1, 2))
 
         # Configure row weights
         self.button_frame.grid_rowconfigure(0, weight=1)
@@ -205,6 +209,39 @@ class ReviewGui:
             messagebox.showinfo("Calculate Next View Date", "Next view date calculated: {:%Y-%m-%d}".format(next_view_date))
         else:
             messagebox.showinfo("Calculate Next View Date", "No next view date calculated")
+
+    def hide_stack(self):
+        # Get values
+        selected_item = self.tree.focus()
+
+        # If no selection was made, display an error message
+        if len(selected_item) == 0:
+            messagebox.showerror("Error", "Please select a stack to update")
+            return
+
+        # Current_item is a dictionary
+        current_item = self.tree.item(selected_item)
+
+        # Get the values index from the dictionary, which contains a list
+        values = current_item['values']
+
+        # Each item in the list corresponds with the columns in the TreeView
+        stack_id = values[0]
+
+        # Hide the selected stack
+        hide_stack = sbl.HideStack()
+        hide_stack.run(stack_id)
+
+        # Refresh the stack table
+        self.refresh_table()
+
+    def show_all_stacks(self):
+        # Show all the stacks
+        show_all_stacks = sbl.ShowAllActiveStacks()
+        show_all_stacks.run()
+
+        # Refresh the stack table
+        self.refresh_table()
 
     def refresh_table(self):
         for item in self.tree.get_children():

@@ -184,6 +184,23 @@ class RetrieveStacksForReviewDAOTest(ut.TestCase):
         # Assert results
         ut.TestCase.assertTrue(len(result) > 0, True)
 
+"""
+A class to test HideStackDAO
+
+Jaco Koekemoer
+2024-07-28
+"""
+class HideStackDAOTest(ut.TestCase):
+
+    @staticmethod
+    def runTest():
+        # Setup parameter
+        stack_id = 98 # Verjaarsdae
+
+        # Run the test
+        hide_stack = sd.HideStackDAO()
+        hide_stack.run(stack_id)
+
 # Run all tests
 # ut.main()
 
@@ -197,7 +214,8 @@ loader = ut.TestLoader()
 # suite = loader.loadTestsFromTestCase(UpdateNextViewDateDAOTest)
 # suite = loader.loadTestsFromTestCase(RetrieveScheduledActiveStacksDAOTest)
 # suite = loader.loadTestsFromTestCase(RetrieveDailyActiveStacksDAOTest)
-suite = loader.loadTestsFromTestCase(RetrieveStacksForReviewDAOTest)
+# suite = loader.loadTestsFromTestCase(RetrieveStacksForReviewDAOTest)
+suite = loader.loadTestsFromTestCase(HideStackDAOTest)
 
 runner = ut.TextTestRunner()
 runner.run(suite)

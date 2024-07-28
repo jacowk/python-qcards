@@ -1,5 +1,4 @@
 import qcards_db as qcards_db
-import qcards_util as qu
 
 """
 A class for creating a new stack in the database.
@@ -166,6 +165,7 @@ class RetrieveScheduledActiveStacksDAO:
                 and s.active = 1 \
                 and (s.next_view_date <= curdate() or s.next_view_date is null) \
                 and rs.review_stage_cd != 1 \
+                and s.hidden = 0 \
                 order by c.description asc, s.id asc;"
         # print(sql)
 
@@ -193,9 +193,77 @@ class RetrieveDailyActiveStacksDAO:
                 and rs.review_stage_cd = lrs.id \
                 and s.active = 1 \
                 and rs.review_stage_cd = 1 \
+                and s.hidden = 0 \
                 order by c.description asc, s.id asc;"
         # print(sql)
 
         # Run the query
         execute_query = qcards_db.QCardsExecuteSelectQuery()
         return execute_query.execute(sql)
+
+"""
+A class for setting the hidden column of a t_stack entry to true.
+
+Jaco Koekemoer
+2024-07-28
+"""
+class HideStackDAO:
+
+    def run(self, id):
+
+        # Prepare SQL
+        sql = "update t_stack \
+            set hidden = true \
+            where id = {:d};".format(id)
+        #print(sql)
+
+        # Run the query
+        execute_query = qcards_db.QCardsExecuteQuery()
+        execute_query.execute(sql)
+
+"""
+A class for setting the hidden column of all active stacks to false.
+This where clause matches RetrieveScheduledActiveStacksDAO
+
+Jaco Koekemoer
+2024-07-28
+"""
+class ShowAllActiveScheduledStacksDAO:
+
+    def run(self):
+
+        # Prepare SQL - Set the hidden field of all scheduled stacks
+        sql = "update t_stack s, t_review_stage rs \
+                set s.hidden = false \
+                where s.id = rs.stack_id \
+                and s.active = 1 \
+                and (s.next_view_date <= curdate() or s.next_view_date is null) \
+                and rs.review_stage_cd != 1"
+        #print(sql)
+
+        # Run the query
+        execute_query = qcards_db.QCardsExecuteQuery()
+        execute_query.execute(sql)
+
+"""
+A class for setting the hidden column of all active stacks to false.
+This where clause matches RetrieveDailyActiveStacksDAO.
+
+Jaco Koekemoer
+2024-07-28
+"""
+class ShowAllActiveDailyStacksDAO:
+
+    def run(self):
+
+        # Prepare SQL - Set the hidden field of all scheduled stacks
+        sql = "update t_stack s, t_review_stage rs \
+                set s.hidden = false \
+                where s.id = rs.stack_id \
+                and s.active = 1 \
+                and rs.review_stage_cd = 1"
+        #print(sql)
+
+        # Run the query
+        execute_query = qcards_db.QCardsExecuteQuery()
+        execute_query.execute(sql)
