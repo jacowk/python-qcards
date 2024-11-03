@@ -220,7 +220,7 @@ class AddCardGui:
         self.frame.grid(column=0, row=0, padx=10, pady=10)
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(620, 630)
+        self.calculate_screen_position(620, 640)
 
         # Creating a ttk style object
         style = ttk.Style()
@@ -421,7 +421,7 @@ class UpdateCardGui:
         self.frame.grid(column=0, row=0, padx=10, pady=10)
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(620, 650)
+        self.calculate_screen_position(620, 660)
 
         # Creating a ttk style object
         style = ttk.Style()

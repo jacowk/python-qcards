@@ -8,6 +8,7 @@ import category_bl as catbl
 import category_constant as catc
 import review_stage_bl as rsbl
 import review_stack_gui as rsg
+import review_stage_gui as rstg
 import card_bl as cbl
 
 """
@@ -217,7 +218,7 @@ class ListStacksGui:
         review_stage = retrieve_review_stage_by_stack_id.run(stack_id)
 
         # Open Review Stage screen
-        review_stage_gui = rsg.ReviewStageGui(self.stack_window, stack, review_stage)
+        review_stage_gui = rstg.ReviewStageGui(self.stack_window, stack, review_stage)
 
     def calculate_next_view_date(self):
         # Get values

@@ -267,7 +267,7 @@ class ReviewStackGui:
         self.frame.grid(column=0, row=0, padx=10, pady=10)
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(640, 680)
+        self.calculate_screen_position(640, 700)
 
         # Creating a ttk style object
         style = ttk.Style()

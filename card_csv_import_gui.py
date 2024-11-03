@@ -55,7 +55,7 @@ class CardCSVImportGui:
         self.stack_filter_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_stack())
 
         # Select a file
-        self.filename_var = tk.StringVar("")
+        self.filename_var = tk.StringVar(None)
         self.select_file_label = ttk.Label(self.import_file_frame, text="Select file:")
         self.select_file_label.grid(column=0, row=2, sticky="w")
         self.select_file_entry = ttk.Entry(self.import_file_frame, textvariable=self.filename_var, width=61)
