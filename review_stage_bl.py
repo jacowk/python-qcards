@@ -410,7 +410,7 @@ class WeekdayLookupDict:
             weekday_lookup_dict[rsc.ReviewStageSelectValues.SELECT_WEEKDAY.value] = -1
             for weekday in rsc.Weekday:
                 weekday_lookup_dict[weekday.name] = weekday.value
-            return
+            return weekday_lookup_dict
         except Exception as e:
             traceback.print_exc()
             raise

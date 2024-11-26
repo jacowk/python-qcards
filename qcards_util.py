@@ -50,7 +50,7 @@ class QCardsUtil:
     For example for a dictionary where "Test Stack":3, then if the value is 3, return the key
     """
     def get_dictionary_key_from_value(self, dictionary, value):
-        if value is None:
+        if value is None or dictionary is None:
             return None
         for key in dictionary.keys():
             if dictionary[key] == value:
