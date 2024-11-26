@@ -1,3 +1,4 @@
+import traceback
 import category_dao as catd
 import qcards_util as qu
 import category_constant as catc
@@ -43,8 +44,12 @@ Jaco Koekemoer
 class AddCategory:
 
     def run(self, category):
-        add_category_dao = catd.AddCategoryDAO()
-        add_category_dao.run(category.description, category.parent_id, category.active)
+        try:
+            add_category_dao = catd.AddCategoryDAO()
+            add_category_dao.run(category.description, category.parent_id, category.active)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Business layer for updating categories
@@ -55,8 +60,12 @@ Jaco Koekemoer
 class UpdateCategory:
 
     def run(self, category):
-        update_category_dao = catd.UpdateCategoryDAO()
-        update_category_dao.run(category.id, category.description, category.parent_id, category.active)
+        try:
+            update_category_dao = catd.UpdateCategoryDAO()
+            update_category_dao.run(category.id, category.description, category.parent_id, category.active)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Business layer for retrieve a category by id
@@ -67,18 +76,22 @@ Jaco Koekemoer
 class RetrieveCategoryById:
 
     def run(self, id):
-        retrieve_category_dao = catd.RetrieveCategoryByIdDAO()
-        result = retrieve_category_dao.run(id) # Returns 2 dimensional tuple
-        # id, description, parent_id, active
+        try:
+            retrieve_category_dao = catd.RetrieveCategoryByIdDAO()
+            result = retrieve_category_dao.run(id) # Returns 2 dimensional tuple
+            # id, description, parent_id, active
 
-        # Convert result to Category class
-        category = Category()
-        category.set_id(result[0][0])
-        category.set_description(result[0][1])
-        category.set_parent_id(result[0][2])
-        qcards_util = qu.QCardsUtil()
-        category.set_active(qcards_util.convert_tinyint_to_boolean(result[0][3]))
-        return category
+            # Convert result to Category class
+            category = Category()
+            category.set_id(result[0][0])
+            category.set_description(result[0][1])
+            category.set_parent_id(result[0][2])
+            qcards_util = qu.QCardsUtil()
+            category.set_active(qcards_util.convert_tinyint_to_boolean(result[0][3]))
+            return category
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Business layer for retrieving all categories
@@ -89,23 +102,27 @@ Jaco Koekemoer
 class RetrieveAllCategories:
 
     def run(self):
-        # Retrieve all categories via the DAO
-        retrieve_category = catd.RetrieveAllCategoriesDAO()
-        categories = retrieve_category.run()
+        try:
+            # Retrieve all categories via the DAO
+            retrieve_category = catd.RetrieveAllCategoriesDAO()
+            categories = retrieve_category.run()
 
-        # Convert data for front-end display
-        converted_categories = ()
-        qcards_util = qu.QCardsUtil()
-        for category in categories:
-            converted_category = (
-                category[0], # id
-                category[1], # description
-                category[4] if category[4] != None else '', # parent_description
-                qcards_util.convert_tinyint_to_boolean(category[3]), # active
-                category[2],  # parent_id
-            )
-            converted_categories = converted_categories + (converted_category,)  # Building up a tuple of tuples
-        return converted_categories
+            # Convert data for front-end display
+            converted_categories = ()
+            qcards_util = qu.QCardsUtil()
+            for category in categories:
+                converted_category = (
+                    category[0], # id
+                    category[1], # description
+                    category[4] if category[4] != None else '', # parent_description
+                    qcards_util.convert_tinyint_to_boolean(category[3]), # active
+                    category[2],  # parent_id
+                )
+                converted_categories = converted_categories + (converted_category,)  # Building up a tuple of tuples
+            return converted_categories
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Business layer for retrieving all categories as a dictionary
@@ -116,16 +133,20 @@ Jaco Koekemoer
 class RetrieveAllCategoriesDict:
 
     def run(self):
-        # Retrieve all categories via the DAO
-        retrieve_category = catd.RetrieveAllCategoriesDAO()
-        categories = retrieve_category.run()
+        try:
+            # Retrieve all categories via the DAO
+            retrieve_category = catd.RetrieveAllCategoriesDAO()
+            categories = retrieve_category.run()
 
-        # Convert data for front-end display
-        parent_dictionary = dict()
-        parent_dictionary[catc.CategoryConstants.SELECT_CATEGORY.value] = -1
-        for category in categories:
-            parent_dictionary[category[1]] = category[0] # description: id
-        return parent_dictionary
+            # Convert data for front-end display
+            parent_dictionary = dict()
+            parent_dictionary[catc.CategoryConstants.SELECT_CATEGORY.value] = -1
+            for category in categories:
+                parent_dictionary[category[1]] = category[0] # description: id
+            return parent_dictionary
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Business layer for retrieving all categories as a tree
@@ -136,20 +157,28 @@ Jaco Koekemoer
 class RetrieveCategoryTree:
 
     def run(self):
-        retrieve_categories = RetrieveAllCategories()
-        categories = retrieve_categories.run()
+        try:
+            retrieve_categories = RetrieveAllCategories()
+            categories = retrieve_categories.run()
 
-        # Call the build_tree function to generate the tree structure
-        tree = self.build_tree(categories)
-        return tree
+            # Call the build_tree function to generate the tree structure
+            tree = self.build_tree(categories)
+            return tree
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     def build_tree(self, categories, parent_id = None):
-        tree = []
-        for id, description, parent_description, active, pid in categories:
-            if pid == parent_id:
-                # tree[id] = {'description': description, 'children': self.build_tree(categories, id)}
-                # tree[description] = {'description': description, 'children': self.build_tree(categories, id)}
-                node = {'name': description, 'children': self.build_tree(categories, id)}
-                tree.append(node)
-        return tree
+        try:
+            tree = []
+            for id, description, parent_description, active, pid in categories:
+                if pid == parent_id:
+                    # tree[id] = {'description': description, 'children': self.build_tree(categories, id)}
+                    # tree[description] = {'description': description, 'children': self.build_tree(categories, id)}
+                    node = {'name': description, 'children': self.build_tree(categories, id)}
+                    tree.append(node)
+            return tree
+        except Exception as e:
+            traceback.print_exc()
+            raise
 

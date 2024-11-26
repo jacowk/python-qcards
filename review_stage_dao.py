@@ -1,3 +1,4 @@
+import traceback
 import review_stage_constant as rsc
 import qcards_db as qcards_db
 
@@ -10,15 +11,19 @@ Jaco Koekemoer
 class AddReviewStageDAO:
 
     def run(self, stack_id):
-        review_stage_cd = rsc.ReviewStage.DAILY.value
+        try:
+            review_stage_cd = rsc.ReviewStage.DAILY.value
 
-        # Prepare SQL
-        sql = "insert into t_review_stage(stack_id, review_stage_cd, odd_even_cd, weekday_cd, week_count, calendar_day, month_count, create_date) \
-                values({:d}, {:d}, -1, -1, -1, -1, -1, current_timestamp());".format(stack_id, review_stage_cd)
+            # Prepare SQL
+            sql = "insert into t_review_stage(stack_id, review_stage_cd, odd_even_cd, weekday_cd, week_count, calendar_day, month_count, create_date) \
+                    values({:d}, {:d}, -1, -1, -1, -1, -1, current_timestamp());".format(stack_id, review_stage_cd)
 
-        # Run the query
-        execute_query = qcards_db.QCardsExecuteQuery()
-        execute_query.execute(sql)
+            # Run the query
+            execute_query = qcards_db.QCardsExecuteQuery()
+            execute_query.execute(sql)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Update the review stage to every 2nd day, for the given odd_even_cd.
@@ -31,15 +36,19 @@ Jaco Koekemoer
 class UpdateEverySecondDayReviewStageDAO:
 
     def run(self, stack_id, odd_even_cd):
-        review_stage_cd = rsc.ReviewStage.EVERY_2ND_DAY.value
+        try:
+            review_stage_cd = rsc.ReviewStage.EVERY_2ND_DAY.value
 
-        # Prepare SQL
-        sql = "update t_review_stage set review_stage_cd = {:d}, odd_even_cd = {:d} \
-                where stack_id = {:d};".format(review_stage_cd, odd_even_cd, stack_id)
+            # Prepare SQL
+            sql = "update t_review_stage set review_stage_cd = {:d}, odd_even_cd = {:d} \
+                    where stack_id = {:d};".format(review_stage_cd, odd_even_cd, stack_id)
 
-        # Run the query
-        execute_query = qcards_db.QCardsExecuteQuery()
-        execute_query.execute(sql)
+            # Run the query
+            execute_query = qcards_db.QCardsExecuteQuery()
+            execute_query.execute(sql)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Update the review stage to daily.
@@ -50,16 +59,20 @@ Jaco Koekemoer
 class UpdateDailyReviewStageDAO:
 
     def run(self, stack_id):
-        review_stage_cd = rsc.ReviewStage.DAILY.value
+        try:
+            review_stage_cd = rsc.ReviewStage.DAILY.value
 
-        # Prepare SQL
-        sql = "update t_review_stage \
-        set review_stage_cd = {:d} \
-        where stack_id = {:d};".format(review_stage_cd, stack_id)
+            # Prepare SQL
+            sql = "update t_review_stage \
+            set review_stage_cd = {:d} \
+            where stack_id = {:d};".format(review_stage_cd, stack_id)
 
-        # Run the query
-        execute_query = qcards_db.QCardsExecuteQuery()
-        execute_query.execute(sql)
+            # Run the query
+            execute_query = qcards_db.QCardsExecuteQuery()
+            execute_query.execute(sql)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Update the review stage to weekly, for the given weekday_cd and week_count.
@@ -72,18 +85,22 @@ Jaco Koekemoer
 class UpdateWeeklyReviewStageDAO:
 
     def run(self, stack_id, weekday_cd, week_count):
-        review_stage_cd = rsc.ReviewStage.WEEKLY.value
+        try:
+            review_stage_cd = rsc.ReviewStage.WEEKLY.value
 
-        # Prepare SQL
-        sql = "update t_review_stage \
-        set review_stage_cd = {:d}, \
-        weekday_cd = {:d}, \
-        week_count = {:d} \
-        where stack_id = {:d};".format(int(review_stage_cd), int(weekday_cd), int(week_count), int(stack_id))
+            # Prepare SQL
+            sql = "update t_review_stage \
+            set review_stage_cd = {:d}, \
+            weekday_cd = {:d}, \
+            week_count = {:d} \
+            where stack_id = {:d};".format(int(review_stage_cd), int(weekday_cd), int(week_count), int(stack_id))
 
-        # Run the query
-        execute_query = qcards_db.QCardsExecuteQuery()
-        execute_query.execute(sql)
+            # Run the query
+            execute_query = qcards_db.QCardsExecuteQuery()
+            execute_query.execute(sql)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Update the review stage to monthly
@@ -96,18 +113,22 @@ Jaco Koekemoer
 class UpdateMonthlyReviewStageDAO:
 
     def run(self, stack_id, calendar_day, month_count):
-        review_stage_cd = rsc.ReviewStage.MONTHLY.value
+        try:
+            review_stage_cd = rsc.ReviewStage.MONTHLY.value
 
-        # Prepare SQL
-        sql = "update t_review_stage \
-        set review_stage_cd = {:d}, \
-        calendar_day = {:d}, \
-        month_count = {:d} \
-        where stack_id = {:d};".format(int(review_stage_cd), int(calendar_day), int(month_count), int(stack_id))
+            # Prepare SQL
+            sql = "update t_review_stage \
+            set review_stage_cd = {:d}, \
+            calendar_day = {:d}, \
+            month_count = {:d} \
+            where stack_id = {:d};".format(int(review_stage_cd), int(calendar_day), int(month_count), int(stack_id))
 
-        # Run the query
-        execute_query = qcards_db.QCardsExecuteQuery()
-        execute_query.execute(sql)
+            # Run the query
+            execute_query = qcards_db.QCardsExecuteQuery()
+            execute_query.execute(sql)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Retrieve the review stage by stack id
@@ -118,12 +139,16 @@ Jaco Koekemoer
 class RetrieveReviewStageByStackIdDAO:
 
     def run(self, stack_id):
-        # Prepare SQL
-        sql = "select id, stack_id, review_stage_cd, odd_even_cd, weekday_cd, week_count, calendar_day, month_count \
-        from t_review_stage \
-        where stack_id = {:d}".format(stack_id)
-        #print(sql)
+        try:
+            # Prepare SQL
+            sql = "select id, stack_id, review_stage_cd, odd_even_cd, weekday_cd, week_count, calendar_day, month_count \
+            from t_review_stage \
+            where stack_id = {:d}".format(stack_id)
+            #print(sql)
 
-        # Run the query
-        execute_query = qcards_db.QCardsExecuteSelectQuery()
-        return execute_query.execute(sql)
+            # Run the query
+            execute_query = qcards_db.QCardsExecuteSelectQuery()
+            return execute_query.execute(sql)
+        except Exception as e:
+            traceback.print_exc()
+            raise

@@ -1,3 +1,4 @@
+import traceback
 import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -38,32 +39,60 @@ class DateUtil:
 
     @staticmethod
     def get_string_as_date(year, month, day):
-        #print(year, month, day)
-        return datetime.date(int(year), int(month), int(day))
+        try:
+            #print(year, month, day)
+            return datetime.date(int(year), int(month), int(day))
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     @staticmethod
     def get_string_as_date_time(year, month, day, hour, minute, second):
-        return datetime.datetime(int(year), int(month), int(day), int(hour), int(minute), int(second))
+        try:
+            return datetime.datetime(int(year), int(month), int(day), int(hour), int(minute), int(second))
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     @staticmethod
     def get_date_as_string(date):
-        return date.strftime("%Y-%m-%d")
+        try:
+            return date.strftime("%Y-%m-%d")
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     @staticmethod
     def get_date_time_as_string(date):
-        return date.strftime("%Y-%m-%d %H:%M:%S")
+        try:
+            return date.strftime("%Y-%m-%d %H:%M:%S")
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     @staticmethod
     def add_days(date, no_days):
-        return date + datetime.timedelta(days=no_days)
+        try:
+            return date + datetime.timedelta(days=no_days)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     @staticmethod
     def subtract_days(date, no_days):
-        return date - datetime.timedelta(days=no_days)
+        try:
+            return date - datetime.timedelta(days=no_days)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     @staticmethod
     def add_months(date, no_months):
-        return date + relativedelta(months=no_months)
+        try:
+            return date + relativedelta(months=no_months)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     """
     Calculate the next odd date after today
@@ -74,16 +103,20 @@ class DateUtil:
     """
     @staticmethod
     def calculate_next_odd_date(from_date):
-        odd_date_found = False
-        next_view_date = from_date
-        while odd_date_found == False:
-            # Add 1 day to the date
-            next_view_date = DateUtil.add_days(next_view_date, 1)
-            next_view_day = next_view_date.day
-            if DateUtil.validate_is_odd(next_view_day):
-                odd_date_found = True
-                break
-        return next_view_date
+        try:
+            odd_date_found = False
+            next_view_date = from_date
+            while odd_date_found == False:
+                # Add 1 day to the date
+                next_view_date = DateUtil.add_days(next_view_date, 1)
+                next_view_day = next_view_date.day
+                if DateUtil.validate_is_odd(next_view_day):
+                    odd_date_found = True
+                    break
+            return next_view_date
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     """
     A validation method to check if a given day value is on an odd day, e.g. 1, 3, 5, etc
@@ -92,7 +125,11 @@ class DateUtil:
     """
     @staticmethod
     def validate_is_odd(day_value):
-        return day_value % 2 != 0
+        try:
+            return day_value % 2 != 0
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     """
     Calculate the next even date after today
@@ -103,16 +140,20 @@ class DateUtil:
     """
     @staticmethod
     def calculate_next_even_date(from_date):
-        even_date_found = False
-        next_view_date = from_date
-        while even_date_found == False:
-            # Add 1 day to the date
-            next_view_date = DateUtil.add_days(next_view_date, 1)
-            next_view_day = next_view_date.day
-            if DateUtil.validate_is_even(next_view_day):
-                even_date_found = True
-                break
-        return next_view_date
+        try:
+            even_date_found = False
+            next_view_date = from_date
+            while even_date_found == False:
+                # Add 1 day to the date
+                next_view_date = DateUtil.add_days(next_view_date, 1)
+                next_view_day = next_view_date.day
+                if DateUtil.validate_is_even(next_view_day):
+                    even_date_found = True
+                    break
+            return next_view_date
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     """
     A validation method to check if a given day value is on an even day, e.g. 2, 4, 6, etc
@@ -121,7 +162,11 @@ class DateUtil:
     """
     @staticmethod
     def validate_is_even(day_value):
-        return day_value % 2 == 0
+        try:
+            return day_value % 2 == 0
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     """
     A method to calculate the next view date for a weekly review stage
@@ -135,32 +180,36 @@ class DateUtil:
     """
     @staticmethod
     def calculate_next_weekly_date(from_date, weekday_cd, week_count):
-        # Calculate the no of days to add
-        days_to_add = week_count * 7
-        #print("days_to_add = {:d}".format(int(days_to_add)))
+        try:
+            # Calculate the no of days to add
+            days_to_add = week_count * 7
+            #print("days_to_add = {:d}".format(int(days_to_add)))
 
-        # Add the days to the from_date
-        adjusted_date = DateUtil.add_days(from_date, days_to_add)
-        #print("adjusted_date = {:%Y:%m:%d}".format(adjusted_date))
+            # Add the days to the from_date
+            adjusted_date = DateUtil.add_days(from_date, days_to_add)
+            #print("adjusted_date = {:%Y:%m:%d}".format(adjusted_date))
 
-        # Get the week day for the adjusted date
-        adjusted_weekday_cd = adjusted_date.isoweekday()
+            # Get the week day for the adjusted date
+            adjusted_weekday_cd = adjusted_date.isoweekday()
 
-        """
-        Adjust the date according to the weekday of the adjusted date and the weekday_cd.
-        The adjusted date might be on a Tuesday, but the weekday_cd might be a Wednesday. In this case we need to 
-        add 1 more day to the adjusted date. The opposite might be true also, in which case we need to subtract
-        the required no of days to set the adjusted date to the intended week day.
-        """
-        if adjusted_weekday_cd < weekday_cd:
-            day_adjustment = weekday_cd - adjusted_weekday_cd
-            # Add the day difference
-            adjusted_date = DateUtil.add_days(adjusted_date, day_adjustment)
-        elif adjusted_weekday_cd > weekday_cd:
-            day_adjustment = adjusted_weekday_cd - weekday_cd
-            # Subtract the day difference
-            adjusted_date = DateUtil.subtract_days(adjusted_date, day_adjustment)
-        return adjusted_date
+            """
+            Adjust the date according to the weekday of the adjusted date and the weekday_cd.
+            The adjusted date might be on a Tuesday, but the weekday_cd might be a Wednesday. In this case we need to 
+            add 1 more day to the adjusted date. The opposite might be true also, in which case we need to subtract
+            the required no of days to set the adjusted date to the intended week day.
+            """
+            if adjusted_weekday_cd < weekday_cd:
+                day_adjustment = weekday_cd - adjusted_weekday_cd
+                # Add the day difference
+                adjusted_date = DateUtil.add_days(adjusted_date, day_adjustment)
+            elif adjusted_weekday_cd > weekday_cd:
+                day_adjustment = adjusted_weekday_cd - weekday_cd
+                # Subtract the day difference
+                adjusted_date = DateUtil.subtract_days(adjusted_date, day_adjustment)
+            return adjusted_date
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     """
     An alternative improved way of calculating the next weekly review date
@@ -170,21 +219,25 @@ class DateUtil:
     """
     @staticmethod
     def calculate_next_weekly_date_v2(from_date, weekday_cd, week_count): # Development in progress
-        # Step 1: If today's weekday = the scheduled weekday, then just add 7 days * the week_count to the date
-        from_weekday_cd = from_date.isoweekday()
-        if from_weekday_cd == weekday_cd:
-            from_date = DateUtil.add_days(from_date, (7 * week_count))
-            return from_date
-
-        # Step 2:
-        weekday_found_cnt = 0
-        while weekday_found_cnt < week_count:
+        try:
+            # Step 1: If today's weekday = the scheduled weekday, then just add 7 days * the week_count to the date
             from_weekday_cd = from_date.isoweekday()
             if from_weekday_cd == weekday_cd:
-                weekday_found_cnt += 1
-            else:
-                from_date = DateUtil.add_days(from_date, 1)
-        return from_date
+                from_date = DateUtil.add_days(from_date, (7 * week_count))
+                return from_date
+
+            # Step 2:
+            weekday_found_cnt = 0
+            while weekday_found_cnt < week_count:
+                from_weekday_cd = from_date.isoweekday()
+                if from_weekday_cd == weekday_cd:
+                    weekday_found_cnt += 1
+                else:
+                    from_date = DateUtil.add_days(from_date, 1)
+            return from_date
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     """
     A method to calculate the next view date for a monthly review stage
@@ -198,12 +251,20 @@ class DateUtil:
     """
     @staticmethod
     def calculate_next_monthly_date(from_date, calendar_day, month_count):
-        current_year = from_date.year
-        current_month = from_date.month
-        adjusted_date = DateUtil.get_string_as_date(current_year, current_month, calendar_day)
-        adjusted_date = DateUtil.add_months(adjusted_date, month_count)
-        return adjusted_date
+        try:
+            current_year = from_date.year
+            current_month = from_date.month
+            adjusted_date = DateUtil.get_string_as_date(current_year, current_month, calendar_day)
+            adjusted_date = DateUtil.add_months(adjusted_date, month_count)
+            return adjusted_date
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     @staticmethod
     def date1_after_date2(date1, date2):
-        return date1 > date2
+        try:
+            return date1 > date2
+        except Exception as e:
+            traceback.print_exc()
+            raise

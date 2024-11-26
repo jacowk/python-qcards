@@ -1,3 +1,4 @@
+import traceback
 import tkinter as tk
 from tkinter import ttk
 import tkinter.scrolledtext as scrolledtext
@@ -18,99 +19,103 @@ Date: 2023-04-27
 class ListCardsGui:
 
     def __init__(self, main_window):
-        self.card_window = tk.Toplevel(main_window)
-        # With transient(), the card_window will always be displayed on top of the main window
-        self.card_window.transient(main_window)
-        # Calculate the position of the center of the screen
-        self.calculate_screen_position(1200, 500)
+        try:
+            self.card_window = tk.Toplevel(main_window)
+            # With transient(), the card_window will always be displayed on top of the main window
+            self.card_window.transient(main_window)
+            # Calculate the position of the center of the screen
+            self.calculate_screen_position(1200, 500)
 
-        # Creating a ttk style object
-        style = ttk.Style()
+            # Creating a ttk style object
+            style = ttk.Style()
 
-        # Changing the theme to 'clam'
-        #style.theme_use('clam')
-        style.theme_use('alt')
+            # Changing the theme to 'clam'
+            #style.theme_use('clam')
+            style.theme_use('alt')
 
-        # Define a Category Frame above the table
-        self.stack_filter_frame = tk.Frame(self.card_window)
-        self.stack_filter_frame.grid(row=0, column=0, columnspan=2)
+            # Define a Category Frame above the table
+            self.stack_filter_frame = tk.Frame(self.card_window)
+            self.stack_filter_frame.grid(row=0, column=0, columnspan=2)
 
-        # Add a category filter dropdown
-        self.category_filter_label = ttk.Label(self.stack_filter_frame, text="Category:")
-        self.category_filter_label.grid(column=0, row=0, sticky="w")
-        self.category_filter_dict = self.populate_categories()
-        self.category_filter_combobox = ttk.Combobox(self.stack_filter_frame, values=list(self.category_filter_dict.keys()), width=40)
-        self.category_filter_combobox.grid(column=1, row=0, sticky="w", pady=(1, 2))
-        self.category_filter_combobox.current(0)
-        self.selected_category_filter_id = None
-        self.selected_category = None
+            # Add a category filter dropdown
+            self.category_filter_label = ttk.Label(self.stack_filter_frame, text="Category:")
+            self.category_filter_label.grid(column=0, row=0, sticky="w")
+            self.category_filter_dict = self.populate_categories()
+            self.category_filter_combobox = ttk.Combobox(self.stack_filter_frame, values=list(self.category_filter_dict.keys()), width=40)
+            self.category_filter_combobox.grid(column=1, row=0, sticky="w", pady=(1, 2))
+            self.category_filter_combobox.current(0)
+            self.selected_category_filter_id = None
+            self.selected_category = None
 
-        # Bind the function to the Combobox selection event
-        self.category_filter_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_category())
+            # Bind the function to the Combobox selection event
+            self.category_filter_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_category())
 
-        # Add a stack filter dropdown
-        self.stack_filter_label = ttk.Label(self.stack_filter_frame, text="Stack:")
-        self.stack_filter_label.grid(column=2, row=0, sticky="w")
-        self.stack_filter_combobox = ttk.Combobox(self.stack_filter_frame, width=40)
-        self.stack_filter_combobox.grid(column=3, row=0, sticky="w", pady=(1, 2))
-        self.selected_stack_filter_id = None
-        self.selected_stack = None
+            # Add a stack filter dropdown
+            self.stack_filter_label = ttk.Label(self.stack_filter_frame, text="Stack:")
+            self.stack_filter_label.grid(column=2, row=0, sticky="w")
+            self.stack_filter_combobox = ttk.Combobox(self.stack_filter_frame, width=40)
+            self.stack_filter_combobox.grid(column=3, row=0, sticky="w", pady=(1, 2))
+            self.selected_stack_filter_id = None
+            self.selected_stack = None
 
-        # Bind the function to the Combobox selection event
-        self.stack_filter_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_stack())
+            # Bind the function to the Combobox selection event
+            self.stack_filter_combobox.bind("<<ComboboxSelected>>", lambda event: self.get_selected_stack())
 
-        # Define the columns
-        columns = ('id', 'category', 'stack', 'title', 'front_content', 'last_view_date', 'active')
+            # Define the columns
+            columns = ('id', 'category', 'stack', 'title', 'front_content', 'last_view_date', 'active')
 
-        # Create a TreeView (Table)
-        self.tree = ttk.Treeview(self.card_window, columns=columns, show='headings')
+            # Create a TreeView (Table)
+            self.tree = ttk.Treeview(self.card_window, columns=columns, show='headings')
 
-        # Define the headings
-        self.tree.heading('id', text="ID")
-        self.tree.heading('category', text="Category")
-        self.tree.heading('stack', text="Stack")
-        self.tree.heading('title', text="Title")
-        self.tree.heading('front_content', text="Front")
-        self.tree.heading('last_view_date', text="Last View Date")
-        self.tree.heading('active', text="Active")
+            # Define the headings
+            self.tree.heading('id', text="ID")
+            self.tree.heading('category', text="Category")
+            self.tree.heading('stack', text="Stack")
+            self.tree.heading('title', text="Title")
+            self.tree.heading('front_content', text="Front")
+            self.tree.heading('last_view_date', text="Last View Date")
+            self.tree.heading('active', text="Active")
 
-        # Change column widths
-        self.tree.column("id", anchor=tk.CENTER, stretch=tk.NO, width=90)
-        self.tree.column("active", anchor=tk.CENTER, stretch=tk.NO, width=90)
+            # Change column widths
+            self.tree.column("id", anchor=tk.CENTER, stretch=tk.NO, width=90)
+            self.tree.column("active", anchor=tk.CENTER, stretch=tk.NO, width=90)
 
-        # Place the TreeView on the grid
-        self.tree.grid(row=1, column=0, sticky='nsew')
+            # Place the TreeView on the grid
+            self.tree.grid(row=1, column=0, sticky='nsew')
 
-        # Define a scrollbar
-        scrollbar = ttk.Scrollbar(self.card_window, orient=tk.VERTICAL, command=self.tree.yview)
-        self.tree.configure(yscroll=scrollbar.set)
-        scrollbar.grid(row=1, column=1, sticky='ns')
+            # Define a scrollbar
+            scrollbar = ttk.Scrollbar(self.card_window, orient=tk.VERTICAL, command=self.tree.yview)
+            self.tree.configure(yscroll=scrollbar.set)
+            scrollbar.grid(row=1, column=1, sticky='ns')
 
-        # Configure the row and column weights
-        self.card_window.rowconfigure(1, weight=1)
-        self.card_window.columnconfigure(0, weight=1)
+            # Configure the row and column weights
+            self.card_window.rowconfigure(1, weight=1)
+            self.card_window.columnconfigure(0, weight=1)
 
-        # Define a button Frame below the table
-        self.button_frame = tk.Frame(self.card_window)
-        self.button_frame.grid(row=2, column=0, columnspan=2)
+            # Define a button Frame below the table
+            self.button_frame = tk.Frame(self.card_window)
+            self.button_frame.grid(row=2, column=0, columnspan=2)
 
-        # Add buttons
-        add_card_button = ttk.Button(self.button_frame, text="Add Card", command=self.add_card)
-        add_card_button.grid(row=0, column=0, pady=5)
-        update_card_button = ttk.Button(self.button_frame, text="Update Card", command=self.update_card)
-        update_card_button.grid(row=0, column=1, pady=5)
-        refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
-        refresh_button.grid(row=0, column=2, pady=5)
-        close_button = tk.Button(self.button_frame, text="Close", command=self.card_window.destroy)
-        close_button.grid(row=0, column=3, pady=5)
+            # Add buttons
+            add_card_button = ttk.Button(self.button_frame, text="Add Card", command=self.add_card)
+            add_card_button.grid(row=0, column=0, pady=5)
+            update_card_button = ttk.Button(self.button_frame, text="Update Card", command=self.update_card)
+            update_card_button.grid(row=0, column=1, pady=5)
+            refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
+            refresh_button.grid(row=0, column=2, pady=5)
+            close_button = tk.Button(self.button_frame, text="Close", command=self.card_window.destroy)
+            close_button.grid(row=0, column=3, pady=5)
 
-        # Populate the grid with data
-        self.populate_cards()
+            # Populate the grid with data
+            self.populate_cards()
 
-        # Wait for the child window to be visible. wait_visibility() has to be called before grab_set
-        self.card_window.wait_visibility()
-        # With grab_set(), give the card_window focus, and prevent the main_window from being clickable
-        self.card_window.grab_set()
+            # Wait for the child window to be visible. wait_visibility() has to be called before grab_set
+            self.card_window.wait_visibility()
+            # With grab_set(), give the card_window focus, and prevent the main_window from being clickable
+            self.card_window.grab_set()
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
@@ -118,47 +123,59 @@ class ListCardsGui:
         self.card_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))
 
     def populate_cards(self, stack_filter_id = None):
-        all_cards = []
-        if stack_filter_id == None or stack_filter_id == -1:
-            retrieve_all_cards = cbl.RetrieveAllCards()
-            all_cards = retrieve_all_cards.run()
-        else:
-            # Retrieve cards by stack_filter_id
-            retrieve_cards_by_stack_id = cbl.RetrieveActiveCardsByStackId()
-            all_cards = retrieve_cards_by_stack_id.run(stack_filter_id)
-        for card in all_cards:
-            # id, title, front_content, back_content, stack_id, view_count, group_cd, active, last_view_date
-            values = (card[0], card[10], card[9], card[1], card[2], card[8], card[7])
-            self.tree.insert('', tk.END, values=values)
-        self.card_window.title("List Cards ({} cards)".format(len(all_cards)))
+        try:
+            all_cards = []
+            if stack_filter_id == None or stack_filter_id == -1:
+                retrieve_all_cards = cbl.RetrieveAllCards()
+                all_cards = retrieve_all_cards.run()
+            else:
+                # Retrieve cards by stack_filter_id
+                retrieve_cards_by_stack_id = cbl.RetrieveActiveCardsByStackId()
+                all_cards = retrieve_cards_by_stack_id.run(stack_filter_id)
+            for card in all_cards:
+                # id, title, front_content, back_content, stack_id, view_count, group_cd, active, last_view_date
+                values = (card[0], card[10], card[9], card[1], card[2], card[8], card[7])
+                self.tree.insert('', tk.END, values=values)
+            self.card_window.title("List Cards ({} cards)".format(len(all_cards)))
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def add_card(self):
-        add_card_gui = AddCardGui(self.card_window, self, self.selected_category, self.selected_stack)
+        try:
+            add_card_gui = AddCardGui(self.card_window, self, self.selected_category, self.selected_stack)
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def update_card(self):
-        # Get values
-        selected_item = self.tree.focus()
+        try:
+            # Get values
+            selected_item = self.tree.focus()
 
-        # If no selection was made, display an error message
-        if len(selected_item) == 0:
-            messagebox.showerror("Error", "Please select a card to update")
-            return
+            # If no selection was made, display an error message
+            if len(selected_item) == 0:
+                messagebox.showerror("Error", "Please select a card to update")
+                return
 
-        # Current_item is a dictionary
-        current_item = self.tree.item(selected_item)
+            # Current_item is a dictionary
+            current_item = self.tree.item(selected_item)
 
-        # Get the values index from the dictionary, which contains a list
-        values = current_item['values']
+            # Get the values index from the dictionary, which contains a list
+            values = current_item['values']
 
-        # Each item in the list corresponds with the columns in the TreeView
-        id = values[0]
+            # Each item in the list corresponds with the columns in the TreeView
+            id = values[0]
 
-        # Retrieve the card from the database
-        retrieve_card = cbl.RetrieveCardById()
-        card = retrieve_card.run(id)
+            # Retrieve the card from the database
+            retrieve_card = cbl.RetrieveCardById()
+            card = retrieve_card.run(id)
 
-        # Run the update GUI
-        update_card_gui = UpdateCardGui(self.card_window, self, card)
+            # Run the update GUI
+            update_card_gui = UpdateCardGui(self.card_window, self, card)
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def refresh_table(self):
         for item in self.tree.get_children():
@@ -166,38 +183,50 @@ class ListCardsGui:
         self.populate_cards(self.selected_stack_filter_id)
 
     def populate_categories(self):
-        retrieve_all_categories = catbl.RetrieveAllCategoriesDict()
-        return retrieve_all_categories.run()
+        try:
+            retrieve_all_categories = catbl.RetrieveAllCategoriesDict()
+            return retrieve_all_categories.run()
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     # Define a function to get the selected value from the dictionary
     def get_selected_category(self):
-        # Get teh selected category
-        self.selected_category = self.category_filter_combobox.get()
-        self.selected_category_filter_id = self.category_filter_dict[self.selected_category]
+        try:
+            # Get teh selected category
+            self.selected_category = self.category_filter_combobox.get()
+            self.selected_category_filter_id = self.category_filter_dict[self.selected_category]
 
-        # Retrieve all stacks
-        retrieve_all_stacks = sbl.RetrieveStacksByCategoryIdDict()
-        self.stack_filter_dict = retrieve_all_stacks.run(self.selected_category_filter_id)
+            # Retrieve all stacks
+            retrieve_all_stacks = sbl.RetrieveStacksByCategoryIdDict()
+            self.stack_filter_dict = retrieve_all_stacks.run(self.selected_category_filter_id)
 
-        # Clear the stack dropdown
-        self.stack_filter_combobox.delete(0, tk.END)
+            # Clear the stack dropdown
+            self.stack_filter_combobox.delete(0, tk.END)
 
-        # Populate the stack dropdown
-        self.stack_filter_combobox['values'] = list(self.stack_filter_dict.keys())
-        self.stack_filter_combobox.current(0)
+            # Populate the stack dropdown
+            self.stack_filter_combobox['values'] = list(self.stack_filter_dict.keys())
+            self.stack_filter_combobox.current(0)
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     # Define a function to get the selected value from the dictionary
     def get_selected_stack(self):
-        # Get the selected stack
-        self.selected_stack = self.stack_filter_combobox.get()
-        self.selected_stack_filter_id = self.stack_filter_dict[self.selected_stack]
+        try:
+            # Get the selected stack
+            self.selected_stack = self.stack_filter_combobox.get()
+            self.selected_stack_filter_id = self.stack_filter_dict[self.selected_stack]
 
-        # Clear the table
-        for item in self.tree.get_children():
-            self.tree.delete(item)
+            # Clear the table
+            for item in self.tree.get_children():
+                self.tree.delete(item)
 
-        # Retrieve cards by selected stack id
-        self.populate_cards(self.selected_stack_filter_id)
+            # Retrieve cards by selected stack id
+            self.populate_cards(self.selected_stack_filter_id)
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
 """
 Description: A class for adding a card
@@ -327,28 +356,40 @@ class AddCardGui:
         self.add_card_window.grab_set()
 
     def populate_categories(self):
-        retrieve_all_categories = catbl.RetrieveAllCategoriesDict()
-        return retrieve_all_categories.run()
+        try:
+            retrieve_all_categories = catbl.RetrieveAllCategoriesDict()
+            return retrieve_all_categories.run()
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def get_selected_category(self):
-        # Get teh selected category
-        selected_category = self.category_filter_combobox.get()
-        self.selected_category_filter_id = self.category_filter_dict[selected_category]
+        try:
+            # Get teh selected category
+            selected_category = self.category_filter_combobox.get()
+            self.selected_category_filter_id = self.category_filter_dict[selected_category]
 
-        # Retrieve all stacks
-        retrieve_all_stacks = sbl.RetrieveStacksByCategoryIdDict()
-        self.stack_dict = retrieve_all_stacks.run(self.selected_category_filter_id)
+            # Retrieve all stacks
+            retrieve_all_stacks = sbl.RetrieveStacksByCategoryIdDict()
+            self.stack_dict = retrieve_all_stacks.run(self.selected_category_filter_id)
 
-        # Clear the stack dropdown
-        self.stack_combobox.delete(0, tk.END)
+            # Clear the stack dropdown
+            self.stack_combobox.delete(0, tk.END)
 
-        # Populate the stack dropdown
-        self.stack_combobox['values'] = list(self.stack_dict.keys())
-        self.stack_combobox.current(0)
+            # Populate the stack dropdown
+            self.stack_combobox['values'] = list(self.stack_dict.keys())
+            self.stack_combobox.current(0)
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def populate_stacks(self):
-        retrieve_all_stacks = sbl.RetrieveAllStacksDict()
-        return retrieve_all_stacks.run()
+        try:
+            retrieve_all_stacks = sbl.RetrieveAllStacksDict()
+            return retrieve_all_stacks.run()
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     # Define a function to get the selected value from the dictionary
     def get_selected_stack(self):
@@ -356,36 +397,40 @@ class AddCardGui:
         self.selected_stack_id = self.stack_dict[selected_stack]
 
     def add_card(self):
-        # title, front_content, back_content, stack_id, active
-        title = self.title_entry.get()
-        #front_content = self.front_content_entry.get()
-        front_content = self.front_content_text.get("1.0", tk.END)
-        back_content = self.back_content_text.get("1.0", tk.END)
-        qcards_util = qu.QCardsUtil()
-        stack_id = qcards_util.get_selected_combobox_value(self.selected_stack_id)
-        active = self.active_var.get()
+        try:
+            # title, front_content, back_content, stack_id, active
+            title = self.title_entry.get()
+            #front_content = self.front_content_entry.get()
+            front_content = self.front_content_text.get("1.0", tk.END)
+            back_content = self.back_content_text.get("1.0", tk.END)
+            qcards_util = qu.QCardsUtil()
+            stack_id = qcards_util.get_selected_combobox_value(self.selected_stack_id)
+            active = self.active_var.get()
 
-        # Prepare Card
-        card = cbl.Card()
-        card.set_title(title)
-        card.set_front_content(front_content)
-        card.set_back_content(back_content)
-        card.set_stack_id(stack_id)
-        card.set_active(active)
+            # Prepare Card
+            card = cbl.Card()
+            card.set_title(title)
+            card.set_front_content(front_content)
+            card.set_back_content(back_content)
+            card.set_stack_id(stack_id)
+            card.set_active(active)
 
-        # Store the new Card in a database
-        add_card = cbl.AddCard()
-        add_card.run(card)
+            # Store the new Card in a database
+            add_card = cbl.AddCard()
+            add_card.run(card)
 
-        # Add the card to the card tree view
-        #self.card_window.tree.insert("", "end", text=desc, values=(active,))
-        self.list_cards_gui.refresh_table()
+            # Add the card to the card tree view
+            #self.card_window.tree.insert("", "end", text=desc, values=(active,))
+            self.list_cards_gui.refresh_table()
 
-        # Show message
-        #messagebox.showinfo("Card added", f"{description} added to cards.")
+            # Show message
+            #messagebox.showinfo("Card added", f"{description} added to cards.")
 
-        # Close the form
-        self.add_card_window.destroy()
+            # Close the form
+            self.add_card_window.destroy()
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
@@ -539,28 +584,40 @@ class UpdateCardGui:
         self.update_card_window.grab_set()
 
     def populate_categories(self):
-        retrieve_all_categories = catbl.RetrieveAllCategoriesDict()
-        return retrieve_all_categories.run()
+        try:
+            retrieve_all_categories = catbl.RetrieveAllCategoriesDict()
+            return retrieve_all_categories.run()
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def get_selected_category(self):
-        # Get th selected category
-        self.selected_category = self.category_combobox.get()
-        self.selected_category_id = self.category_dict[self.selected_category]
+        try:
+            # Get th selected category
+            self.selected_category = self.category_combobox.get()
+            self.selected_category_id = self.category_dict[self.selected_category]
 
-        # Retrieve all stacks
-        retrieve_all_stacks = sbl.RetrieveStacksByCategoryIdDict()
-        self.stack_dict = retrieve_all_stacks.run(self.selected_category_id)
+            # Retrieve all stacks
+            retrieve_all_stacks = sbl.RetrieveStacksByCategoryIdDict()
+            self.stack_dict = retrieve_all_stacks.run(self.selected_category_id)
 
-        # Clear the stack dropdown
-        self.stack_combobox.delete(0, tk.END)
+            # Clear the stack dropdown
+            self.stack_combobox.delete(0, tk.END)
 
-        # Populate the stack dropdown
-        self.stack_combobox['values'] = list(self.stack_dict.keys())
-        self.stack_combobox.current(0)
+            # Populate the stack dropdown
+            self.stack_combobox['values'] = list(self.stack_dict.keys())
+            self.stack_combobox.current(0)
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def populate_stacks(self):
-        retrieve_all_stacks = sbl.RetrieveAllStacksDict()
-        return retrieve_all_stacks.run()
+        try:
+            retrieve_all_stacks = sbl.RetrieveAllStacksDict()
+            return retrieve_all_stacks.run()
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     # Define a function to get the selected value from the dictionary
     def get_selected_stack(self):
@@ -568,39 +625,43 @@ class UpdateCardGui:
         self.selected_stack_id = self.stack_dict[self.selected_stack]
 
     def save_card(self):
-        id = self.id_var.get()
-        title = self.title_entry.get()
-        front_content = self.front_content_text.get("1.0", tk.END)
-        back_content = self.back_content_text.get("1.0", tk.END)
-        qcards_util = qu.QCardsUtil()
-        stack_id = qcards_util.get_selected_combobox_value(self.selected_stack_id)
-        active = self.active_var.get()
+        try:
+            id = self.id_var.get()
+            title = self.title_entry.get()
+            front_content = self.front_content_text.get("1.0", tk.END)
+            back_content = self.back_content_text.get("1.0", tk.END)
+            qcards_util = qu.QCardsUtil()
+            stack_id = qcards_util.get_selected_combobox_value(self.selected_stack_id)
+            active = self.active_var.get()
 
-        # Prepare Card
-        card = cbl.Card()
-        card.set_id(id)
-        card.set_title(title)
-        card.set_front_content(front_content)
-        card.set_back_content(back_content)
-        card.set_stack_id(stack_id)
-        card.set_active(active)
+            # Prepare Card
+            card = cbl.Card()
+            card.set_id(id)
+            card.set_title(title)
+            card.set_front_content(front_content)
+            card.set_back_content(back_content)
+            card.set_stack_id(stack_id)
+            card.set_active(active)
 
-        # Store the new Card in a database
-        persist_card = cbl.UpdateCard()
-        persist_card.run(card);
+            # Store the new Card in a database
+            persist_card = cbl.UpdateCard()
+            persist_card.run(card);
 
-        # Update the card to the card tree view
-        selected_item = self.list_cards_gui.tree.focus()
-        self.list_cards_gui.tree.item(selected_item, values=(id,
-                                                             self.selected_category,
-                                                             self.selected_stack,
-                                                             title,
-                                                             front_content,
-                                                             self.last_view_date_var,
-                                                             active))
+            # Update the card to the card tree view
+            selected_item = self.list_cards_gui.tree.focus()
+            self.list_cards_gui.tree.item(selected_item, values=(id,
+                                                                 self.selected_category,
+                                                                 self.selected_stack,
+                                                                 title,
+                                                                 front_content,
+                                                                 self.last_view_date_var,
+                                                                 active))
 
-        # Close the form
-        self.update_card_window.destroy()
+            # Close the form
+            self.update_card_window.destroy()
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()

@@ -1,3 +1,4 @@
+import traceback
 from enum import Enum
 import MySQLdb as mysql
 
@@ -21,14 +22,22 @@ Date: 30 March 2023
 class QCardsDatabaseConnection:
 
     def __enter__(self):
-        self.conn = mysql.connect(host=QCardsDB.DB_HOST.value,  # your host
-                             user=QCardsDB.DB_USER.value,       # username
-                             passwd=QCardsDB.DB_PASSWORD.value,     # password
-                             db=QCardsDB.DB_DATABASE.value)   # name of the database
-        return self.conn
+        try:
+            self.conn = mysql.connect(host=QCardsDB.DB_HOST.value,  # your host
+                                 user=QCardsDB.DB_USER.value,       # username
+                                 passwd=QCardsDB.DB_PASSWORD.value,     # password
+                                 db=QCardsDB.DB_DATABASE.value)   # name of the database
+            return self.conn
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
     def __exit__(self, exc_type, exc_value, traceback):
-        self.conn.close()
+        try:
+            self.conn.close()
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Description: A class for executing database queries

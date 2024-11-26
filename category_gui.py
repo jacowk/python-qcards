@@ -1,3 +1,4 @@
+import traceback
 import tkinter as tk
 from tkinter import ttk
 import tkinter.messagebox as messagebox
@@ -14,68 +15,72 @@ Date: 2023-03-30
 class ListCategoriesGui:
 
     def __init__(self, main_window):
-        self.category_window = tk.Toplevel(main_window)
-        # With transient(), the category_window will always be displayed on top of the main window
-        self.category_window.transient(main_window)
-        # Calculate the position of the center of the screen
-        self.calculate_screen_position(600, 520)
+        try:
+            self.category_window = tk.Toplevel(main_window)
+            # With transient(), the category_window will always be displayed on top of the main window
+            self.category_window.transient(main_window)
+            # Calculate the position of the center of the screen
+            self.calculate_screen_position(600, 520)
 
-        # Creating a ttk style object
-        style = ttk.Style()
+            # Creating a ttk style object
+            style = ttk.Style()
 
-        # Changing the theme to 'clam'
-        #style.theme_use('clam')
-        style.theme_use('alt')
+            # Changing the theme to 'clam'
+            #style.theme_use('clam')
+            style.theme_use('alt')
 
-        # Define the columns
-        columns = ('id', 'description', 'parent', 'active')
+            # Define the columns
+            columns = ('id', 'description', 'parent', 'active')
 
-        # Create a TreeView (Table)
-        self.tree = ttk.Treeview(self.category_window, columns=columns, show='headings')
+            # Create a TreeView (Table)
+            self.tree = ttk.Treeview(self.category_window, columns=columns, show='headings')
 
-        # Define the headings
-        self.tree.heading('id', text="ID")
-        self.tree.heading('description', text="Description")
-        self.tree.heading('parent', text="Parent")
-        self.tree.heading('active', text="Active")
+            # Define the headings
+            self.tree.heading('id', text="ID")
+            self.tree.heading('description', text="Description")
+            self.tree.heading('parent', text="Parent")
+            self.tree.heading('active', text="Active")
 
-        # Change column widths
-        self.tree.column("id", anchor=tk.CENTER, stretch=tk.NO, width=90)
-        self.tree.column("active", anchor=tk.CENTER, stretch=tk.NO, width=90)
+            # Change column widths
+            self.tree.column("id", anchor=tk.CENTER, stretch=tk.NO, width=90)
+            self.tree.column("active", anchor=tk.CENTER, stretch=tk.NO, width=90)
 
-        # Place the TreeView on the grid
-        self.tree.grid(row=0, column=0, sticky='nsew')
+            # Place the TreeView on the grid
+            self.tree.grid(row=0, column=0, sticky='nsew')
 
-        # Define a scrollbar
-        scrollbar = ttk.Scrollbar(self.category_window, orient=tk.VERTICAL, command=self.tree.yview)
-        self.tree.configure(yscroll=scrollbar.set)
-        scrollbar.grid(row=0, column=1, sticky='ns')
+            # Define a scrollbar
+            scrollbar = ttk.Scrollbar(self.category_window, orient=tk.VERTICAL, command=self.tree.yview)
+            self.tree.configure(yscroll=scrollbar.set)
+            scrollbar.grid(row=0, column=1, sticky='ns')
 
-        # Configure the row and column weights
-        self.category_window.rowconfigure(0, weight=1)
-        self.category_window.columnconfigure(0, weight=1)
+            # Configure the row and column weights
+            self.category_window.rowconfigure(0, weight=1)
+            self.category_window.columnconfigure(0, weight=1)
 
-        # Define a button Frame below the table
-        self.button_frame = tk.Frame(self.category_window)
-        self.button_frame.grid(row=1, column=0, columnspan=2)
+            # Define a button Frame below the table
+            self.button_frame = tk.Frame(self.category_window)
+            self.button_frame.grid(row=1, column=0, columnspan=2)
 
-        # Add buttons
-        add_category_button = ttk.Button(self.button_frame, text="Add Category", command=self.add_category)
-        add_category_button.grid(row=0, column=0, pady=5)
-        update_category_button = ttk.Button(self.button_frame, text="Update Category", command=self.update_category)
-        update_category_button.grid(row=0, column=1, pady=5)
-        refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
-        refresh_button.grid(row=0, column=2, pady=5)
-        close_button = tk.Button(self.button_frame, text="Close", command=self.category_window.destroy)
-        close_button.grid(row=0, column=3, pady=5)
+            # Add buttons
+            add_category_button = ttk.Button(self.button_frame, text="Add Category", command=self.add_category)
+            add_category_button.grid(row=0, column=0, pady=5)
+            update_category_button = ttk.Button(self.button_frame, text="Update Category", command=self.update_category)
+            update_category_button.grid(row=0, column=1, pady=5)
+            refresh_button = ttk.Button(self.button_frame, text="Refresh", command=self.refresh_table)
+            refresh_button.grid(row=0, column=2, pady=5)
+            close_button = tk.Button(self.button_frame, text="Close", command=self.category_window.destroy)
+            close_button.grid(row=0, column=3, pady=5)
 
-        # Populate the grid with data
-        self.populate_categories()
+            # Populate the grid with data
+            self.populate_categories()
 
-        # Wait for the child window to be visible. wait_visibility() has to be called before grab_set
-        self.category_window.wait_visibility()
-        # With grab_set(), give the category_window focus, and prevent the main_window from being clickable
-        self.category_window.grab_set()
+            # Wait for the child window to be visible. wait_visibility() has to be called before grab_set
+            self.category_window.wait_visibility()
+            # With grab_set(), give the category_window focus, and prevent the main_window from being clickable
+            self.category_window.grab_set()
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
@@ -83,40 +88,52 @@ class ListCategoriesGui:
         self.category_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))
 
     def populate_categories(self):
-        retrieve_all_categories = catbl.RetrieveAllCategories()
-        all_categories = retrieve_all_categories.run()
-        for category in all_categories:
-            self.tree.insert('', tk.END, values=category)
+        try:
+            retrieve_all_categories = catbl.RetrieveAllCategories()
+            all_categories = retrieve_all_categories.run()
+            for category in all_categories:
+                self.tree.insert('', tk.END, values=category)
 
-        self.category_window.title("List Categories ({}) categories".format(len(all_categories)))
+            self.category_window.title("List Categories ({}) categories".format(len(all_categories)))
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def add_category(self):
-        add_category_gui = AddCategoryGui(self.category_window, self)
+        try:
+            add_category_gui = AddCategoryGui(self.category_window, self)
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def update_category(self):
-        # Get values
-        selected_item = self.tree.focus()
+        try:
+            # Get values
+            selected_item = self.tree.focus()
 
-        # If no selection was made, display an error message
-        if len(selected_item) == 0:
-            messagebox.showerror("Error", "Please select a category to update")
-            return
+            # If no selection was made, display an error message
+            if len(selected_item) == 0:
+                messagebox.showerror("Error", "Please select a category to update")
+                return
 
-        # Current_item is a dictionary
-        current_item = self.tree.item(selected_item)
+            # Current_item is a dictionary
+            current_item = self.tree.item(selected_item)
 
-        # Get the values index from the dictionary, which contains a list
-        values = current_item['values']
+            # Get the values index from the dictionary, which contains a list
+            values = current_item['values']
 
-        # Each item in the list corresponds with the columns in the TreeView
-        id = values[0]
+            # Each item in the list corresponds with the columns in the TreeView
+            id = values[0]
 
-        # Retrieve the category from the database
-        retrieve_category = catbl.RetrieveCategoryById()
-        category = retrieve_category.run(id)
+            # Retrieve the category from the database
+            retrieve_category = catbl.RetrieveCategoryById()
+            category = retrieve_category.run(id)
 
-        # Run the update GUI
-        update_category_gui = UpdateCategoryGui(self.category_window, self, category)
+            # Run the update GUI
+            update_category_gui = UpdateCategoryGui(self.category_window, self, category)
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def refresh_table(self):
         for item in self.tree.get_children():
@@ -142,7 +159,7 @@ class AddCategoryGui:
         self.frame.grid(column=0, row=0, padx=10, pady=10)
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(620, 130)
+        self.calculate_screen_position(620, 160)
 
         # Creating a ttk style object
         style = ttk.Style()
@@ -190,8 +207,12 @@ class AddCategoryGui:
         self.add_category_window.grab_set()
 
     def populate_parent_categories(self):
-        retrieve_all_categories = catbl.RetrieveAllCategoriesDict()
-        return retrieve_all_categories.run()
+        try:
+            retrieve_all_categories = catbl.RetrieveAllCategoriesDict()
+            return retrieve_all_categories.run()
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     # Define a function to get the selected value from the dictionary
     def get_selected_parent(self):
@@ -199,30 +220,34 @@ class AddCategoryGui:
         self.selected_parent_id = self.parent_category_dict[selected_parent]
 
     def add_category(self):
-        description = self.desc_entry.get()
-        qcards_util = qu.QCardsUtil()
-        parent_id = qcards_util.get_selected_combobox_value(self.selected_parent_id)
-        active = self.active_var.get()
+        try:
+            description = self.desc_entry.get()
+            qcards_util = qu.QCardsUtil()
+            parent_id = qcards_util.get_selected_combobox_value(self.selected_parent_id)
+            active = self.active_var.get()
 
-        # Prepare Category
-        category = catbl.Category()
-        category.set_description(description)
-        category.set_parent_id(parent_id)
-        category.set_active(active)
+            # Prepare Category
+            category = catbl.Category()
+            category.set_description(description)
+            category.set_parent_id(parent_id)
+            category.set_active(active)
 
-        # Store the new Category in a database
-        add_category = catbl.AddCategory()
-        add_category.run(category)
+            # Store the new Category in a database
+            add_category = catbl.AddCategory()
+            add_category.run(category)
 
-        # Add the category to the category tree view
-        #self.category_window.tree.insert("", "end", text=desc, values=(active,))
-        self.list_categories_gui.refresh_table()
+            # Add the category to the category tree view
+            #self.category_window.tree.insert("", "end", text=desc, values=(active,))
+            self.list_categories_gui.refresh_table()
 
-        # Show message
-        #messagebox.showinfo("Category added", f"{description} added to categories.")
+            # Show message
+            #messagebox.showinfo("Category added", f"{description} added to categories.")
 
-        # Close the form
-        self.add_category_window.destroy()
+            # Close the form
+            self.add_category_window.destroy()
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
@@ -248,8 +273,7 @@ class UpdateCategoryGui:
         self.frame.grid(column=0, row=0, padx=10, pady=10)
 
         # Calculate the position of the center of the screen
-        self.calculate_screen_position(628, 150)
-
+        self.calculate_screen_position(628, 160)
         # Creating a ttk style object
         style = ttk.Style()
 
@@ -314,8 +338,12 @@ class UpdateCategoryGui:
         self.update_category_window.grab_set()
 
     def populate_parent_categories(self):
-        retrieve_all_categories = catbl.RetrieveAllCategoriesDict()
-        return retrieve_all_categories.run()
+        try:
+            retrieve_all_categories = catbl.RetrieveAllCategoriesDict()
+            return retrieve_all_categories.run()
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     # Define a function to get the selected value from the dictionary
     def get_selected_parent(self):
@@ -324,32 +352,36 @@ class UpdateCategoryGui:
         self.selected_parent_id = self.parent_category_dict[self.selected_parent]
 
     def save_category(self):
-        id = self.id_var.get()
-        description = self.desc_entry.get()
-        qcards_util = qu.QCardsUtil()
-        parent_id = qcards_util.get_selected_combobox_value(self.selected_parent_id)
-        active = self.active_var.get()
-        active_converted = qu.QCardsUtil().convert_boolean_to_tinyint(active)
+        try:
+            id = self.id_var.get()
+            description = self.desc_entry.get()
+            qcards_util = qu.QCardsUtil()
+            parent_id = qcards_util.get_selected_combobox_value(self.selected_parent_id)
+            active = self.active_var.get()
+            active_converted = qu.QCardsUtil().convert_boolean_to_tinyint(active)
 
-        # Prepare Category
-        category = catbl.Category()
-        category.set_id(id)
-        category.set_description(description)
-        category.set_parent_id(parent_id)
-        category.set_active(active)
+            # Prepare Category
+            category = catbl.Category()
+            category.set_id(id)
+            category.set_description(description)
+            category.set_parent_id(parent_id)
+            category.set_active(active)
 
-        # Store the new Category in a database
-        persist_category = catbl.UpdateCategory()
-        persist_category.run(category);
+            # Store the new Category in a database
+            persist_category = catbl.UpdateCategory()
+            persist_category.run(category);
 
-        # Update the category to the category tree view
-        selected_item = self.list_categories_gui.tree.focus()
-        self.list_categories_gui.tree.item(selected_item, values=(id, description,
-                                                                  "" if self.selected_parent == catc.CategoryConstants.SELECT_PARENT.value else self.selected_parent,
-                                                                    active))
+            # Update the category to the category tree view
+            selected_item = self.list_categories_gui.tree.focus()
+            self.list_categories_gui.tree.item(selected_item, values=(id, description,
+                                                                      "" if self.selected_parent == catc.CategoryConstants.SELECT_PARENT.value else self.selected_parent,
+                                                                        active))
 
-        # Close the form
-        self.update_category_window.destroy()
+            # Close the form
+            self.update_category_window.destroy()
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()

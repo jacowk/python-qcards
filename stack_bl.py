@@ -1,3 +1,4 @@
+import traceback
 import stack_dao as sd
 import qcards_util as qu
 import stack_constant as sc
@@ -67,8 +68,12 @@ Jaco Koekemoer
 class AddStack:
 
     def run(self, stack):
-        add_stack_dao = sd.AddStackDAO()
-        add_stack_dao.run(stack.description, stack.active, stack.source, stack.category_id)
+        try:
+            add_stack_dao = sd.AddStackDAO()
+            add_stack_dao.run(stack.description, stack.active, stack.source, stack.category_id)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Business layer for updating stacks
@@ -79,8 +84,12 @@ Jaco Koekemoer
 class UpdateStack:
 
     def run(self, stack):
-        update_stack_dao = sd.UpdateStackDAO()
-        update_stack_dao.run(stack.id, stack.description, stack.active, stack.source, stack.category_id)
+        try:
+            update_stack_dao = sd.UpdateStackDAO()
+            update_stack_dao.run(stack.id, stack.description, stack.active, stack.source, stack.category_id)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Business layer for updating the next view date for a stack
@@ -91,8 +100,12 @@ Jaco Koekemoer
 class UpdateNextViewDate:
 
     def run(self, stack):
-        update_next_view_date_dao = sd.UpdateNextViewDateDAO()
-        update_next_view_date_dao.run(stack.get_id(), stack.get_next_view_date())
+        try:
+            update_next_view_date_dao = sd.UpdateNextViewDateDAO()
+            update_next_view_date_dao.run(stack.get_id(), stack.get_next_view_date())
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Business layer for retrieve a stack by id
@@ -103,22 +116,26 @@ Jaco Koekemoer
 class RetrieveStackById:
 
     def run(self, id):
-        retrieve_category_dao = sd.RetrieveStackByIdDAO()
-        result = retrieve_category_dao.run(id) # Returns 2 dimensional tuple
-        # id, description, active, source, category_id, next_view_date
+        try:
+            retrieve_category_dao = sd.RetrieveStackByIdDAO()
+            result = retrieve_category_dao.run(id) # Returns 2 dimensional tuple
+            # id, description, active, source, category_id, next_view_date
 
-        # Convert result to Category class
-        stack = Stack()
-        stack.set_id(result[0][0])
-        stack.set_description(result[0][1])
-        qcards_util = qu.QCardsUtil()
-        stack.set_active(qcards_util.convert_tinyint_to_boolean(result[0][2]))
-        stack.set_source(result[0][3])
-        stack.set_category_id(result[0][4])
-        stack.set_next_view_date(result[0][5])
-        stack.set_review_stage_id(result[0][6])
-        stack.set_review_stage(result[0][7])
-        return stack
+            # Convert result to Category class
+            stack = Stack()
+            stack.set_id(result[0][0])
+            stack.set_description(result[0][1])
+            qcards_util = qu.QCardsUtil()
+            stack.set_active(qcards_util.convert_tinyint_to_boolean(result[0][2]))
+            stack.set_source(result[0][3])
+            stack.set_category_id(result[0][4])
+            stack.set_next_view_date(result[0][5])
+            stack.set_review_stage_id(result[0][6])
+            stack.set_review_stage(result[0][7])
+            return stack
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Business layer for retrieving all stacks
@@ -129,28 +146,32 @@ Jaco Koekemoer
 class RetrieveAllStacks:
 
     def run(self):
-        # Retrieve all stacks via the DAO
-        retrieve_stack = sd.RetrieveAllStacksDAO()
-        stacks = retrieve_stack.run()
+        try:
+            # Retrieve all stacks via the DAO
+            retrieve_stack = sd.RetrieveAllStacksDAO()
+            stacks = retrieve_stack.run()
 
-        # Convert data for front-end display
-        converted_stacks = ()
-        qcards_util = qu.QCardsUtil()
-        for stack in stacks:
-            # s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, c.description
-            converted_category = (
-                stack[0], # id
-                stack[1], # description
-                qcards_util.convert_tinyint_to_boolean(stack[2]), # active
-                stack[3], # source
-                stack[4], # category_id
-                stack[5] if stack[5] is not None else '', # next_view_date
-                stack[6] if stack[6] != None else '', # category_description
-                stack[7], # review stage id
-                stack[8]  # review stage
-            )
-            converted_stacks = converted_stacks + (converted_category,)  # Building up a tuple of tuples
-        return converted_stacks
+            # Convert data for front-end display
+            converted_stacks = ()
+            qcards_util = qu.QCardsUtil()
+            for stack in stacks:
+                # s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, c.description
+                converted_category = (
+                    stack[0], # id
+                    stack[1], # description
+                    qcards_util.convert_tinyint_to_boolean(stack[2]), # active
+                    stack[3], # source
+                    stack[4], # category_id
+                    stack[5] if stack[5] is not None else '', # next_view_date
+                    stack[6] if stack[6] != None else '', # category_description
+                    stack[7], # review stage id
+                    stack[8]  # review stage
+                )
+                converted_stacks = converted_stacks + (converted_category,)  # Building up a tuple of tuples
+            return converted_stacks
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Business layer for retrieving all active stacks by category id
@@ -161,28 +182,32 @@ Jaco Koekemoer
 class RetrieveActiveStacksByCategoryId:
 
     def run(self, category_id, active = None):
-        # Retrieve all stacks via the DAO
-        retrieve_stack = sd.RetrieveActiveStacksByCategoryIdDAO()
-        stacks = retrieve_stack.run(category_id, active)
+        try:
+            # Retrieve all stacks via the DAO
+            retrieve_stack = sd.RetrieveActiveStacksByCategoryIdDAO()
+            stacks = retrieve_stack.run(category_id, active)
 
-        # Convert data for front-end display
-        converted_stacks = ()
-        qcards_util = qu.QCardsUtil()
-        for stack in stacks:
-            # s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, c.description
-            converted_stack = (
-                stack[0],  # id
-                stack[1],  # description
-                qcards_util.convert_tinyint_to_boolean(stack[2]),  # active
-                stack[3],  # source
-                stack[4],  # category_id
-                stack[5] if stack[5] is not None else '',  # next_view_date
-                stack[6] if stack[6] is not None else '', # category_description
-                stack[7], # review stage id
-                stack[8]  # review stage
-            )
-            converted_stacks = converted_stacks + (converted_stack,)  # Building up a tuple of tuples
-        return converted_stacks
+            # Convert data for front-end display
+            converted_stacks = ()
+            qcards_util = qu.QCardsUtil()
+            for stack in stacks:
+                # s.id, s.description, s.active, s.source, s.category_id, s.next_view_date, c.description
+                converted_stack = (
+                    stack[0],  # id
+                    stack[1],  # description
+                    qcards_util.convert_tinyint_to_boolean(stack[2]),  # active
+                    stack[3],  # source
+                    stack[4],  # category_id
+                    stack[5] if stack[5] is not None else '',  # next_view_date
+                    stack[6] if stack[6] is not None else '', # category_description
+                    stack[7], # review stage id
+                    stack[8]  # review stage
+                )
+                converted_stacks = converted_stacks + (converted_stack,)  # Building up a tuple of tuples
+            return converted_stacks
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Business layer for retrieving all sheduled active stacks
@@ -193,27 +218,31 @@ Jaco Koekemoer
 class RetrieveScheduledActiveStacks:
 
     def run(self):
-        # Retrieve all stacks via the DAO
-        retrieve_stack = sd.RetrieveScheduledActiveStacksDAO()
-        stacks = retrieve_stack.run()
+        try:
+            # Retrieve all stacks via the DAO
+            retrieve_stack = sd.RetrieveScheduledActiveStacksDAO()
+            stacks = retrieve_stack.run()
 
-        # Convert data for front-end display
-        converted_stacks = ()
-        qcards_util = qu.QCardsUtil()
-        for stack in stacks:
-            converted_category = (
-                stack[0], # id
-                stack[1], # description
-                qcards_util.convert_tinyint_to_boolean(stack[2]), # active
-                stack[3], # source
-                stack[4], # category_id
-                stack[5] if stack[5] is not None else '', # next_view_date
-                stack[6], # review_stage_cd
-                stack[7] if stack[7] != None else '', # category_description
-                stack[8]  # review stage description
-            )
-            converted_stacks = converted_stacks + (converted_category,)  # Building up a tuple of tuples
-        return converted_stacks
+            # Convert data for front-end display
+            converted_stacks = ()
+            qcards_util = qu.QCardsUtil()
+            for stack in stacks:
+                converted_category = (
+                    stack[0], # id
+                    stack[1], # description
+                    qcards_util.convert_tinyint_to_boolean(stack[2]), # active
+                    stack[3], # source
+                    stack[4], # category_id
+                    stack[5] if stack[5] is not None else '', # next_view_date
+                    stack[6], # review_stage_cd
+                    stack[7] if stack[7] != None else '', # category_description
+                    stack[8]  # review stage description
+                )
+                converted_stacks = converted_stacks + (converted_category,)  # Building up a tuple of tuples
+            return converted_stacks
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Business layer for retrieving daily active stacks
@@ -224,27 +253,31 @@ Jaco Koekemoer
 class RetrieveDailyActiveStacks:
 
     def run(self):
-        # Retrieve all stacks via the DAO
-        retrieve_stack = sd.RetrieveDailyActiveStacksDAO()
-        stacks = retrieve_stack.run()
+        try:
+            # Retrieve all stacks via the DAO
+            retrieve_stack = sd.RetrieveDailyActiveStacksDAO()
+            stacks = retrieve_stack.run()
 
-        # Convert data for front-end display
-        converted_stacks = ()
-        qcards_util = qu.QCardsUtil()
-        for stack in stacks:
-            converted_category = (
-                stack[0], # id
-                stack[1], # description
-                qcards_util.convert_tinyint_to_boolean(stack[2]), # active
-                stack[3], # source
-                stack[4], # category_id
-                stack[5] if stack[5] is not None else '', # next_view_date
-                stack[6], # review_stage_cd
-                stack[7] if stack[7] is not None else '', # category_description
-                stack[8]  # review stage description
-            )
-            converted_stacks = converted_stacks + (converted_category,)  # Building up a tuple of tuples
-        return converted_stacks
+            # Convert data for front-end display
+            converted_stacks = ()
+            qcards_util = qu.QCardsUtil()
+            for stack in stacks:
+                converted_category = (
+                    stack[0], # id
+                    stack[1], # description
+                    qcards_util.convert_tinyint_to_boolean(stack[2]), # active
+                    stack[3], # source
+                    stack[4], # category_id
+                    stack[5] if stack[5] is not None else '', # next_view_date
+                    stack[6], # review_stage_cd
+                    stack[7] if stack[7] is not None else '', # category_description
+                    stack[8]  # review stage description
+                )
+                converted_stacks = converted_stacks + (converted_category,)  # Building up a tuple of tuples
+            return converted_stacks
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 A class for retrieving a stacks to be reviewed
@@ -255,16 +288,20 @@ Jaco Koekemoer
 class RetrieveStacksForReview:
 
     def run(self):
-        # Retrieve scheduled stacks
-        retrieve_scheduled_stacks = sd.RetrieveScheduledActiveStacksDAO()
-        scheduled_stacks = retrieve_scheduled_stacks.run()
+        try:
+            # Retrieve scheduled stacks
+            retrieve_scheduled_stacks = sd.RetrieveScheduledActiveStacksDAO()
+            scheduled_stacks = retrieve_scheduled_stacks.run()
 
-        # Retrieve active stacks
-        retrieve_daily_stacks = sd.RetrieveDailyActiveStacksDAO()
-        daily_stacks = retrieve_daily_stacks.run()
+            # Retrieve active stacks
+            retrieve_daily_stacks = sd.RetrieveDailyActiveStacksDAO()
+            daily_stacks = retrieve_daily_stacks.run()
 
-        # Combine stacks and return
-        return scheduled_stacks + daily_stacks
+            # Combine stacks and return
+            return scheduled_stacks + daily_stacks
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Business layer for retrieving all stacks as a dictionary
@@ -275,16 +312,20 @@ Jaco Koekemoer
 class RetrieveAllStacksDict:
 
     def run(self):
-        # Retrieve all categories via the DAO
-        retrieve_stack = sd.RetrieveAllStacksDAO()
-        stacks = retrieve_stack.run()
+        try:
+            # Retrieve all categories via the DAO
+            retrieve_stack = sd.RetrieveAllStacksDAO()
+            stacks = retrieve_stack.run()
 
-        # Convert data for front-end display
-        stack_dictionary = dict()
-        stack_dictionary[sc.StackConstant.SELECT_STACK.value] = -1
-        for stack in stacks:
-            stack_dictionary[stack[1]] = stack[0] # description: id
-        return stack_dictionary
+            # Convert data for front-end display
+            stack_dictionary = dict()
+            stack_dictionary[sc.StackConstant.SELECT_STACK.value] = -1
+            for stack in stacks:
+                stack_dictionary[stack[1]] = stack[0] # description: id
+            return stack_dictionary
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Business layer for retrieving stacks by category id as a dictionary
@@ -295,16 +336,20 @@ Jaco Koekemoer
 class RetrieveStacksByCategoryIdDict:
 
     def run(self, category_id):
-        # Retrieve all categories via the DAO
-        retrieve_stack = sd.RetrieveActiveStacksByCategoryIdDAO()
-        stacks = retrieve_stack.run(category_id)
+        try:
+            # Retrieve all categories via the DAO
+            retrieve_stack = sd.RetrieveActiveStacksByCategoryIdDAO()
+            stacks = retrieve_stack.run(category_id)
 
-        # Convert data for front-end display
-        stack_dictionary = dict()
-        stack_dictionary[sc.StackConstant.SELECT_STACK.value] = -1
-        for stack in stacks:
-            stack_dictionary[stack[1]] = stack[0] # description: id
-        return stack_dictionary
+            # Convert data for front-end display
+            stack_dictionary = dict()
+            stack_dictionary[sc.StackConstant.SELECT_STACK.value] = -1
+            for stack in stacks:
+                stack_dictionary[stack[1]] = stack[0] # description: id
+            return stack_dictionary
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 
 """
@@ -316,8 +361,12 @@ Jaco Koekemoer
 class HideStack:
 
     def run(self, stack_id):
-        hide_stack_dao = sd.HideStackDAO()
-        hide_stack_dao.run(stack_id)
+        try:
+            hide_stack_dao = sd.HideStackDAO()
+            hide_stack_dao.run(stack_id)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 
 """
@@ -329,10 +378,14 @@ Jaco Koekemoer
 class ShowAllActiveStacks:
 
     def run(self):
-        # Show active scheduled stacks
-        show_all_active_scheduled_stacks = sd.ShowAllActiveScheduledStacksDAO()
-        show_all_active_scheduled_stacks.run()
+        try:
+            # Show active scheduled stacks
+            show_all_active_scheduled_stacks = sd.ShowAllActiveScheduledStacksDAO()
+            show_all_active_scheduled_stacks.run()
 
-        # Show active daily stacks
-        show_all_active_daily_stacks = sd.ShowAllActiveDailyStacksDAO()
-        show_all_active_daily_stacks.run()
+            # Show active daily stacks
+            show_all_active_daily_stacks = sd.ShowAllActiveDailyStacksDAO()
+            show_all_active_daily_stacks.run()
+        except Exception as e:
+            traceback.print_exc()
+            raise

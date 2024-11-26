@@ -1,3 +1,4 @@
+import traceback
 import qcards_db as qcards_db
 
 class Bookmark:
@@ -17,14 +18,18 @@ Jaco Koekemoer
 class AddBookmark:
 
     def run(self, stack_id, card_id, active):
-        # Prepare SQL
-        sql = "insert into t_bookmark(stack_id, card_id, active, create_date) \
-            values({:d}, {:d}, {}, NOW());".format(stack_id, card_id, active)
-        # print(sql)
+        try:
+            # Prepare SQL
+            sql = "insert into t_bookmark(stack_id, card_id, active, create_date) \
+                values({:d}, {:d}, {}, NOW());".format(stack_id, card_id, active)
+            # print(sql)
 
-        # Run the query
-        execute_query = qcards_db.QCardsExecuteQuery()
-        execute_query.execute(sql)
+            # Run the query
+            execute_query = qcards_db.QCardsExecuteQuery()
+            execute_query.execute(sql)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Update a bookmark
@@ -35,16 +40,20 @@ Jaco Koekemoer
 class UpdateBookmark:
 
     def run(self, id, active):
-        # Prepare SQL
-        sql = "update t_bookmark \
-                set active = {}, \
-                    last_modified_date = NOW() \
-                where id = {:d};".format(active, id)
-        # print(sql)
+        try:
+            # Prepare SQL
+            sql = "update t_bookmark \
+                    set active = {}, \
+                        last_modified_date = NOW() \
+                    where id = {:d};".format(active, id)
+            # print(sql)
 
-        # Run the query
-        execute_query = qcards_db.QCardsExecuteQuery()
-        execute_query.execute(sql)
+            # Run the query
+            execute_query = qcards_db.QCardsExecuteQuery()
+            execute_query.execute(sql)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Retrieve a bookmark by id
@@ -55,13 +64,17 @@ Jaco Koekemoer
 class RetrieveBookmarkById:
 
     def run(self, id):
-        # Prepare SQL
-        sql = "select id, stack_id, card_id, active from t_bookmark where id = {:d};".format(id)
-        # print(sql)
+        try:
+            # Prepare SQL
+            sql = "select id, stack_id, card_id, active from t_bookmark where id = {:d};".format(id)
+            # print(sql)
 
-        # Run the query
-        execute_query = qcards_db.QCardsExecuteSelectQuery()
-        return execute_query.execute(sql)
+            # Run the query
+            execute_query = qcards_db.QCardsExecuteSelectQuery()
+            return execute_query.execute(sql)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Retrieve all bookmarks
@@ -72,13 +85,17 @@ Jaco Koekemoer
 class RetrieveAllBookmarks:
 
     def run(self):
-        # Prepare SQL
-        sql = "select id, stack_id, card_id, active from t_bookmark;"
-        # print(sql)
+        try:
+            # Prepare SQL
+            sql = "select id, stack_id, card_id, active from t_bookmark;"
+            # print(sql)
 
-        # Run the query
-        execute_query = qcards_db.QCardsExecuteSelectQuery()
-        return execute_query.execute(sql)
+            # Run the query
+            execute_query = qcards_db.QCardsExecuteSelectQuery()
+            return execute_query.execute(sql)
+        except Exception as e:
+            traceback.print_exc()
+            raise
 
 """
 Retrieve all active bookmarks
@@ -89,10 +106,14 @@ Jaco Koekemoer
 class RetrieveAllActiveBookmarks:
 
     def run(self):
-        # Prepare SQL
-        sql = "select id, stack_id, card_id, active from t_bookmark where active = 1;"
-        # print(sql)
+        try:
+            # Prepare SQL
+            sql = "select id, stack_id, card_id, active from t_bookmark where active = 1;"
+            # print(sql)
 
-        # Run the query
-        execute_query = qcards_db.QCardsExecuteSelectQuery()
-        return execute_query.execute(sql)
+            # Run the query
+            execute_query = qcards_db.QCardsExecuteSelectQuery()
+            return execute_query.execute(sql)
+        except Exception as e:
+            traceback.print_exc()
+            raise

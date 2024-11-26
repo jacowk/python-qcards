@@ -1,3 +1,5 @@
+import traceback
+import tkinter.messagebox as messagebox
 import tkinter as tk
 from tkinter import ttk
 from PIL import ImageTk, Image
@@ -19,55 +21,59 @@ Run Squirrel: sudo /usr/local/squirrel-sql-4.7.1/squirrel-sql.sh
 class QCardsApp:
 
     def run(self):
-        # Setup the main window
-        self.main_window = tk.Tk()
-        self.main_window.title("QCards")
+        try:
+            # Setup the main window
+            self.main_window = tk.Tk()
+            self.main_window.title("QCards")
 
-        # Calculate the position of the center of the screen
-        self.calculate_screen_position(1024, 600)
+            # Calculate the position of the center of the screen
+            self.calculate_screen_position(1024, 600)
 
-        # Image frame
-        self.image_frame = tk.Frame(self.main_window, width=1200, height=500)
-        self.image_frame.grid(row=0, column=0, columnspan=2)
-        img = ImageTk.PhotoImage(Image.open("images/pinetree.jpg"))
-        self.image_label = tk.Label(self.image_frame, image=img)
-        self.image_label.grid(row=0, column=0, columnspan=2)
+            # Image frame
+            self.image_frame = tk.Frame(self.main_window, width=1200, height=500)
+            self.image_frame.grid(row=0, column=0, columnspan=2)
+            img = ImageTk.PhotoImage(Image.open("images/pinetree.jpg"))
+            self.image_label = tk.Label(self.image_frame, image=img)
+            self.image_label.grid(row=0, column=0, columnspan=2)
 
-        # Creating a ttk style object
-        style = ttk.Style(self.main_window)
+            # Creating a ttk style object
+            style = ttk.Style(self.main_window)
 
-        # Changing the theme to 'clam'
-        #style.theme_use('clam')
-        style.theme_use('alt')
+            # Changing the theme to 'clam'
+            #style.theme_use('clam')
+            style.theme_use('alt')
 
-        # Add a menubar
-        menubar = tk.Menu(self.main_window)
+            # Add a menubar
+            menubar = tk.Menu(self.main_window)
 
-        # Add the Category menu
-        main_menu = tk.Menu(menubar, tearoff=0)
+            # Add the Category menu
+            main_menu = tk.Menu(menubar, tearoff=0)
 
-        main_menu.add_command(label="Category Tree", command=self.open_category_tree_window)
-        main_menu.add_separator()
-        main_menu.add_command(label="Categories", command=self.open_category_window)
-        main_menu.add_command(label="Stacks", command=self.open_stack_window)
-        main_menu.add_command(label="Cards", command=self.open_card_window)
-        main_menu.add_separator()
-        main_menu.add_command(label="Review", command=self.open_review_window)
-        main_menu.add_separator()
-        main_menu.add_command(label="Import Cards", command=self.open_import_cards_window)
-        main_menu.add_separator()
-        main_menu.add_command(label="Exit", command=self.main_window.quit)
+            main_menu.add_command(label="Category Tree", command=self.open_category_tree_window)
+            main_menu.add_separator()
+            main_menu.add_command(label="Categories", command=self.open_category_window)
+            main_menu.add_command(label="Stacks", command=self.open_stack_window)
+            main_menu.add_command(label="Cards", command=self.open_card_window)
+            main_menu.add_separator()
+            main_menu.add_command(label="Review", command=self.open_review_window)
+            main_menu.add_separator()
+            main_menu.add_command(label="Import Cards", command=self.open_import_cards_window)
+            main_menu.add_separator()
+            main_menu.add_command(label="Exit", command=self.main_window.quit)
 
-        menubar.add_cascade(label="Menu", menu=main_menu)
+            menubar.add_cascade(label="Menu", menu=main_menu)
 
-        # Add menu to the main window
-        self.main_window.config(menu=menubar)
+            # Add menu to the main window
+            self.main_window.config(menu=menubar)
 
-        # Adding a frame
-        #frame = tk.Frame(main_window)
-        #frame.pack()
+            # Adding a frame
+            #frame = tk.Frame(main_window)
+            #frame.pack()
 
-        self.main_window.mainloop()
+            self.main_window.mainloop()
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def calculate_screen_position(self, x, y):
         gui_util = u.QCardsGUIUtil()
@@ -75,22 +81,46 @@ class QCardsApp:
         self.main_window.geometry("{}x{}+{}+{}".format(x, y, screen_coordinates[0], screen_coordinates[1] - 50))
 
     def open_category_tree_window(self):
-        category_tree_gui = ctg.CategoryTreeGui(self.main_window)
+        try:
+            category_tree_gui = ctg.CategoryTreeGui(self.main_window)
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def open_category_window(self):
-        list_categories_gui = catg.ListCategoriesGui(self.main_window)
+        try:
+            list_categories_gui = catg.ListCategoriesGui(self.main_window)
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def open_stack_window(self):
-        list_stacks_gui = sg.ListStacksGui(self.main_window)
+        try:
+            list_stacks_gui = sg.ListStacksGui(self.main_window)
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def open_card_window(self):
-        list_cards_gui = cg.ListCardsGui(self.main_window)
+        try:
+            list_cards_gui = cg.ListCardsGui(self.main_window)
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def open_review_window(self):
-        review_gui = rg.ReviewGui(self.main_window)
+        try:
+            review_gui = rg.ReviewGui(self.main_window)
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
     def open_import_cards_window(self):
-        card_import = ci.CardCSVImportGui(self.main_window)
+        try:
+            card_import = ci.CardCSVImportGui(self.main_window)
+        except Exception as e:
+            traceback.print_exc()
+            messagebox.showerror("Error", e.args[0])
 
 app = QCardsApp()
 app.run()
